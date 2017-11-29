@@ -2,6 +2,8 @@ http://www.linuxjournal.com/article/8497
 
 https://stackoverflow.com/questions/1056051/how-do-you-call-python-code-from-c-code
 
+https://github.com/KonradIT/goprowifihack
+
 GStreamer
 LibVLC
 MPlayer
