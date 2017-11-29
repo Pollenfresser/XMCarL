@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="game_res">
+		<file>css/style.css</file>
+		<file>img/background.png</file>
+		<file>css/larkspur.ttf</file>
+	</gresource>
+</gresources>
