@@ -1,5 +1,5 @@
 ### c & python
-http://www.linuxjournal.com/article/8497
+http://www.linuxjournal.com/article/8497 <br>
 https://stackoverflow.com/questions/1056051/how-do-you-call-python-code-from-c-code
 
 ### gopro - wifi
@@ -9,10 +9,10 @@ https://github.com/KonradIT/goprowifihack
 https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 ### Tipps vom mr. teacher
-GStreamer
-LibVLC
-MPlayer
-Webkit GTK
+GStreamer <br>
+LibVLC <br>
+MPlayer <br>
+Webkit GTK <br>
 
 
 ### Regeln:
