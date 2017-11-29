@@ -8,3 +8,28 @@ GStreamer
 LibVLC
 MPlayer
 Webkit GTK
+
+
+Regel:
+
+- Lesbarkeit
+- Übersicht
+- Verständnis
+- Erweiterbar
+- keine Redundanz!
+- Testbarkeit
+- Namenskonvention
+
+Funktionen für
+- Aufrufe
+- Funktionalität
+
+Jeder Codeteil / Funktion soll eine einzelne Funktionalität haben
+-> Funktionsname daran anpassen
+
+Gute Ideen:
+Pair programming
+anderen Leuten Code erklären
+Reviews
+Issues aufschreiben
+5 Why's
