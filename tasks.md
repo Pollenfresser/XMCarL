@@ -12,6 +12,9 @@ Dominik - WANT
 * Kommunikation: XMC <-> Auto
 Lucas - WANT
 
+* Kommunikation: XMC <-> GUI
+Lucas - HAS TO
+
 GUI
 
 * Kommunikation: GoPro <-> GUI
@@ -19,6 +22,9 @@ Dominik - HAS TO
 
 * Kommunikation: XMC <-> GUI
 Lucas - HAS TO
+
+* Etwas mit den XMC Daten im GUI machen
+TO BE DEFINED - WANT
 
 * GUI Grundgerüst
 Lucas - HAS TO
