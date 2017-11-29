@@ -3,23 +3,22 @@ INCDIR = ./inc
 SRC = $(wildcard src/*.c)
 RESOURCE = gui_res
 
-
-
 TARGET = main
 
 CXX = gcc
 #json-glib-1.0
-CXXFLAGS = -Wall -g
+CXXFLAGS = 'pkg-config --cflags --libs gtk+-3.0'
+CXXFLAGS += -Wall -g
 CXXFLAGS += -I$(SRCDIR)
 CXXFLAGS += -I$(INCDIR)
-#LDFLAGS = -lm
 
 
 OBJS = $(SRC:.c=.o)
 
+all: $(SRC) $(TARGET)
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) $(RESOURCE).c $< -o $@
+	$(CXX) $(CXXFLAGS) $(RESOURCE) $< -o $(TARGET)
 	@echo ""
 
 
