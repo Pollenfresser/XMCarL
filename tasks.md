@@ -56,3 +56,20 @@ Abhängigkeiten:
 Chrisy braucht Video-Info von Dominik
 
 Dominik braucht "Was muss gesendet werden" von Lucas
+
+
+
+Vorgehensweise:
+Tipp - kleine, einfache dinge umsetzen & später erst erweitern (wenn man weiß dass es funktioniert); darauf achten, dass man jede funktion testet & debuggt
+
+- testen, ob gopro mit computer verbindet (bsp programm aus dem internet)
+
+entwickeln
+
+- gstreamer mit beispielvideo testen
+
+entwickeln
+
+- einzelne funktionalitäten vor der implementierungsphase testen
+
+implementieren
