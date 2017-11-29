@@ -4,6 +4,8 @@ ALLES AUF ENGLISCH!
 
 !!!DARAUF ACHTEN, dass sinnvolle Namen gegeben werden - kein x, y, i, ...
 
+Golden rule: keinen code stehlen (auf Lizenz & Copyright achten)
+
 # Funktionen
 Funktionsnamen: klein mit unterstrichen
 Eine Funktion hat eine Funktionalität
