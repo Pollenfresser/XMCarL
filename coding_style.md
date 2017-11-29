@@ -101,6 +101,7 @@ Beispiel:
 /* Diese Beschreibung dient als Beispieltext für eine            */ 
 /* Filebeschreibung aus welcher klar hervorgehen soll was in        */
 /* diesem File passiert und wozu dieses benötigt wird.           */
+/*-----------------------------------------------------------------*/
 ```
 
 <b>Funktionskommentar</b>
