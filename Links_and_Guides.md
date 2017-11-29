@@ -4,6 +4,8 @@ https://stackoverflow.com/questions/1056051/how-do-you-call-python-code-from-c-c
 
 https://github.com/KonradIT/goprowifihack
 
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+
 GStreamer
 LibVLC
 MPlayer
