@@ -14,8 +14,11 @@ Lucas - WANT
 
 GUI
 
-* Kommunikation: GoPro <-> Laptop
+* Kommunikation: GoPro <-> GUI
 Dominik - HAS TO
+
+* Kommunikation: XMC <-> GUI
+Lucas - HAS TO
 
 * GUI Grundgerüst
 Lucas - HAS TO
