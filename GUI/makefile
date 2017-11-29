@@ -4,8 +4,9 @@ RM       = rm -rf
 SRCDIR   = ./src
 SRC      = $(wildcard $(SRCDIR)/*.c)
 INCDIR   = ./inc
-CFLAGS   = -Wall --pedantic -g
+CFLAGS   = `pkg-config --cflags --libs gtk+-3.0`
 CFLAGS  += -I$(INCDIR)
+CFLAGS  += -Wall -g
 OBJS     = $(SRC:.c=.o)
 
 all: $(OBJS) $(TARGET)
