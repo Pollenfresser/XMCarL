@@ -29,8 +29,8 @@ Webkit GTK <br>
 -> Funktionsname daran anpassen
 
 ### Gute Ideen:
-Pair programming
-anderen Leuten Code erklären
-Reviews
-Issues aufschreiben
-5 Why's
+* Pair programming
+* anderen Leuten Code erklären
+* Reviews
+* Issues aufschreiben
+* 5 Why's
