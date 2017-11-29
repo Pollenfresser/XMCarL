@@ -16,4 +16,7 @@ In order to the task-description the xmc communicates with the gui-application (
 
 
 ### GUI - Application
+GoPro & GUI
 <p>Using Gstreamer and WebKitGtk</p>
+XMC & GUI
+<p>Using cairo / gnuplot to visualise data from the sensor</p>
