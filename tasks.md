@@ -3,11 +3,17 @@ Name - WANT / HAS TO / DOING / REVIEW / DONE
 XMC
 
 * Initialisierung / Grundgerüst XMC
-Chrisy - HAS TO
+Chrisy - HAS TO <br>
 Lucas - WANT (Überarbeitung)
+
+* Sensor Daten Auswertung
+Lucas - WANT <br>
+Sensordaten werden durch 15 TAUSEND dividiert - danach Zahlen von -10 bis + 10
+wir verwenden nur 2 Achsen - daher werden nur 2 Zahlen an Steuerung und GUI weitergegeben
 
 * Steuerung (vor, zurück, seiten)
 Dominik - WANT
+Wie viel Beschleunigung
 
 * Kommunikation: XMC <-> Auto
 Lucas - WANT
