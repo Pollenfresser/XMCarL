@@ -30,7 +30,10 @@ https://github.com/KonradIT/GoProStream
 
 -> python3
 
-dnf install ffmpeg
+* rpm -ivh https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-24.noarch.rpm
+* rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-24.noarch.rpm	
+* dnf update
+* dnf install ffmpeg
 
 ### Next Steps
 
