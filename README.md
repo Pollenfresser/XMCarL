@@ -20,3 +20,15 @@ GoPro & GUI
 <p>Using Gstreamer and WebKitGtk</p>
 XMC & GUI
 <p>Using cairo / gnuplot to visualise data from the sensor</p>
+
+
+### Steps we did / Working
+
+GoPro
+https://github.com/KonradIT/GoProStream
+-> python3
+dnf install ffmpeg
+
+### Next Steps
+
+gopro video with gstreamer
