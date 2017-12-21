@@ -20,3 +20,21 @@ GoPro & GUI
 <p>Using Gstreamer and WebKitGtk</p>
 XMC & GUI
 <p>Using cairo / gnuplot to visualise data from the sensor</p>
+
+
+### Steps we did / Working
+
+GoPro
+
+https://github.com/KonradIT/GoProStream
+
+-> python3
+
+* rpm -ivh https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-24.noarch.rpm
+* rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-24.noarch.rpm	
+* dnf update
+* dnf install ffmpeg
+
+### Next Steps
+
+gopro video with gstreamer

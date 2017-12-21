@@ -1,4 +1,4 @@
-# Hier sind unsere Coding styles 
+# Hier sind unsere Coding styles
 
 ALLES AUF ENGLISCH!
 
@@ -24,14 +24,14 @@ int zaehl_variable = 0;
 t_ für type zu Beginn des Typen
 
 <b>Beispiel:</b>
-typedef struct name{
+typedef t_struct name{
         unsigned char sinnvoll_x;
         unsigned char sinnvoll_y;
-} t_beispiel;    
+} beispiel;    
 
-name … Strukturtyp
+t_name … Strukturtyp
 { xxx } … Strukturdefinition
-t_beispiel … Strukturvariable / Variablenname
+beispiel … Strukturvariable / Variablenname
 
 
 # Konstanten
@@ -48,11 +48,13 @@ Enum bei nicht funktionalen Werten (zb Status: fahren 1, stehen 2, links 3, ...)
 # C - File (Reihenfolge)
 
 Erklärung was im File “passiert” -> Kommentare
+
+
 Inkludieren der Headerfiles
 
 Funktionen
 - Kommentar, Erklärung was die Funktion macht
-- Definition der Funktion - void chrisy_function(){ ... 
+- Definition der Funktion - void chrisy_function(){ ...
 - Lokale Variablen
 - Code
 - Return (wenn nicht void)
@@ -100,7 +102,7 @@ Beispiel:
 /* Created: yyyy-mm-dd                                   */
 /* Project: XMCarL                                       */
 /*                                                   */
-/* Diese Beschreibung dient als Beispieltext für eine            */ 
+/* Diese Beschreibung dient als Beispieltext für eine            */
 /* Filebeschreibung aus welcher klar hervorgehen soll was in        */
 /* diesem File passiert und wozu dieses benötigt wird.           */
 /*-----------------------------------------------------------------*/
@@ -122,5 +124,3 @@ Beispiel:
 nicht zu viele - eher ins Funktionskommentar
 -> keine sternchen
 // Beispielkommentar
-
-
