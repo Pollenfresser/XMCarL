@@ -9,11 +9,11 @@ In order to the task-description the xmc communicates with the gui-application (
 
 <b>acceleration sensor</b>  -wire-  <b>xmc</b> -wire-  <b>transmitter</b>  -wireless-  <b>car</b>  -mechanical-  <b>gopro</b>  -wireless-  <b>gui</b> 
 
-### Remote controll
+### Remote control
 <p>Microcontroller XMC and Acceleration sensor is used as a remote control</p>
 
 ### Car
-
+<p>PWM signal from the XMC to the remote car
 
 ### GUI - Application
 GoPro & GUI
@@ -34,6 +34,8 @@ https://github.com/KonradIT/GoProStream
 * rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-24.noarch.rpm	
 * dnf update
 * dnf install ffmpeg
+
+Chrisy: i did the init ... somehow ...
 
 ### Next Steps
 
