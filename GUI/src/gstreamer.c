@@ -77,6 +77,7 @@ GError *err = NULL;
   memset (&data, 0, sizeof (data));
 
   /* Build the pipeline */
+<<<<<<< HEAD
   pipeline = gst_parse_launch ("playbin udpsrc port=8554", &err);
  if (!pipeline) {
     g_print ("Parse error: %s\n", err->message);
@@ -87,8 +88,11 @@ GError *err = NULL;
 }else{
     g_printerr ("Aye, ok\n");
 }
+=======
+  pipeline = gst_parse_launch ("udpsrc port=8554 ",NULL);
+>>>>>>> 6f5b98741a8d4ade822b370399e41b3a966ce261
   bus = gst_element_get_bus (pipeline);
-
+ //! tee name='reapeat' ! queue ! udpsink host = 10.5.5.9 port = 8554 repeat. ! application/x-rtp,encoding-name=H264,payload=96 ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert
   /* Start playing */
 
  ret = gst_element_set_state (pipeline, GST_STATE_PLAYING);

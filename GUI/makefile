@@ -1,4 +1,4 @@
-TARGET   = myapplication
+TARGET   = myapplication.out
 CC       = gcc
 RM       = rm -rf
 SRCDIR   = ./src
