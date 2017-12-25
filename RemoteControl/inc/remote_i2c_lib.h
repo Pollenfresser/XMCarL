@@ -1,7 +1,8 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg, Lucas Ullrich
+ * Author:
+ * Modified: Christina Bornberg, Lucas Ullrich
  *
  * Date of creation: 25.12.2017
  *

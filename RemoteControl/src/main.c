@@ -44,10 +44,7 @@
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500
 
-#define LED1 P1_1
-#define LED2 P1_0
-
-#define RX_BUFFER_SIZE 64
+#define RX_BUFFER_SIZE 64 // UART
 
 /**
  * Global variables

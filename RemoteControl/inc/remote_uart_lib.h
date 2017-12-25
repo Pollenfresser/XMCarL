@@ -1,7 +1,8 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg, Lucas Ullrich
+ * Author:
+ * Modified: Christina Bornberg, Lucas Ullrich
  *
  * Date of creation: 25.12.2017
  *
@@ -72,11 +73,11 @@ XMC_UART_CH_CONFIG_t uart_config = {
  * Prototypes
  */
 
-void _init_uart0_ch0(void);
-uint8_t _uart_send_char(char c);
-uint8_t _uart_printf(char *fmt, ...); // TODO i have no idea
-uint8_t _uart_send_string(char *str);
-uint8_t _uart_get_string (char *str);
+void remote_uart_to_pc_init(void);
+uint8_t remote_uart_send_char(char c);
+uint8_t remote_uart_printf(char *fmt, ...); // TODO i have no idea
+uint8_t remote_uart_send_string(char *str);
+uint8_t remote_uart_get_string (char *str);
 #endif /* REMOTE_UART_H_ */
 
 /* EOF */

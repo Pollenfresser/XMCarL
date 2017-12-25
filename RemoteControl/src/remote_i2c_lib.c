@@ -1,12 +1,13 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg
+ * Author:
+ * Modified: Christina Bornberg
  *
  * Date of creation: 25.12.2017
  *
  * File description: I2C Library
- * Using: XMC_I2C1_CH0
+ * Using: XMC_I2C1_CH0 (USIC1)
  *
  * Status: Done I2C (Chrisy)
  * Lucas Review

@@ -1,12 +1,13 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg
+ * Author:
+ * Modified: Christina Bornberg
  *
  * Date of creation: 25.12.2017
  *
  * File description: UART Library
- * Using: XMC_UART0_CH0
+ * Using: XMC_UART0_CH0 (USIC0)
  *
  * Status: Doing UART (Chrisy)
  *
@@ -19,7 +20,7 @@
  *****************************************************************************/
 
 // TODO: different channel, maybe XMC_UART0_CH1
-void _init_uart0_ch0()
+void remote_uart_to_pc_init()
 {
 	/* USIC channels initialization */
 	XMC_UART_CH_Init (XMC_UART0_CH0, &uart_config);
@@ -77,7 +78,8 @@ void USIC0_0_IRQHandler (void)
 	}
 }
 
-uint8_t _uart_send_char (char c)
+// TODO do we need this?
+uint8_t remote_uart_send_char (char c)
 {
 	while (XMC_USIC_CH_GetTransmitBufferStatus (XMC_UART0_CH0) == XMC_USIC_CH_TBUF_STATUS_BUSY);
 	XMC_UART_CH_Transmit (XMC_UART0_CH0, c);
@@ -85,7 +87,8 @@ uint8_t _uart_send_char (char c)
 	return 0;
 }
 
-uint8_t _uart_printf (char *fmt, ...)
+// TODO do we need this?
+uint8_t remote_uart_printf (char *fmt, ...)
 {
 	va_list arg_ptr;
 	char buffer[BUFFER_SIZE_PRINTF];
@@ -98,11 +101,12 @@ uint8_t _uart_printf (char *fmt, ...)
 	vsprintf (buffer, fmt, arg_ptr);
 	va_end (arg_ptr);
 
-	_uart_send_string (buffer);
+	remote_uart_send_string (buffer);
 	return 0;
 }
 
-uint8_t _uart_send_string (char *str)
+// TODO do we need this?
+uint8_t remote_uart_send_string (char *str)
 {
 	if (str == NULL) {
 		return ERR_OUT_OF_MEMORY;
@@ -115,7 +119,8 @@ uint8_t _uart_send_string (char *str)
 	return 0;
 }
 
-uint8_t _uart_get_string (char *str)
+// TODO do we need this?
+uint8_t remote_uart_get_string (char *str)
 {
 	if (str == NULL) {
 		return ERR_OUT_OF_MEMORY;
