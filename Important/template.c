@@ -1,47 +1,35 @@
 /**
  * Project: XMCarL
  *
- *  Description:
- *    - XMC with Sensor:
- *      The XMC is connetced to a accelerometer sensor via I2C, reads the data
- *      from it and forwards it to a PC via UART to a GUI.
+ *  Description: // just in main files
+ *    - XMC as Remote Control:
+ *      The first XMC is connected to an accelerometer sensor via I2C, reads the data
+ *      from it and forwards it to our GUI on a PC via UART.
  *
- *    - PC:
+ *    - PC - GUI:
  *      The PC is used to graphically display the current position of the sensor
- *      and display a video feed of a GoPro mounted on a RC car.
- *      Furthermore it is connected to both of the XMC's to act as a
+ *      and display a video feed of the GoPro Hero5 mounted on a RC car.
+ *      Furthermore it is connected to both XMC's to act as a
  *      transmission pipeline.
  *
- *    - XMC on RC car:
- *      The XMC is directly connetced to the controls of the RC car, and via
- *      Bluetooth to the PC. The from the PC forwarded Date is used to control
+ *    - XMC on Car:
+ *      The XMC is directly connected directly to the controls of the RC car and via
+ *      bluetooth to the PC. The forwarded data from the PC is used to control
  *      the car.
  *
- * Author:
+ * Author: Christina Bornberg, Lucas Ullrich
  *
- * Date of creation:
+ * Date of creation: 25.12.2017
  *
- * Filedescription:
+ * File description:
  *
- *
+ * Status:
  */
 
 
-/**
- * Included Files
- */
-
-
-/**
- * Defines
- */
-
-
-/**
- * Global variables
- */
-
+// hier ist platz für die .h datei, globals, defines, ... in header
 
 /******************************************************************************
  * Start of user functions
  *****************************************************************************/
+
