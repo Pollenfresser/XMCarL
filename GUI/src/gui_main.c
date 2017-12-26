@@ -1,23 +1,63 @@
 #include <gui_main.h>
 
 
+void apply_css(GtkWidget *widget, GtkStyleProvider *css_s)
+{
+  gtk_style_context_add_provider (gtk_widget_get_style_context (widget), css_s, G_MAXUINT);
+
+  if(GTK_IS_CONTAINER (widget))
+  {
+    gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback) apply_css, css_s);
+  }
+}
+
+
+void start_screen (gpointer data)
+{
+  widgets *a = (widgets *) data;
+  gint get_hight, get_width;
+  GtkWidget *label_name;
+
+  a->start_layout = gtk_fixed_new();
+
+  label_name = gtk_label_new ("Welcome to XMCarL");
+
+  a->start_button = gtk_button_new_with_label("Start Car");
+  gtk_widget_set_size_request(a->start_button, 300, 100);
+  g_signal_connect(a->start_button, "clicked", G_CALLBACK(start_stream), (gpointer) a);
+
+/*
+  gtk_widget_set_name (a->main_box, "background");
+  gtk_widget_set_name (a->start_button, "start_button");
+*/
+
+  gtk_window_get_size(GTK_WINDOW (a->window), &get_width, &get_hight);
+  gtk_fixed_put(GTK_FIXED(a->start_layout), label_name, (get_width - 400) / 2, 50);
+  gtk_fixed_put(GTK_FIXED(a->start_layout), a->start_input_entry, (get_width - 400) / 2, 80);
+  gtk_fixed_put(GTK_FIXED(a->start_layout), a->start_input_entry, (get_width - 400) / 2, (get_hight / 2) - 100);
+
+  gtk_box_pack_start (GTK_BOX(a->main_box), a->start_layout, FALSE, FALSE, 0);
+}
+
+
 void activate(GtkApplication *app, gpointer data)
 {
-  widets *a = (widgets *) data;
+  widgets *a = (widgets *) data;
 
-  gtk_css_provier_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
+  a->css_style = GTK_STYLE_PROVIDER (gtk_css_provider_new());
+  gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
 
   a->window = gtk_application_window_new (a->app);
   gtk_window_set_application (GTK_WINDOW (a->window), GTK_APPLICATION(a->app));
-  gtl_window_set_position (GTK_WINDOW (a->window), GTK_WIN_POS_CENTER);
+  gtk_window_set_position (GTK_WINDOW (a->window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (a->window), 800, 500);
 
-  a->main_box = gtk_box_new (GKT_ORIENTATION_VERTICAL, 0);
+  a->main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (a->window), a->main_box);
   a->sub_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX(a->main_box), a->sub_box, FALSE, FALSE, 0);
 
-  // start_screen((gpointer) a);
+  start_screen((gpointer) a);
 
   apply_css (a->window, a->css_style);
 
@@ -31,7 +71,7 @@ void activate(GtkApplication *app, gpointer data)
 
 
 
-int main (int argv, char ** argc)
+int main (int argc, char ** argv)
 {
   int status;
 
