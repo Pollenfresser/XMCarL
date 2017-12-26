@@ -17,26 +17,30 @@ void start_screen (gpointer data)
   widgets *a = (widgets *) data;
   gint get_hight, get_width;
   GtkWidget *label_name;
+	GtkWidget *img;
 
   a->start_layout = gtk_fixed_new();
 
   label_name = gtk_label_new ("Welcome to XMCarL");
 
+	img = gtk_image_new_from_file ("img/xmcarl.png");
+gtk_widget_show_all(img);
+
+
   a->start_button = gtk_button_new_with_label("Start Car");
   gtk_widget_set_size_request(a->start_button, 300, 100);
   g_signal_connect(a->start_button, "clicked", G_CALLBACK(start_stream), (gpointer) a);
 
-/*
-  gtk_widget_set_name (a->main_box, "background");
-  gtk_widget_set_name (a->start_button, "start_button");
-*/
 
-  gtk_window_get_size(GTK_WINDOW (a->window), &get_width, &get_hight);
-  gtk_fixed_put(GTK_FIXED(a->start_layout), label_name, (get_width - 400) / 2, 50);
-  gtk_fixed_put(GTK_FIXED(a->start_layout), a->start_input_entry, (get_width - 400) / 2, 80);
-  gtk_fixed_put(GTK_FIXED(a->start_layout), a->start_input_entry, (get_width - 400) / 2, (get_hight / 2) - 100);
+  gtk_box_pack_start (GTK_BOX(a->main_box), a->start_button, FALSE, FALSE, 0);	
+	
+
+  gtk_box_pack_start (GTK_BOX(a->main_box), label_name, FALSE, FALSE, 0);	
+  gtk_box_pack_start (GTK_BOX(a->main_box), img, FALSE, FALSE, 0);
 
   gtk_box_pack_start (GTK_BOX(a->main_box), a->start_layout, FALSE, FALSE, 0);
+
+gtk_widget_show_all(a->main_box);
 }
 
 
@@ -45,7 +49,7 @@ void activate(GtkApplication *app, gpointer data)
   widgets *a = (widgets *) data;
 
   a->css_style = GTK_STYLE_PROVIDER (gtk_css_provider_new());
-  gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
+ // gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
 
   a->window = gtk_application_window_new (a->app);
   gtk_window_set_application (GTK_WINDOW (a->window), GTK_APPLICATION(a->app));
@@ -59,13 +63,13 @@ void activate(GtkApplication *app, gpointer data)
 
   start_screen((gpointer) a);
 
-  apply_css (a->window, a->css_style);
+ // apply_css (a->window, a->css_style);
 
   gtk_widget_show (a->window);
   gtk_widget_show (a->main_box);
   gtk_widget_show (a->sub_box);
 
-  // next_screen_1_start((gpointer) a);
+  next_screen_1_start((gpointer) a);
 
 }
 
