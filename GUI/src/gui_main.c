@@ -12,38 +12,6 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s)
 }
 
 
-void start_screen (gpointer data)
-{
-  widgets *a = (widgets *) data;
-  gint get_hight, get_width;
-  GtkWidget *label_name;
-	GtkWidget *img;
-
-  a->start_layout = gtk_fixed_new();
-
-  label_name = gtk_label_new ("Welcome to XMCarL");
-
-	img = gtk_image_new_from_file ("img/xmcarl.png");
-gtk_widget_show_all(img);
-
-
-  a->start_button = gtk_button_new_with_label("Start Car");
-  gtk_widget_set_size_request(a->start_button, 300, 100);
-  g_signal_connect(a->start_button, "clicked", G_CALLBACK(start_stream), (gpointer) a);
-
-
-  gtk_box_pack_start (GTK_BOX(a->main_box), a->start_button, FALSE, FALSE, 0);	
-	
-
-  gtk_box_pack_start (GTK_BOX(a->main_box), label_name, FALSE, FALSE, 0);	
-  gtk_box_pack_start (GTK_BOX(a->main_box), img, FALSE, FALSE, 0);
-
-  gtk_box_pack_start (GTK_BOX(a->main_box), a->start_layout, FALSE, FALSE, 0);
-
-gtk_widget_show_all(a->main_box);
-}
-
-
 void activate(GtkApplication *app, gpointer data)
 {
   widgets *a = (widgets *) data;
@@ -58,21 +26,18 @@ void activate(GtkApplication *app, gpointer data)
 
   a->main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (a->window), a->main_box);
-  a->sub_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX(a->main_box), a->sub_box, FALSE, FALSE, 0);
 
-  start_screen((gpointer) a);
+  start_screen_init((gpointer) a);
+  stream_screen_init((gpointer) a);
+  datavis_screen_init((gpointer) a);
 
  apply_css (a->window, a->css_style);
 
   gtk_widget_show (a->window);
   gtk_widget_show (a->main_box);
-  gtk_widget_show (a->sub_box);
 
-  next_screen_1_start((gpointer) a);
-
+  start_screen_visible((gpointer) a);
 }
-
 
 
 int main (int argc, char ** argv)
