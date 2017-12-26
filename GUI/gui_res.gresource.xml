@@ -2,6 +2,6 @@
 <gresources>
 	<gresource prefix="gui_res">
 		<file>css/style.css</file>
-		<file>data/NimbusMono-Regular.odf</file>
+		<file>data/NimbusMono-Regular.otf</file>
 	</gresource>
 </gresources>
