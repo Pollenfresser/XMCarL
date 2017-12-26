@@ -3,9 +3,11 @@ CC       = gcc
 RM       = rm -rf
 SRCDIR   = ./src
 SRC      = $(wildcard $(SRCDIR)/*.c)
+SRC			+= gui_res.c
 INCDIR   = ./inc
 CFLAGS   = `pkg-config --cflags --libs gtk+-3.0`
 CFLAGS  += `pkg-config --cflags --libs gstreamer-1.0`
+CFLAGS  += -I$(SRCDIR)
 CFLAGS  += -I$(INCDIR)
 CFLAGS  += -Wall -g
 OBJS     = $(SRC:.c=.o)
@@ -14,10 +16,14 @@ RESOURCE = gui_res
 all: $(OBJS) $(TARGET)
 
 %.o: %.c $(RESOURCE).c
-	$(CC) $(SRC) $(RESOURCE).c $(CFLAGS) -o $(TARGET)
+	$(CC) -c $(CFLAGS) $< -o $@
+	@echo ""
 
 $(RESOURCE).c: $(RESOURCE).gresource.xml
 	glib-compile-resources --sourcedir=. $(RESOURCE).gresource.xml --generate-source
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
 clean:
 	$(RM) $(OBJS) $(TARGET) $(RESOURCE).c core *~
