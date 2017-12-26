@@ -20,6 +20,10 @@ GoPro & GUI
 <p>Using Gstreamer and WebKitGtk</p>
 XMC & GUI
 <p>Using cairo / gnuplot to visualise data from the sensor</p>
+* One Startscreen with the logo and a start button
+* Screen with mems-sensor data visualisation
+* Screen with video from GoPro (GStreamer)
+
 
 
 ### Steps we did / Working
