@@ -1,4 +1,4 @@
-/*#include <gui_main.h>
+#include <gui_main.h>
 
 
 int main (int argv, char ** argc)
@@ -11,4 +11,3 @@ int main (int argv, char ** argc)
 
   return 0;
 }
-*/
