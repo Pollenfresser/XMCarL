@@ -49,7 +49,7 @@ void activate(GtkApplication *app, gpointer data)
   widgets *a = (widgets *) data;
 
   a->css_style = GTK_STYLE_PROVIDER (gtk_css_provider_new());
- // gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
+  gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER(a->css_style), "/gui_res/css/style.css");
 
   a->window = gtk_application_window_new (a->app);
   gtk_window_set_application (GTK_WINDOW (a->window), GTK_APPLICATION(a->app));
@@ -63,7 +63,7 @@ void activate(GtkApplication *app, gpointer data)
 
   start_screen((gpointer) a);
 
- // apply_css (a->window, a->css_style);
+ apply_css (a->window, a->css_style);
 
   gtk_widget_show (a->window);
   gtk_widget_show (a->main_box);
