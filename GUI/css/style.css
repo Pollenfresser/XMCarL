@@ -1,0 +1,16 @@
+/* Colors:
+	 Lucas: 20, 80, 120
+*/
+
+
+button{ 
+	border-radius: 10px;
+	font-family: "Nimbus Mono";
+	font-size: 32px;
+	background-image: image(rgb(20,80,120));
+	color: #FFFFFF;
+}
+
+
+
+
