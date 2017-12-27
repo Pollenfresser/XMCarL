@@ -1,4 +1,22 @@
+/**
+ * Project: XMCarL
+ *
+ * Author: Lucas Ullrich
+ * Modified: Christina Bornberg
+ *
+ * Date of creation: 26.12.2017
+ *
+ * File description: Main - routine
+ *
+ * Status: done so far
+ *
+ */
+
 #include <gui_main.h>
+
+/******************************************************************************
+ * Start of user functions
+ *****************************************************************************/
 
 void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	gtk_style_context_add_provider(gtk_widget_get_style_context(widget), css_s,
@@ -20,6 +38,7 @@ void activate(GtkApplication *app, gpointer data) {
 	a->window = gtk_application_window_new(a->app);
 	gtk_window_set_application(GTK_WINDOW(a->window), GTK_APPLICATION(a->app));
 	gtk_window_set_position(GTK_WINDOW(a->window), GTK_WIN_POS_CENTER);
+	gtk_window_set_title(GTK_WINDOW (a->window), "XMCarL");
 	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 500);
 
 	a->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
