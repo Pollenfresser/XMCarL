@@ -4,6 +4,9 @@ void datavis_screen_visible(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
 	gtk_widget_show_all(a->datavis.layout);
 
+	gtk_widget_set_visible(a->start.layout, FALSE);
+	  	gtk_widget_set_visible(a->stream.layout, FALSE);
+
 }
 
 void datavis_screen_init(gpointer data) {
@@ -11,7 +14,7 @@ void datavis_screen_init(gpointer data) {
 
 	a->datavis.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-	a->datavis.label_name = gtk_label_new("Welcome to XMCarL");
+	a->datavis.label_name = gtk_label_new("vis to XMCarL");
 
 	a->datavis.img = gtk_image_new_from_file("img/xmcarl.png");
 	gtk_widget_show_all(a->datavis.img);

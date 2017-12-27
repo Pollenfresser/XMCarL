@@ -5,15 +5,18 @@ void stream_screen_visible(GtkWidget *wid, gpointer data)
 	widgets *a = (widgets *) data;
   	gtk_widget_show_all(a->stream.layout);
 
+  	gtk_widget_set_visible(a->start.layout, FALSE);
+  	gtk_widget_set_visible(a->datavis.layout, FALSE);
+
+
 }
 
 void stream_screen_init(gpointer data)
 {
     widgets *a = (widgets *) data;
-/*
 
 a->stream.layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
+/*
 a->stream.video_area = gtk_drawing_area_new();
  gtk_widget_set_double_buffered (video_window, FALSE);
   g_signal_connect (a->stream.video_area, "realize", G_CALLBACK (realize_cb), data);
@@ -29,7 +32,7 @@ a->stream.video_area = gtk_drawing_area_new();
 
 
 
-  a->stream.label_name = gtk_label_new ("Welcome to XMCarL");
+  a->stream.label_name = gtk_label_new ("stream to XMCarL");
 
 	a->stream.img = gtk_image_new_from_file ("img/xmcarl.png");
 gtk_widget_show_all(a->stream.img);
