@@ -50,7 +50,6 @@ void start_screen_init(gpointer data) {
 
 	gtk_box_pack_start(GTK_BOX(a->start.layout), a->start.button, FALSE, FALSE,
 			0);
-
 	gtk_box_pack_start(GTK_BOX(a->start.layout), a->start.label, FALSE,
 			FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(a->start.layout), a->start.img, FALSE, FALSE, 0);
