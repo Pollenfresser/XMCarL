@@ -32,10 +32,10 @@
 /**
  * Included Files
  */
+#include <main.h>
 #include <debug_lib.h>
-#include <adjd_s311_sens.h>
 #include <remote_uart_lib.h> // will be needed for GUI
-#include <tcs3471_sens.h>
+#include <remote_i2c_lib.h>
 
 /**
  * Defines
@@ -64,7 +64,7 @@ void SysTick_Handler (void)
 
 int main (void)
 {
-	
+
 	while (1) {
 
 

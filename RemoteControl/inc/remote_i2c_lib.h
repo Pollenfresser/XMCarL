@@ -19,16 +19,9 @@
 /**
  * Included Files
  */
-
-#include <stdio.h>
-#include <stdlib.h>
+#include <main.h>
 #include <xmc_i2c.h>
-#include <xmc_gpio.h>
 #include <xmc_usic.h>
-
-// TODO do we need them? they are all over the code - need file for mems sensor instead
-#include <adjd_s311_sens.h>
-#include <tcs3471_sens.h>
 
 
 /**
@@ -55,13 +48,12 @@ XMC_I2C_CH_CONFIG_t i2c_cfg = { .baudrate = 100000U, };
 
 uint8_t remote_i2c_to_mems_init(void);
 
-uint8_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data, _Bool write_read);
-uint8_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data);
-uint8_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id);
+uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data, _Bool write_read);
+uint16_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data);
+uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id);
 
 uint8_t remote_i2c_wait_for_ack(XMC_USIC_CH_t *const channel);
 
 #endif /* REMOTE_I2C_H_ */
 
 /* EOF */
-
