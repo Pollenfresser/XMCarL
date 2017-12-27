@@ -10,7 +10,7 @@ void stream_screen_visible(GtkWidget *wid, gpointer data)
 void stream_screen_init(gpointer data)
 {
     widgets *a = (widgets *) data;
-
+/*
 
 a->stream.layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
@@ -56,12 +56,12 @@ gtk_widget_show_all(a->stream.img);
 /* This function is called everytime the video window needs to be redrawn (due to damage/exposure,
  * rescaling, etc). GStreamer takes care of this in the PAUSED and PLAYING states, otherwise,
  * we simply draw a black rectangle to avoid garbage showing up. */
-static gboolean draw_cb (GtkWidget *widget, cairo_t *cr, CustomData *data) {
+/*static gboolean draw_cb (GtkWidget *widget, cairo_t *cr, CustomData *data) {
   if (data->state < GST_STATE_PAUSED) {
     GtkAllocation allocation;
 
     /* Cairo is a 2D graphics library which we use here to clean the video window.
-     * It is used by GStreamer for other reasons, so it will always be available to us. */
+     * It is used by GStreamer for other reasons, so it will always be available to us.
     gtk_widget_get_allocation (widget, &allocation);
     cairo_set_source_rgb (cr, 0, 0, 0);
     cairo_rectangle (cr, 0, 0, allocation.width, allocation.height);
@@ -70,5 +70,5 @@ static gboolean draw_cb (GtkWidget *widget, cairo_t *cr, CustomData *data) {
 
   return FALSE;
 }
-
+*/
 
