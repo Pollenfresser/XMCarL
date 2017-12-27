@@ -9,28 +9,18 @@
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *button;
-
-	GtkWidget *label_name;
+	GtkWidget *label;
 	GtkWidget *img;
-
 } start_widgets;
 
 typedef struct {
 	GtkWidget *layout;
-	GtkWidget *button;
-
-	GtkWidget *label_name;
-	GtkWidget *img;
-
+	GtkWidget *label;
 } datavis_widgets;
 
 typedef struct {
 	GtkWidget *layout;
-	GtkWidget *button;
-	GtkWidget *video_area;
-
-	GtkWidget *label_name;
-	GtkWidget *img;
+	GtkWidget *label;
 
 } stream_widgets;
 
@@ -50,12 +40,15 @@ typedef struct {
 	menu_widgets menu;
 } widgets;
 
+// start screen
 void start_screen_init(gpointer data);
 void start_screen_visible(gpointer data);
 
+// gopro stream
 void stream_screen_init(gpointer data);
 void stream_screen_visible(GtkWidget *wid, gpointer data);
 
+// data visualisation
 void datavis_screen_init(gpointer data);
 void datavis_screen_visible(GtkWidget *wid, gpointer data);
 
