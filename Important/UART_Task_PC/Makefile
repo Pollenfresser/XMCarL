@@ -19,4 +19,3 @@ $(RESOURCE).c: $(RESOURCE).gresource.xml
 .PHONY: clean
 clean:
 	@rm -rf $(OBJECT) $(TARGET) core *~
-	@rm -rf $(RESOURCE).c

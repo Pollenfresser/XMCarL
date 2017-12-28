@@ -10,6 +10,7 @@
  * Using: XMC_UART0_CH0 (USIC0)
  *
  * Status: Doing UART (Chrisy)
+ * 		rework: Lucas
  *
  */
 
@@ -19,7 +20,9 @@
  * Start of user functions
  *****************************************************************************/
 
-// TODO: different channel, maybe XMC_UART0_CH1
+/**
+ * Configures the UART module with 115200 baud, 1 stopbit, 8 databits and no parity
+ */
 void remote_uart_to_pc_init()
 {
 	/* USIC channels initialization */
@@ -60,6 +63,9 @@ void remote_uart_to_pc_init()
 	return;
 }
 
+/**
+ * Handles the reception of data via the UART module via interupts
+ */
 void USIC0_0_IRQHandler (void)
 {
 	static uint8_t rx_ctr = 0;
@@ -78,7 +84,11 @@ void USIC0_0_IRQHandler (void)
 	}
 }
 
-// TODO do we need this?
+/**
+ * Sends a character via UART
+ * @param  c character to be sent
+ * @return 0 on success
+ */
 uint8_t remote_uart_send_char (char c)
 {
 	while (XMC_USIC_CH_GetTransmitBufferStatus (XMC_UART0_CH0) == XMC_USIC_CH_TBUF_STATUS_BUSY);
@@ -87,7 +97,12 @@ uint8_t remote_uart_send_char (char c)
 	return 0;
 }
 
-// TODO do we need this?
+/**
+ * This function takes a string formated as in a printf
+ * @param  fmt
+ * @param  VARARGS
+ * @return 0 on success
+ */
 uint8_t remote_uart_printf (char *fmt, ...)
 {
 	va_list arg_ptr;
@@ -105,7 +120,11 @@ uint8_t remote_uart_printf (char *fmt, ...)
 	return 0;
 }
 
-// TODO do we need this?
+/**
+ * sends a string via the UART module
+ * @param  str string to be sent via
+ * @return 0 on success
+ */
 uint8_t remote_uart_send_string (char *str)
 {
 	if (str == NULL) {
@@ -119,7 +138,11 @@ uint8_t remote_uart_send_string (char *str)
 	return 0;
 }
 
-// TODO do we need this?
+/**
+ * Reads a comlete string from the UART interface
+ * @param  str the read string
+ * @return 0 on success
+ */
 uint8_t remote_uart_get_string (char *str)
 {
 	if (str == NULL) {

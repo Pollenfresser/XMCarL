@@ -32,6 +32,12 @@
 
 
 /**
+ * Pins
+ */
+#define Data_Ready P0_3
+
+
+/**
 * Prototypes
 */
 

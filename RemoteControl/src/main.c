@@ -65,8 +65,18 @@ void SysTick_Handler (void)
 int main (void)
 {
 
-	while (1) {
+	remote_i2c_to_mems_init();
+	remote_uart_to_pc_init();
+	remote_mems_init();
 
+	while (1) {
+		if(Data_Ready)
+		{
+			remote_i2c_write_read(MEMS_ADDRESS, memory_address, data, 1, 4);
+		}
+		#if DEBUG
+			printf("");
+		#endif
 
 	}
 }
