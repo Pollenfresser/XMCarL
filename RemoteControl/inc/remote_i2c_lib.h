@@ -33,13 +33,9 @@
  * Global variables
  */
 
-XMC_GPIO_CONFIG_t i2c_sda = { .mode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN_ALT2,
-		.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM };
-
-XMC_GPIO_CONFIG_t i2c_scl = { .mode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN_ALT2,
-		.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM };
-
-XMC_I2C_CH_CONFIG_t i2c_cfg = { .baudrate = 100000U, };
+extern XMC_GPIO_CONFIG_t i2c_sda;
+extern XMC_GPIO_CONFIG_t i2c_scl;
+extern XMC_I2C_CH_CONFIG_t i2c_cfg;
 
 
 /**
@@ -49,6 +45,7 @@ XMC_I2C_CH_CONFIG_t i2c_cfg = { .baudrate = 100000U, };
 uint8_t remote_i2c_to_mems_init(void);
 
 uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data, _Bool write_read);
+uint8_t	 remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received);
 uint16_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data);
 uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id);
 

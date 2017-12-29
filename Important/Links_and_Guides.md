@@ -11,6 +11,9 @@ https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 ### Drawing in GTK with cairo
 https://www.cairographics.org/manual/
 
+### Bluetoothprogramming
+https://people.csail.mit.edu/albert/bluez-intro/
+
 ### Tipps vom mr. teacher
 GStreamer <br>
 LibVLC <br>
