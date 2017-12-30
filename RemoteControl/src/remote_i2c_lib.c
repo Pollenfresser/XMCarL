@@ -72,6 +72,8 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 		return 0xFFFF;
 	}
 
+
+
 	XMC_I2C_CH_MasterReceiveNack(channel);
 
 	while ((XMC_USIC_CH_GetReceiveBufferStatus(channel)
@@ -127,10 +129,10 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 	uint16_t ret = 0;
 
 	/**
-	 * Involes the start condition on the I2C interface and sends the address of
+	 * Invokes the start condition on the I2C interface and sends the address of
 	 * 	the desired slave
 	 * @param channel I2C Channel on which the data should be sent
-	 * @param id_tmp Address of the desired slave
+	 * @param id Address of the desired slave
 	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
 	 */
 	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
@@ -151,4 +153,52 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 
 	XMC_I2C_CH_MasterStop(channel);
 	return ret;
+}
+
+
+uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
+	XMC_USIC_CH_t *channel;
+	channel = XMC_I2C1_CH0;
+
+	/**
+	 * Invokes the start condition on the I2C interface and sends the address of
+	 * 	the desired slave
+	 * @param channel I2C Channel on which the data should be sent
+	 * @param id Address of the desired slave
+	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
+	 */
+	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
+	if(remote_i2c_wait_for_ack(channel)) {
+		return 1;
+	}
+
+	XMC_I2C_CH_MasterTransmit(channel, reg_addr);
+	if(remote_i2c_wait_for_ack(channel)) {
+		return 1;
+	}
+
+	XMC_I2C_CH_MasterRepeatedStart(channel, id, XMC_I2C_CH_CMD_READ);
+	if(remote_i2c_wait_for_ack(channel)) {
+		return 1;
+	}
+
+
+	/*
+	 * Waits until valid data is available on reception register
+	 */
+	for(uint8_t receive_counter = 0; receive_counter < 4; receive_counter++)
+	{
+		if(receive_counter < 3) {
+			XMC_I2C_CH_MasterReceiveAck(channel);	// is sent as soon as channel is not busy
+		} else {
+			XMC_I2C_CH_MasterReceiveNack(channel);
+		}
+		while ((XMC_USIC_CH_GetReceiveBufferStatus(channel)
+				!= (uint32_t) XMC_USIC_CH_RBUF_STATUS_DATA_VALID1));
+
+		received[receive_counter] = XMC_I2C_CH_GetReceivedData(channel);
+	}
+
+	return 0;
+
 }

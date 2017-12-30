@@ -49,24 +49,13 @@
  * Global variables
  */
 
-_Bool str_available = false;
-char rx_buffer[BUFFER_SIZE_RX] = {0};
+extern _Bool str_available;
+extern char rx_buffer[BUFFER_SIZE_RX];
 
 // structures
-XMC_GPIO_CONFIG_t uart_tx = {
-	.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2,
-	.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM
-};
-
-XMC_GPIO_CONFIG_t uart_rx = {
-	.mode = XMC_GPIO_MODE_INPUT_TRISTATE
-};
-
-XMC_UART_CH_CONFIG_t uart_config = {
-	.data_bits = 8U,
-	.stop_bits = 1U,
-	.baudrate = 115200U
-};
+extern XMC_GPIO_CONFIG_t uart_tx;
+extern XMC_GPIO_CONFIG_t uart_rx;
+extern XMC_UART_CH_CONFIG_t uart_config;
 
 
 /**

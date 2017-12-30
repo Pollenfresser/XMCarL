@@ -24,11 +24,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <xmc_gpio.h>
+// User files
+#include <debug_lib.h>
+#include <remote_uart_lib.h> // will be needed for GUI
+#include <remote_i2c_lib.h>
+#include <remote_mems.h>
 
 /**
 * Defines
 */
-#define DEBUG = 1
+#define DEBUG 1
+#define MEMS_ADDRESS 0x30 // 0b0011000 with added default 0
+#define MEMS_CTRL_REG1 0x20
+#define MEMS_CTRL_REG3 0x22
+#define MEMS_STATUS_REG2 0x27
+#define MEMS_OUT_X_L 0x28
+#define MEMS_OUT_X_H 0x29
+#define MEMS_OUT_Y_L 0x2A
+#define MEMS_OUT_Y_H 0x2B
+#define MEMS_OUT_XY_FULL_READ 0xA8
+
+#define TICKS_PER_SECOND 1000
+#define TICKS_WAIT 500
+
+
+/**
+ * Pins
+ */
+#define DATA_READY P1_3
+#define LED1 P1_1
+#define LED2 P1_0
 
 
 /**

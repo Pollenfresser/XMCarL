@@ -33,9 +33,7 @@
  * Included Files
  */
 #include <main.h>
-#include <debug_lib.h>
-#include <remote_uart_lib.h> // will be needed for GUI
-#include <remote_i2c_lib.h>
+
 
 /**
  * Defines
@@ -49,7 +47,39 @@
 /**
  * Global variables
  */
+/*!< UART lib */
+_Bool str_available = false;
+char rx_buffer[RX_BUFFER_SIZE] = {0};
+XMC_GPIO_CONFIG_t uart_tx = {
+	.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2,
+	.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM
+};
 
+XMC_GPIO_CONFIG_t uart_rx = {
+	.mode = XMC_GPIO_MODE_INPUT_TRISTATE
+};
+
+XMC_UART_CH_CONFIG_t uart_config = {
+	.data_bits = 8U,
+	.stop_bits = 1U,
+	.baudrate = 115200U
+};
+
+
+/*!< I2C lib */
+XMC_GPIO_CONFIG_t i2c_sda = {
+		.mode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN_ALT2,
+		.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM
+};
+
+XMC_GPIO_CONFIG_t i2c_scl = {
+		.mode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN_ALT2,
+		.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM
+};
+
+XMC_I2C_CH_CONFIG_t i2c_cfg = {
+		.baudrate = 100000U
+};
 
 /******************************************************************************
  * Start of user functions
@@ -58,15 +88,52 @@
 
 void SysTick_Handler (void)
 {
+	static uint32_t ticks = 0;
 
+	ticks++;
+	if (ticks >= TICKS_WAIT) {
+		XMC_GPIO_ToggleOutput(LED1);
+		XMC_GPIO_ToggleOutput(LED2);
+
+		ticks = 0;
+	}
 }
 
 
 int main (void)
 {
 
-	while (1) {
+	uint8_t data[4];
+	uint8_t mems_status;
 
+	XMC_GPIO_CONFIG_t led_config;
+	led_config.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL;
+	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH;
+	led_config.output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM;
+	XMC_GPIO_Init(LED1, &led_config);
+
+	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_LOW;
+	XMC_GPIO_Init(LED2, &led_config);
+
+	SysTick_Config(SystemCoreClock / TICKS_PER_SECOND);
+
+	remote_i2c_to_mems_init();
+	remote_uart_to_pc_init();
+	remote_mems_init();
+
+	while (1) {
+		//if(DATA_READY)
+		//{
+			mems_status = remote_i2c_write_read(MEMS_ADDRESS, MEMS_STATUS_REG2, 0, 1);
+			if(mems_status & (1 << 3))
+			{
+				remote_i2c_read_xy(MEMS_ADDRESS, MEMS_OUT_X_L, data);
+				remote_transmit_data(data);
+			}
+		//}
+		#if DEBUG
+			printf("data: %s", data);
+		#endif
 
 	}
 }
