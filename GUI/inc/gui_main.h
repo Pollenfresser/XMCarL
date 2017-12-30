@@ -8,6 +8,7 @@
 #include <glib.h>
 #include <string.h>
 
+// start screen
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *button;
@@ -15,22 +16,25 @@ typedef struct {
 	GtkWidget *img;
 } start_widgets;
 
+// data visualisation screen
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
 } datavis_widgets;
 
+// gopro stream screen
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
-
 } stream_widgets;
 
+// menu
 typedef struct {
 	GtkWidget *menubar;
 
 } menu_widgets;
 
+// all widgets together
 typedef struct {
 	GtkApplication *app;
 	GtkWidget *window;

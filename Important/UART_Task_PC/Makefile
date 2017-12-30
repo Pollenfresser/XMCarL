@@ -1,5 +1,4 @@
-SOURCES = /src/rs232.c
-RESOURCE = /src/main
+SOURCES = rs232.c
 
 TARGET = main
 
@@ -12,9 +11,6 @@ CXXFLAGS = -Wall -g
 
 $(TARGET): $(SOURCES) $(RESOURCE).c
 	$(CXX) $(SOURCES) $(RESOURCE).c $(LDFLAGS) $(CXXFLAGS) -o $(TARGET)
-
-$(RESOURCE).c: $(RESOURCE).gresource.xml
-	glib-compile-resources --sourcedir=. $(RESOURCE).gresource.xml --generate-source
 
 .PHONY: clean
 clean:

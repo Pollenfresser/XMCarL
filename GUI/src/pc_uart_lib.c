@@ -31,7 +31,12 @@
 /* For more info and how to use this library, visit: http://www.teuniz.net/RS-232/ */
 
 
-#include "rs232.h"
+#include <pc_uart.h>
+
+
+/******************************************************************************
+ * Start of user functions
+ *****************************************************************************/
 
 
 #if defined(__linux__) || defined(__FreeBSD__)   /* Linux & FreeBSD */
@@ -221,7 +226,6 @@ int RS232_OpenComport(int comport_number, int baudrate, const char *mode)
 
 /*
 http://pubs.opengroup.org/onlinepubs/7908799/xsh/termios.h.html
-
 http://man7.org/linux/man-pages/man3/termios.3.html
 */
 
@@ -384,7 +388,6 @@ TIOCM_CD        see TIOCM_CAR
 TIOCM_RNG       RNG (ring)
 TIOCM_RI        see TIOCM_RNG
 TIOCM_DSR       DSR (data set ready)
-
 http://man7.org/linux/man-pages/man4/tty_ioctl.4.html
 */
 
@@ -623,7 +626,6 @@ int RS232_OpenComport(int comport_number, int baudrate, const char *mode)
 
 /*
 http://msdn.microsoft.com/en-us/library/windows/desktop/aa363145%28v=vs.85%29.aspx
-
 http://technet.microsoft.com/en-us/library/cc732236.aspx
 */
 

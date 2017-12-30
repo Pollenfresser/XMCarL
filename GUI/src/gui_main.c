@@ -37,6 +37,14 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	}
 }
 
+/*
+ * CSS provider
+ * Window properties
+ * main_box - Layout
+ * init of all screens
+ * CSS function call
+ * make screens visible
+ */
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
 
@@ -49,8 +57,10 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_window_set_position(GTK_WINDOW(a->window), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW (a->window), "XMCarL");
 	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 500);
+	gtk_widget_show(a->window);
 
 	a->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	gtk_widget_show(a->main_box);
 	gtk_container_add(GTK_CONTAINER(a->window), a->main_box);
 
 	menu_init ((gpointer) a);
@@ -59,9 +69,6 @@ void activate(GtkApplication *app, gpointer data) {
 	datavis_screen_init((gpointer) a);
 
 	apply_css(a->window, a->css_style);
-
-	gtk_widget_show(a->window);
-	gtk_widget_show(a->main_box);
 
 	menu_visible ((gpointer) a);
 	start_screen_visible((gpointer) a);
@@ -77,8 +84,8 @@ int main(int argc, char ** argv) {
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
 	status = g_application_run(G_APPLICATION(a->app), argc, argv);
 
+	// clean up
 	g_object_unref(a->app);
-
 	g_free(a);
 
 	return status;
