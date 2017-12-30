@@ -21,7 +21,7 @@
  * Start of user functions
  *****************************************************************************/
 
-/*int pc_uart_init() {
+int pc_uart_init() {
 
 	int bdrate = 115200;
 
@@ -66,7 +66,6 @@ void pc_uart_result_manipulation(){
  * manipulieren
  * bluetooth 2 car senden
  */
-/*
 void pc_uart_receive() {
 
 	int received_bytes = 0;
@@ -105,4 +104,4 @@ int pc_uart_routine() {
 	}
 
 	return 0;
-}*/
+}
