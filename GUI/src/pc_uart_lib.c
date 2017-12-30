@@ -30,6 +30,7 @@
 
 /* For more info and how to use this library, visit: http://www.teuniz.net/RS-232/ */
 
+#define _DEFAULT_SOURCE
 
 #include <gui_main.h>
 
