@@ -31,7 +31,7 @@
 /* For more info and how to use this library, visit: http://www.teuniz.net/RS-232/ */
 
 
-#include <pc_uart.h>
+#include <gui_main.h>
 
 
 /******************************************************************************

@@ -14,7 +14,7 @@
  *
  */
 
-#include <pc_bluetooth.h>
+#include <gui_main.h>
 
 /******************************************************************************
  * Start of user functions

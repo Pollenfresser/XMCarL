@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
+#include <pc_uart.h>
+#include <pc_bluetooth.h>
 
 // start screen
 typedef struct {
