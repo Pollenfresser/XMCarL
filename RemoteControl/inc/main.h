@@ -34,6 +34,9 @@
 * Defines
 */
 #define DEBUG 1
+#define I2C 1
+#define UART 0
+
 #define MEMS_ADDRESS 0x30 // 0b0011000 with added default 0
 #define MEMS_CTRL_REG1 0x20
 #define MEMS_CTRL_REG3 0x22
@@ -51,7 +54,7 @@
 /**
  * Pins
  */
-#define DATA_READY P1_3
+#define DATAREADY P0_3
 #define LED1 P1_1
 #define LED2 P1_0
 

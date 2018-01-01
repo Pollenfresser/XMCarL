@@ -106,6 +106,8 @@ int main (void)
 	uint8_t data[4];
 	uint8_t mems_status;
 
+	initRetargetSwo();
+
 	XMC_GPIO_CONFIG_t led_config;
 	led_config.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL;
 	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH;
@@ -115,22 +117,56 @@ int main (void)
 	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_LOW;
 	XMC_GPIO_Init(LED2, &led_config);
 
+	XMC_GPIO_CONFIG_t interrupt_config;
+	interrupt_config.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
+	XMC_GPIO_Init(DATAREADY, &interrupt_config);
+
+#if DEBUG
+	printf("Pin Init finished\n");
+#endif
+
 	SysTick_Config(SystemCoreClock / TICKS_PER_SECOND);
 
+#if I2C
 	remote_i2c_to_mems_init();
-	remote_uart_to_pc_init();
+	#if DEBUG
+		printf("I2C Init finished\n");
+	#endif
 	remote_mems_init();
+	#if DEBUG
+		printf("Mems Init finished\n");
+	#endif
+	__NOP();
+#endif // I2C
+
+#if UART
+	remote_uart_to_pc_init();
+#endif // UART
 
 	while (1) {
-		//if(DATA_READY)
-		//{
+		__NOP();
+		#if DEBUG
+			printf("while loop started\n");
+		#endif
+		if(XMC_GPIO_GetInput(DATAREADY))
+		{
+			__NOP();
 			mems_status = remote_i2c_write_read(MEMS_ADDRESS, MEMS_STATUS_REG2, 0, 1);
+			#if DEBUG
+				printf("mems_status: %x", mems_status);
+			#endif
 			if(mems_status & (1 << 3))
 			{
+				__NOP();
+				#if I2C
 				remote_i2c_read_xy(MEMS_ADDRESS, MEMS_OUT_X_L, data);
+				#endif // I2C
+
+				#if UART
 				remote_transmit_data(data);
+				#endif	// UART
 			}
-		//}
+		}
 		#if DEBUG
 			printf("data: %s", data);
 		#endif
