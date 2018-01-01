@@ -9,6 +9,7 @@ CFLAGS   = `pkg-config --cflags --libs gtk+-3.0`
 CFLAGS  += `pkg-config --cflags --libs gstreamer-1.0`
 CFLAGS  += -I$(SRCDIR)
 CFLAGS  += -I$(INCDIR)
+CFLAGS 	+= -std=c99
 CFLAGS  += -Wall -g
 OBJS     = $(SRC:.c=.o)
 RESOURCE = gui_res

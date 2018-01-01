@@ -45,8 +45,9 @@ extern "C" {
 #include <ctype.h>
 
 #define RECEIVE_BUFF_SIZE 4096
+#define RX_BUFFER_SIZE 64 // UART
 
-int cport_nr = 16;    // /dev/ttyUSB0
+extern int cport_nr;    // /dev/ttyUSB0
 // XMCarl End
 
 #if defined(__linux__) || defined(__FreeBSD__)
