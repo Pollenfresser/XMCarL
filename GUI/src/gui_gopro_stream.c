@@ -26,6 +26,7 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 	gtk_widget_show_all(a->stream.layout);
 
 	gtk_widget_set_visible(a->start.layout, FALSE);
+	gtk_widget_set_visible(a->wait.layout, FALSE);
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
 
 }

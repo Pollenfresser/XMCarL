@@ -48,6 +48,11 @@
 void start_screen_init(gpointer data);
 void start_screen_visible(gpointer data);
 
+void wait_screen_init(gpointer data);
+void wait_screen_visible(GtkWidget *wid, gpointer data);
+void wait_screen_bluetooth(GtkWidget *wid, gpointer data);
+
+
 // gopro stream
 void stream_screen_init(gpointer data);
 void stream_screen_visible(GtkWidget *wid, gpointer data);
@@ -83,6 +88,13 @@ typedef struct {
 	GtkWidget *img;
 } start_widgets;
 
+// wait screen
+typedef struct {
+	GtkWidget *layout;
+	GtkWidget *buttons; // ** -> has to be allocated
+	GtkWidget *label;
+} wait_widgets;
+
 // data visualisation screen
 typedef struct {
 	GtkWidget *layout;
@@ -110,6 +122,7 @@ typedef struct {
 	start_widgets start;
 	stream_widgets stream;
 	datavis_widgets datavis;
+	wait_widgets wait;
 	menu_widgets menu;
 } widgets;
 

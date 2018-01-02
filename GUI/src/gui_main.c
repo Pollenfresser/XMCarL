@@ -10,6 +10,8 @@
  *
  * Status: done so far
  *
+ *	TODO: reconnect function and if menu is used: wait screen
+ *
  */
 
 #include <gui_main.h>
@@ -63,6 +65,7 @@ void activate(GtkApplication *app, gpointer data) {
 
 	menu_init ((gpointer) a);
 	start_screen_init((gpointer) a);
+	wait_screen_init((gpointer) a);
 	stream_screen_init((gpointer) a);
 	datavis_screen_init((gpointer) a);
 

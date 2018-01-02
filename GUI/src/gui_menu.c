@@ -7,7 +7,8 @@
  *
  * File description: Menu
  *
- * Status: done
+ * Status:
+ * TODO if you are not connected already - connect and show wait screen
  *
  */
 
