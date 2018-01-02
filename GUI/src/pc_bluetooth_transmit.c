@@ -26,9 +26,11 @@
  * Start of user functions
  *****************************************************************************/
 
-void blue_search_for_available_devices() {
+int blue_search_for_available_devices(gpointer data) {
+	widgets *a = (widgets *) data;
+
 	inquiry_info *ii = NULL;
-	int max_rsp, num_rsp;
+	int num_rsp;
 	int dev_id, sock, len, flags;
 	int i;
 	char addr[19] = { 0 };
@@ -42,11 +44,10 @@ void blue_search_for_available_devices() {
 	}
 
 	len = 8;
-	max_rsp = 255;
 	flags = IREQ_CACHE_FLUSH;
-	ii = (inquiry_info*) malloc(max_rsp * sizeof(inquiry_info));
+	ii = (inquiry_info*) malloc(MAX_BLUETOOTH_RESPONSES * sizeof(inquiry_info));
 
-	num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &ii, flags);
+	num_rsp = hci_inquiry(dev_id, len, MAX_BLUETOOTH_RESPONSES, NULL, &ii, flags);
 	if (num_rsp < 0)
 		perror("hci_inquiry");
 
@@ -56,11 +57,16 @@ void blue_search_for_available_devices() {
 		if (hci_read_remote_name(sock, &(ii + i)->bdaddr, sizeof(name), name, 0)
 				< 0)
 			strcpy(name, "[unknown]");
+
+		//strcpy(a->bluetooth[i].name, name);
+		//strcpy(a->bluetooth[i].addr, addr);
+
 		printf("%s  %s\n", addr, name);
 	}
 
 	free(ii);
 	close(sock);
+	return num_rsp;
 }
 
 /*

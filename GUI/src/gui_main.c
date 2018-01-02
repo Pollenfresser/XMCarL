@@ -80,6 +80,7 @@ int main(int argc, char ** argv) {
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
+//	a->bluetooth = g_malloc(5*sizeof(bluetooth_devices));
 
 	a->app = gtk_application_new("org.gtk.gui", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
