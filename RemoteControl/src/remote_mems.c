@@ -15,14 +15,32 @@ uint8_t remote_mems_init(void)
    * @param b00110011 25 Hz data rate, X & Y axis enabled, normal power mode
    * @param 0 write access
    */
-  remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG1, 0b00110011, 0);
+  while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG1, 0b00110011, 0) == 0xFFFF)
+  {
+    XMC_GPIO_ToggleOutput(LED1);
+    #if DEBUG
+      printf("CTRL_REG1 failed\n");
+    #endif
+  }
+#if DEBUG
+  printf("Mems Init MEMS_CTRL_REG1 finished\n");
+#endif
   /**
    * @param MEMS_ADDRESS addressing acceleration sensor
    * @param MEMS_CTRL_REG3 addressing register for interrupt on pin INT1
    * @param b00010000 enabling interrupt to indicate a new set of data
    * @param 0 write access
    */
-  remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG3, 0b00010000, 0);
+  while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG3, 0b00010000, 0) == 0xFFFF)
+  {
+    XMC_GPIO_ToggleOutput(LED1);
+    #if DEBUG
+      printf("CTRL_REG1 failed\n");
+    #endif
+  }
+#if DEBUG
+  printf("Mems Init MEMS_CTRL_REG3 finished\n");
+#endif
   return 0;
 }
 

@@ -22,8 +22,8 @@
  *****************************************************************************/
 
 /**
- * This function configures the I2C interface to communicate via pins P0_5
- * 	& P0_11
+ * This function configures the I2C interface to communicate via pins P0_5 (SDA)
+ * 	& P0_11 (SCL)
  * @return [description]
  */
 uint8_t remote_i2c_to_mems_init(void) {
@@ -96,18 +96,19 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
  */
 uint8_t remote_i2c_wait_for_ack(XMC_USIC_CH_t * const channel) {
 
+	uint8_t ret = 0;
 	uint16_t timeout_counter = 0;
 
 	while ((XMC_I2C_CH_GetStatusFlag(channel)
 			& XMC_I2C_CH_STATUS_FLAG_ACK_RECEIVED) == 0U) {
 		/* wait for ACK */
 		timeout_counter++;
-		if(timeout_counter > 5000) {
-			return 1;
+		if(timeout_counter > 10000) {
+			ret = 1;
 		}
 	}
 	XMC_I2C_CH_ClearStatusFlag(channel, XMC_I2C_CH_STATUS_FLAG_ACK_RECEIVED);
-	return 0;
+	return ret;
 }
 
 /**
@@ -136,22 +137,40 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
 	 */
 	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
+	#if DEBUG
+		printf("\t-I2C started\n");
+	#endif
 	if(remote_i2c_wait_for_ack(channel)) {
 		return 0xFFFF;
 	}
+	#if DEBUG
+		printf("\t-ACK received\n");
+	#endif
 
 	XMC_I2C_CH_MasterTransmit(channel, reg_addr);
+	#if DEBUG
+		printf("\t-reg_addr transmitted\n");
+	#endif
 	if(remote_i2c_wait_for_ack(channel)) {
 		return 0xFFFF;
 	}
+	#if DEBUG
+		printf("\t-ACK received\n");
+	#endif
 
 	if (write_read) { // read = 1
 		ret = remote_i2c_read(channel, id);
 	} else { // write = 0
 		ret = remote_i2c_write(channel, i2c_data);
 	}
+	#if DEBUG
+		printf("\t-read/write complete\n");
+	#endif
 
 	XMC_I2C_CH_MasterStop(channel);
+	#if DEBUG
+		printf("\t-I2C finished\n");
+	#endif
 	return ret;
 }
 
