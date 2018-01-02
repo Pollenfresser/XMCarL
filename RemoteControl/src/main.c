@@ -85,6 +85,15 @@ XMC_I2C_CH_CONFIG_t i2c_cfg = {
  * Start of user functions
  *****************************************************************************/
 
+void delay(uint16_t cnt_wait)
+{
+	uint16_t cnt_passed = cnt_wait;
+	while(--cnt_passed) {
+		__NOP();
+		__NOP();
+	}
+}
+
 
 void SysTick_Handler (void)
 {
@@ -93,8 +102,6 @@ void SysTick_Handler (void)
 	ticks++;
 	if (ticks >= TICKS_WAIT) {
 		XMC_GPIO_ToggleOutput(LED1);
-		XMC_GPIO_ToggleOutput(LED2);
-
 		ticks = 0;
 	}
 }
@@ -103,8 +110,8 @@ void SysTick_Handler (void)
 int main (void)
 {
 
-	uint8_t data[4];
-	uint8_t mems_status;
+	uint8_t data[6];
+	char mems_status;
 
 	initRetargetSwo();
 
@@ -121,9 +128,11 @@ int main (void)
 	interrupt_config.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
 	XMC_GPIO_Init(DATAREADY, &interrupt_config);
 
-#if DEBUG
+#if DEBUG_ALL
 	printf("Pin Init finished\n");
 #endif
+
+	delay(50000);
 
 	SysTick_Config(SystemCoreClock / TICKS_PER_SECOND);
 
@@ -145,7 +154,7 @@ int main (void)
 
 	while (1) {
 		__NOP();
-		#if DEBUG
+		#if DEBUG_ALL
 			printf("while loop started\n");
 		#endif
 		if(XMC_GPIO_GetInput(DATAREADY))
@@ -153,23 +162,35 @@ int main (void)
 			__NOP();
 			mems_status = remote_i2c_write_read(MEMS_ADDRESS, MEMS_STATUS_REG2, 0, 1);
 			#if DEBUG
-				printf("mems_status: %x", mems_status);
+				printf("Status read\n");
+				printf("accelerometer status: %d\n", mems_status);
+				__NOP();
 			#endif
 			if(mems_status & (1 << 3))
 			{
 				__NOP();
+				#if DEBUG_ALL
+					printf("Retrieving data...\n");
+				#endif
+
 				#if I2C
-				remote_i2c_read_xy(MEMS_ADDRESS, MEMS_OUT_X_L, data);
+					remote_i2c_read_xy(MEMS_ADDRESS, MEMS_OUT_XY_FULL_READ, data);
+					XMC_GPIO_ToggleOutput(LED2);
 				#endif // I2C
 
+				#if DEBUG
+					printf("Data retrieved\n");
+				#endif
+
 				#if UART
-				remote_transmit_data(data);
+					remote_transmit_data(data);
 				#endif	// UART
+
+				#if DEBUG
+					printf("x_l: %d\tx_h: %d\ny_l: %d\ty_h: %d\n\n", data[0], data[1], data[2], data[3]);
+				#endif
 			}
 		}
-		#if DEBUG
-			printf("data: %s", data);
-		#endif
 
 	}
 }

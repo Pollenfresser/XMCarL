@@ -34,18 +34,23 @@
 * Defines
 */
 #define DEBUG 1
+#define DEBUG_ALL 0
 #define I2C 1
-#define UART 0
+#define UART 1
 
 #define MEMS_ADDRESS 0x30 // 0b0011000 with added default 0
 #define MEMS_CTRL_REG1 0x20
 #define MEMS_CTRL_REG3 0x22
+#define MEMS_CTRL_REG4 0x23
 #define MEMS_STATUS_REG2 0x27
 #define MEMS_OUT_X_L 0x28
 #define MEMS_OUT_X_H 0x29
 #define MEMS_OUT_Y_L 0x2A
 #define MEMS_OUT_Y_H 0x2B
 #define MEMS_OUT_XY_FULL_READ 0xA8
+#define ONE_HZ_X_AND_Y 0b00010011
+#define TEN_HZ_X_AND_Y 0b00100011
+#define ZWENTYFIFE_HZ_X_AND_Y 0b00110011
 
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500

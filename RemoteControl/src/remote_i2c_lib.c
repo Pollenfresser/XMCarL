@@ -82,6 +82,9 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 					!= (uint32_t) XMC_USIC_CH_RBUF_STATUS_DATA_VALID0))
 		;
 
+	XMC_I2C_CH_ClearStatusFlag(XMC_I2C1_CH0, XMC_I2C_CH_STATUS_FLAG_RECEIVE_INDICATION |
+                                           XMC_I2C_CH_STATUS_FLAG_ALTERNATIVE_RECEIVE_INDICATION);
+
 	recv = XMC_I2C_CH_GetReceivedData(channel);
 
 	return recv;
@@ -105,6 +108,7 @@ uint8_t remote_i2c_wait_for_ack(XMC_USIC_CH_t * const channel) {
 		timeout_counter++;
 		if(timeout_counter > 10000) {
 			ret = 1;
+			break;
 		}
 	}
 	XMC_I2C_CH_ClearStatusFlag(channel, XMC_I2C_CH_STATUS_FLAG_ACK_RECEIVED);
@@ -137,24 +141,24 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
 	 */
 	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-I2C started\n");
 	#endif
 	if(remote_i2c_wait_for_ack(channel)) {
 		return 0xFFFF;
 	}
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-ACK received\n");
 	#endif
 
 	XMC_I2C_CH_MasterTransmit(channel, reg_addr);
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-reg_addr transmitted\n");
 	#endif
 	if(remote_i2c_wait_for_ack(channel)) {
 		return 0xFFFF;
 	}
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-ACK received\n");
 	#endif
 
@@ -163,12 +167,12 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 	} else { // write = 0
 		ret = remote_i2c_write(channel, i2c_data);
 	}
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-read/write complete\n");
 	#endif
 
 	XMC_I2C_CH_MasterStop(channel);
-	#if DEBUG
+	#if DEBUG_ALL
 		printf("\t-I2C finished\n");
 	#endif
 	return ret;
@@ -205,18 +209,34 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
 	/*
 	 * Waits until valid data is available on reception register
 	 */
-	for(uint8_t receive_counter = 0; receive_counter < 4; receive_counter++)
+	for(uint8_t receive_counter = 0; receive_counter < 6; receive_counter++)
 	{
-		if(receive_counter < 3) {
+		#if DEBUG_ALL
+			printf("Retrieving #%d\n", receive_counter);
+		#endif
+		if(receive_counter < 5) {
 			XMC_I2C_CH_MasterReceiveAck(channel);	// is sent as soon as channel is not busy
+			#if DEBUG_ALL
+				printf("Master ACK is sent\n");
+			#endif
 		} else {
 			XMC_I2C_CH_MasterReceiveNack(channel);
 		}
 		while ((XMC_USIC_CH_GetReceiveBufferStatus(channel)
-				!= (uint32_t) XMC_USIC_CH_RBUF_STATUS_DATA_VALID1));
+				!= (uint32_t) XMC_USIC_CH_RBUF_STATUS_DATA_VALID1) && ( (uint32_t) XMC_USIC_CH_GetReceiveBufferStatus(channel)
+					!= (uint32_t) XMC_USIC_CH_RBUF_STATUS_DATA_VALID0));
+
+		XMC_I2C_CH_ClearStatusFlag(XMC_I2C1_CH0, XMC_I2C_CH_STATUS_FLAG_RECEIVE_INDICATION |
+                                             XMC_I2C_CH_STATUS_FLAG_ALTERNATIVE_RECEIVE_INDICATION);
+
+		#if DEBUG_ALL
+			printf("#%d retrieved\n", receive_counter);
+		#endif
 
 		received[receive_counter] = XMC_I2C_CH_GetReceivedData(channel);
 	}
+
+	XMC_I2C_CH_MasterStop(channel);
 
 	return 0;
 
