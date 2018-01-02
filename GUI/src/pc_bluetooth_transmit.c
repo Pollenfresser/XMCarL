@@ -58,8 +58,8 @@ int blue_search_for_available_devices(gpointer data) {
 				< 0)
 			strcpy(name, "[unknown]");
 
-		//strcpy(a->bluetooth[i].name, name);
-		//strcpy(a->bluetooth[i].addr, addr);
+		strcpy(a->bluetooth[i].name, name);
+		strcpy(a->bluetooth[i].addr, addr);
 
 		printf("%s  %s\n", addr, name);
 	}

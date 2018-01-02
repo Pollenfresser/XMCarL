@@ -55,7 +55,7 @@ void wait_screen_init(gpointer data) {
 
 	a->wait.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-	a->wait.button = gtk_button_new_with_label("Click to load devices");
+	a->wait.button = gtk_button_new_with_label("Click and wait to load devices");
 	g_signal_connect(a->wait.button, "clicked",
 							G_CALLBACK(wait_screen_bluetooth), (gpointer) a);
 
@@ -86,10 +86,9 @@ void wait_create_button_for_each_device(int count_devices, gpointer data){
 	GtkWidget *device_buttons [count_devices];// ** -> has to be allocated
 	int i;
 	for(i = 0; i<count_devices; i++){
-		device_buttons[i] = gtk_button_new_with_label("Dev");
-		g_signal_connect(device_buttons[i], "clicked", 	G_CALLBACK(stream_screen_visible), (gpointer) a);
+		device_buttons[i] = gtk_button_new_with_label(a->bluetooth[i].name);
+		g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
 		gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
-
 	}
 	gtk_widget_show_all(a->wait.layout);
 
