@@ -10,6 +10,9 @@ bluez-libs-devel.x86_64 : Development libraries for Bluetooth applications
 it was this version: bluez-libs-devel-5.46-6.fc26.x86_64
 
 
+https://www.pcsuggest.com/bluetooth-linux-part-2/
+here you find commands to find / connect / bind (with rfcomm) your bluetooth device
+
 
 
 
