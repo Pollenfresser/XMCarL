@@ -91,9 +91,14 @@ typedef struct {
 // wait screen
 typedef struct {
 	GtkWidget *layout;
-	GtkWidget *buttons; // ** -> has to be allocated
+	GtkWidget *button;
 	GtkWidget *label;
 } wait_widgets;
+
+typedef struct{
+	char addr[19];
+	char name[248];
+} bluetooth_devices;
 
 // data visualisation screen
 typedef struct {
@@ -124,6 +129,7 @@ typedef struct {
 	datavis_widgets datavis;
 	wait_widgets wait;
 	menu_widgets menu;
+	bluetooth_devices *bluetooth; // allocate
 } widgets;
 
 #endif /* GUI_MAIN_H */

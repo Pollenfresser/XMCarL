@@ -11,6 +11,7 @@
  * Status: done so far
  *
  *	TODO: reconnect function and if menu is used: wait screen
+ *	TODO: you are able to click the connect button more often than twice - this is a big problem
  *
  */
 
@@ -80,6 +81,7 @@ int main(int argc, char ** argv) {
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
+	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_devices));
 
 	a->app = gtk_application_new("org.gtk.gui", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
@@ -87,6 +89,7 @@ int main(int argc, char ** argv) {
 
 	// clean up
 	g_object_unref(a->app);
+	//g_free(a->bluetooth);
 	g_free(a);
 
 	return status;

@@ -32,7 +32,7 @@
 * Defines
 */
 #define DEBUG 1
-
+#define MAX_BLUETOOTH_RESPONSES 255
 /**
  * Pins
  */
@@ -41,7 +41,9 @@
 * Prototypes
 */
 
-void blue_search_for_available_devices();
+int blue_search_for_available_devices(gpointer data);
+void wait_create_button_for_each_device(int count_devices, gpointer data);
+
 
 /**
 * Global variables
