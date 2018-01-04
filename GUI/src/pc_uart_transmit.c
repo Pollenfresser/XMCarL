@@ -33,9 +33,9 @@ int pc_uart_init() {
 	if (RS232_OpenComport(cport_nr, bdrate, mode)) {
 		printf("Cannot open com port\n");
 
-		return 0;
+		return 1;
 	}
-	return 1;
+	return 0;
 
 }
 
@@ -45,7 +45,7 @@ void pc_uart_clean() {
 }
 
 
-// ergebnis -> durch 9.81 wird an an gui
+// ergebnis -> durch 2000 wird an gui
 // durch 2*9.81 an car - ich schicke nur mehr pulsdauer in millisec
 // es sind immer 2 verschiedene werte - eines für throttle, eines für steering
 // pulsdauer zw 1 & 2 ms
@@ -92,8 +92,8 @@ void pc_uart_receive() {
 
 int pc_uart_routine() {
 
-	if (!pc_uart_init()) {
-		return 0;
+	if (pc_uart_init()) {
+		return 1;
 	}
 
 	while (1) {
