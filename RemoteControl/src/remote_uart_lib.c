@@ -21,7 +21,7 @@
  *****************************************************************************/
 
 /**
- * Configures the UART module with 115200 baud, 1 stopbit, 8 databits and no parity
+ * \brief Configures the UART module with 115200 baud, 1 stopbit, 8 databits and no parity
  */
 void remote_uart_to_pc_init()
 {
@@ -59,12 +59,11 @@ void remote_uart_to_pc_init()
 	line number */
 	NVIC_SetPriority (USIC0_0_IRQn, 63U);
 	NVIC_EnableIRQ (USIC0_0_IRQn);
-
-	return;
 }
 
 /**
- * Handles the reception of data via the UART module via interupts
+ * \brief Handles the reception of data via the UART module via interupts
+ * \return none
  */
 void USIC0_0_IRQHandler (void)
 {
@@ -85,9 +84,9 @@ void USIC0_0_IRQHandler (void)
 }
 
 /**
- * Sends a character via UART
- * @param  c character to be sent
- * @return 0 on success
+ * \brief Sends a character via UART
+ * \param  c  ... character to be sent
+ * \return 0 on success
  */
 uint8_t remote_uart_send_char (char c)
 {
@@ -98,10 +97,10 @@ uint8_t remote_uart_send_char (char c)
 }
 
 /**
- * This function takes a string formated as in a printf
- * @param  fmt
- * @param  VARARGS
- * @return 0 on success
+ * \brief This function takes a string formated as in a printf and sends it via UART
+ * \param  fmt      ... String of the printf routine
+ * \param  VARARGS  ... to the string corresponding arguments
+ * \return 0 on success
  */
 uint8_t remote_uart_printf (char *fmt, ...)
 {
@@ -121,9 +120,9 @@ uint8_t remote_uart_printf (char *fmt, ...)
 }
 
 /**
- * sends a string via the UART module
- * @param  str string to be sent via
- * @return 0 on success
+ * \brief sends a string via the UART module
+ * \param  str string to be sent via
+ * \return 0 on success
  */
 uint8_t remote_uart_send_string (char *str)
 {
@@ -138,10 +137,10 @@ uint8_t remote_uart_send_string (char *str)
 	return 0;
 }
 
-/**
- * Reads a comlete string from the UART interface
- * @param  str the read string
- * @return 0 on success
+/*!
+ * \brief Reads a comlete string from the UART interface
+ * \param  str the read string
+ * \return 0 on success
  */
 uint8_t remote_uart_get_string (char *str)
 {
