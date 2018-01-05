@@ -79,6 +79,9 @@ void activate(GtkApplication *app, gpointer data) {
 int main(int argc, char ** argv) {
 	int status;
 
+	// blue_how_to_communicate();
+
+
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
 	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_devices));

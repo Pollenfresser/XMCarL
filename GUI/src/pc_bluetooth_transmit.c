@@ -13,12 +13,13 @@
  * using bluez with c
  * not working becaude heder - compile it with:  gcc -o simplescan simplescan.c -lbluetooth
  *
+ * update, we are using rfcomm (5.jan)
+ *
  * Status:
  * - able to search for bluetooth devices
  *
  *
  */
-
 
 #include <gui_main.h>
 
@@ -26,7 +27,19 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <bluetooth/bluetooth.h>
-#include <bluetooth/l2cap.h>
+#include <bluetooth/rfcomm.h>
+
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+
+ #include <stdlib.h>
+
+ #include <bluetooth/bluetooth.h>
+ #include <bluetooth/rfcomm.h>
+ #include <bluetooth/hci.h>
+
 
 /******************************************************************************
  * Start of user functions
@@ -80,52 +93,99 @@ int blue_search_for_available_devices(gpointer data) {
 /*
  * Device adress of bluetooth module on car:
  * 00:1B:35:88:0C:81
+ * Handling Bluetooth device addresses
  */
 
 void blue_choose_device_to_communicate(){
 
+	bdaddr_t bdaddr;
+	char *str, addr[18];
 
+	str2ba("00:1B:35:88:0C:81", &bdaddr);
 
+	ba2str(&bdaddr, addr);
+	str = batostr(&bdaddr);
+
+	free(str);
+
+	bacpy(&bdaddr, BDADDR_ANY);
 
 
 }
-
-void bluetooth_client(void)
-{
-    struct sockaddr_l2 addr = { 0 };
-    int s, status;
-    char *message = "hello!";
-    char dest[18] = "00:1B:35:88:0C:81";
-
-    // allocate a socket
-    s = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
-
-    // set the connection parameters (who to connect to)
-    addr.l2_family = AF_BLUETOOTH;
-    addr.l2_psm = htobs(0x1001);
-    str2ba( dest, &addr.l2_bdaddr );
-
-    // connect to server
-    status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
-
-    // send a message
-    if( status == 0 ) {
-        status = write(s, "hello!", 6);
-    }
-
-    if( status < 0 ) perror("uh oh");
-
-    close(s);
-}
-
 
 /*
  * determine which transport protocol to use
  * RFCOMM + TCP or
  * L2CAP + UDP - never retransmit (logical link control and adaptation protocol)
  */
- void blue_how_to_communicate(){
 
+
+
+ /*
+   BlueZ example code to build an rfcomm client.
+   This code just creates a socket and connects
+   to a remote bluetooth device and sends a string.
+   Programmed by Bastian Ballmann
+   http://www.geektown.de
+   Compile with gcc -lbluetooth <executable> <source>
+ */
+
+
+
+ int blue_how_to_communicate()
+ {
+   int sock, d;
+   struct sockaddr_rc laddr, raddr;
+   struct hci_dev_info di;
+
+   /*if(argc < 4)
+     {
+       printf("%s <btaddr> <channel> <cmd>\n", argv[0]);
+       exit(0);
+     }*/
+
+
+
+   if(hci_devinfo(0, &di) < 0)
+     {
+       perror("HCI device info failed");
+       exit(1);
+     }
+
+   printf("Local device %s\n", batostr(&di.bdaddr));
+
+   laddr.rc_family = AF_BLUETOOTH;
+   laddr.rc_bdaddr = di.bdaddr;
+   laddr.rc_channel = 0;
+
+   raddr.rc_family = AF_BLUETOOTH;
+   str2ba("00:1B:35:88:0C:81",&raddr.rc_bdaddr);
+   raddr.rc_channel = 1;
+
+   if( (sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0)
+     {
+       perror("socket");
+     }
+
+   if(bind(sock, (struct sockaddr *)&laddr, sizeof(laddr)) < 0)
+     {
+       perror("bind");
+       exit(1);
+     }
+
+   printf("Remote device %s\n", "00:1B:35:88:0C:81");
+
+   if(connect(sock, (struct sockaddr *)&raddr, sizeof(raddr)) < 0)
+     {
+       perror("connect");
+       exit(1);
+     }
+
+   printf("Connected.\nSending data %s\n","hey");
+   send(sock,"hey",strlen("hey"),0);
+   printf("Disconnect.\n");
+   close(sock);
+   return 0;
  }
 
 /*
@@ -137,10 +197,45 @@ void bluetooth_client(void)
  * Bluetooth is to assign a 128-bit number, called the Universally Unique Identifier (UUID), at design time
  *
  */
+/*
+ static int create_dev(int ctl, int dev, uint32_t flags, bdaddr_t *bdaddr, int argc, char **argv)
+ {
+ 	struct rfcomm_dev_req req;
+ 	int err;
 
+ 	memset(&req, 0, sizeof(req));
+ 	req.dev_id = dev;
+ 	req.flags = flags;
+ 	bacpy(&req.src, bdaddr);
+
+ 	if (argc < 2) {
+ 		fprintf(stderr, "Missing dev parameter");
+ 		return -EINVAL;
+ 	}
+
+ 	str2ba(argv[1], &req.dst);
+
+ 	if (argc > 2)
+ 		req.channel = atoi(argv[2]);
+ 	else
+ 		req.channel = 1;
+
+ 	err = ioctl(ctl, RFCOMMCREATEDEV, &req);
+ 	if (err == -1) {
+ 		err = -errno;
+
+ 		if (err == -EOPNOTSUPP)
+ 			fprintf(stderr, "RFCOMM TTY support not available\n");
+ 		else
+ 			perror("Can't create device");
+ 	}
+
+ 	return err;
+ }
+*/
 
 void blue_outgoing_connection(){
-
+	//         status = write(s, "hello!", 6);
 }
 
 void blue_accept_ingoing_connection(){
