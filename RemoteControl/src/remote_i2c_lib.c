@@ -21,10 +21,11 @@
  * Start of user functions
  *****************************************************************************/
 
-/**
- * This function configures the I2C interface to communicate via pins P0_5 (SDA)
- * 	& P0_11 (SCL)
- * @return [description]
+/*!
+ * \brief This function configures the I2C interface to communicate via pins P0_5 (SDA)
+ * 	      & P0_11 (SCL)
+ * \param none
+ * \return 0 on success
  */
 uint8_t remote_i2c_to_mems_init(void) {
 	XMC_I2C_CH_Init(XMC_I2C1_CH0, &i2c_cfg);
@@ -39,11 +40,12 @@ uint8_t remote_i2c_to_mems_init(void) {
 	return 0;
 }
 
-/**
- * This function sends a byte via the I2C interface and waits for the ack
- * @param  channel [description]
- * @param  data [description]
- * @return either the sent data or 0xFFFF on error
+
+/*!
+ * \brief This function sends a byte via the I2C interface and waits for the ack
+ * \param channel ... the channel of the USIC module for I2C communication
+ *        data    ... data to be written on the I2C interface
+ * \return either the sent data or 0xFFFF on error
  */
 uint16_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data) {
 
@@ -56,12 +58,13 @@ uint16_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data) {
 
 }
 
-/**
- * A restart with a read access is sent to the slave, afterwards the data is
- * 	read and a NACK of the master is sent
- * @param  channel I2C channel to be read of
- * @param  id address of the slave
- * @return either the received value or 0xFFFF on error
+
+/*!
+ * \brief A restart with a read access is sent to the slave, afterwards the data
+ *        is read and a NACK of the master is sent
+ * \param channel ... I2C channel to be read of
+ *        id      ... address of the slave
+ * \return either the received value or 0xFFFF on error
  */
 uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 
@@ -91,11 +94,12 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 
 }
 
-/**
- * Waits for a ack of the slave, if no ack is received after 5000 cycles an
- * 	error is returned
- * @param  channel the channel on which the ack shall be received
- * @return 0 on success, 1 on failure
+
+/*!
+ * \brief Waits for a ack of the slave, if no ack is received after 5000 cycles an
+ *        error is returned
+ * \param channel	... the channel on which the ack shall be received
+ * \return 0 on success, 1 on failure
  */
 uint8_t remote_i2c_wait_for_ack(XMC_USIC_CH_t * const channel) {
 
@@ -115,15 +119,17 @@ uint8_t remote_i2c_wait_for_ack(XMC_USIC_CH_t * const channel) {
 	return ret;
 }
 
-/**
- * The function writes a desired register address to a specifyed target, if
- * 	if read mode is selected the mandatory restart ist performed and the
- * 	connection opened in read mode
- * @param  id address of the slave
- * @param  reg_addr register address to be read of or written to
- * @param  i2c_data data to be sent in a write access
- * @param  write_read distinction between write or read access 0 = write / 1 = read
- * @return sent or received data or 0xFFFF in case of an error
+
+/*!
+ * \brief The function writes a desired register address to a specifyed target,
+ *        if read mode is selected the mandatory restart ist performed and the
+ *        connection opened in read mode
+ * \param id          ... address of the slave
+ *        reg_addr    ... register address to be read of or written to
+ *        i2c_data    ... data to be sent in a write access
+ *        write_read  ... distinction between write or read access
+ *                        0 = write / 1 = read
+ * \return sent or received data or 0xFFFF in case of an error
  */
 uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 		_Bool write_read) {
@@ -133,13 +139,13 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 
 	uint16_t ret = 0;
 
-	/**
-	 * Invokes the start condition on the I2C interface and sends the address of
-	 * 	the desired slave
-	 * @param channel I2C Channel on which the data should be sent
-	 * @param id Address of the desired slave
-	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
-	 */
+	/*!
+   * \brief Invokes the start condition on the I2C interface and sends the
+   *        address of the desired slave
+   * \param channel ... I2C Channel on which the data should be sent
+   *        id      ... Address of the desired slave
+   * \return none
+   */
 	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
 	#if DEBUG_ALL
 		printf("\t-I2C started\n");
@@ -179,17 +185,25 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 }
 
 
+/*!
+ * \brief Function to read 4 consecuitive values of the sensor. Designed for
+ *        the read process of X and Y in one communication session
+ * \param id          ... address of the slave
+ *        reg_addr    ... register address to be read of or written to
+ *        *received   ... data received from sensor
+ * \return 0 on sucess, 1 on failure
+ */
 uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
 	XMC_USIC_CH_t *channel;
 	channel = XMC_I2C1_CH0;
 
-	/**
-	 * Invokes the start condition on the I2C interface and sends the address of
-	 * 	the desired slave
-	 * @param channel I2C Channel on which the data should be sent
-	 * @param id Address of the desired slave
-	 * @param XMC_I2C_CH_CMD_WRITE distinction between read and write
-	 */
+  /*!
+   * \brief Invokes the start condition on the I2C interface and sends the
+   *        address of the desired slave
+   * \param channel ... I2C Channel on which the data should be sent
+   *        id      ... Address of the desired slave
+   * \return none
+   */
 	XMC_I2C_CH_MasterStart(channel, id, XMC_I2C_CH_CMD_WRITE);
 	if(remote_i2c_wait_for_ack(channel)) {
 		return 1;
@@ -205,16 +219,15 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
 		return 1;
 	}
 
-
 	/*
 	 * Waits until valid data is available on reception register
 	 */
-	for(uint8_t receive_counter = 0; receive_counter < 6; receive_counter++)
+	for(uint8_t receive_counter = 0; receive_counter < 4; receive_counter++)
 	{
 		#if DEBUG_ALL
 			printf("Retrieving #%d\n", receive_counter);
 		#endif
-		if(receive_counter < 5) {
+		if(receive_counter < 3) {
 			XMC_I2C_CH_MasterReceiveAck(channel);	// is sent as soon as channel is not busy
 			#if DEBUG_ALL
 				printf("Master ACK is sent\n");
