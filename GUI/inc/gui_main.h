@@ -16,14 +16,17 @@
 /**
 * Included Files
 */
+
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
+
+// XMCarl Header
 #include <pc_uart.h>
 #include <pc_bluetooth.h>
 
-#include <string.h>
+// GStreamer
 #include <gst/gst.h>
 #include <gst/video/videooverlay.h>
 #include <gdk/gdk.h>
@@ -51,7 +54,7 @@
 * Prototypes
 */
 
-int blue_how_to_communicate();
+int blue_how_to_communicate(gpointer data);
 
 // start screen
 void start_screen_init(gpointer data);
@@ -119,6 +122,11 @@ typedef struct {
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
+
+	GstElement *playbin;
+	GtkWidget *streams_list;
+	GstState state;
+	gint64 duration;
 } stream_widgets;
 
 // menu
@@ -134,11 +142,10 @@ typedef struct {
 	GtkWidget *main_box;
 	GtkStyleProvider *css_style;
 
-	GstElement *playbin;
-	GtkWidget *streams_list;
-	GstState state;
-	gint64 duration;
+	// Bluetooth
+	int choosen_blue_dev;
 
+	// Data
 	start_widgets start;
 	stream_widgets stream;
 	datavis_widgets datavis;
