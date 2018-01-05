@@ -32,7 +32,8 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 	gtk_widget_set_visible(a->wait.layout, FALSE);
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
 
-	stream_code((gpointer) a);
+	//stream_code((gpointer) a);
+	 blue_how_to_communicate();
 
 	//bluetooth_client();
 

@@ -50,6 +50,9 @@
 /**
 * Prototypes
 */
+
+int blue_how_to_communicate();
+
 // start screen
 void start_screen_init(gpointer data);
 void start_screen_visible(gpointer data);
