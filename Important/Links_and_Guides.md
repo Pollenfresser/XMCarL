@@ -14,6 +14,12 @@ https://www.cairographics.org/manual/
 ### Bluetoothprogramming
 https://people.csail.mit.edu/albert/bluez-intro/
 
+### Bluetoothconnection !!!!working!!!!
+http://www.free-it.org/archiv/talks/paper-10006/paper.html
+
+### Forks
+http://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html
+
 ### Tipps vom mr. teacher
 GStreamer <br>
 LibVLC <br>
