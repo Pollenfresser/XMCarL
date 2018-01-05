@@ -13,6 +13,19 @@ it was this version: bluez-libs-devel-5.46-6.fc26.x86_64
 https://www.pcsuggest.com/bluetooth-linux-part-2/
 here you find commands to find / connect / bind (with rfcomm) your bluetooth device
 
+# Bluetooth commands (terminal)
+
+* hcitool scan
+* sdptool browse
+channel is important
+* hciconfig
+UP RUNNING PSCAN PSCAN
+* sudo rfcomm release 0 
+for removing rfcomm0; listed here: ls /dev/
+* sudo rfcomm connect 1 00:1B:35:88:0C:81 1
+Connected /dev/rfcomm1 to 00:1B:35:88:0C:81 on channel 1
+wuhu, it's working!!!
+
 
 
 
