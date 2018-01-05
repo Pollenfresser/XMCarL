@@ -27,22 +27,6 @@ uint8_t remote_mems_init(void)
 #endif
 
 
-  /*!
-     \brief "Description"
-     \param "Param description"
-     \pre "Pre-conditions"
-     \post "Post-conditions"
-     \return "Return of the function"
-  */
-  while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG4, 0, 0) == 0xFFFF)
-  {
-    XMC_GPIO_ToggleOutput(LED1);
-    #if DEBUG
-      printf("CTRL_REG1 failed\n");
-    #endif
-  }
-
-
   /**
    * @param MEMS_ADDRESS addressing acceleration sensor
    * @param MEMS_CTRL_REG3 addressing register for interrupt on pin INT1
@@ -59,6 +43,26 @@ uint8_t remote_mems_init(void)
 #if DEBUG
   printf("Mems Init MEMS_CTRL_REG3 finished\n");
 #endif
+
+
+/*!
+\brief "Description"
+\param "Param description"
+\pre "Pre-conditions"
+\post "Post-conditions"
+\return "Return of the function"
+*/
+while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG4, 0, 0) == 0xFFFF)
+{
+  XMC_GPIO_ToggleOutput(LED1);
+  #if DEBUG
+  printf("CTRL_REG4 failed\n");
+  #endif
+}
+#if DEBUG
+printf("Mems Init MEMS_CTRL_REG4 finished\n");
+#endif
+
   return 0;
 }
 
