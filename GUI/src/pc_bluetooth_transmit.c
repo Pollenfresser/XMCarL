@@ -22,10 +22,18 @@
 
 #include <gui_main.h>
 
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/l2cap.h>
+
 /******************************************************************************
  * Start of user functions
  *****************************************************************************/
 
+// working - the function looks out for available
+// bluetooth devices
 int blue_search_for_available_devices(gpointer data) {
 	widgets *a = (widgets *) data;
 
@@ -76,7 +84,40 @@ int blue_search_for_available_devices(gpointer data) {
 
 void blue_choose_device_to_communicate(){
 
+
+
+
+
 }
+
+void bluetooth_client(void)
+{
+    struct sockaddr_l2 addr = { 0 };
+    int s, status;
+    char *message = "hello!";
+    char dest[18] = "00:1B:35:88:0C:81";
+
+    // allocate a socket
+    s = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
+
+    // set the connection parameters (who to connect to)
+    addr.l2_family = AF_BLUETOOTH;
+    addr.l2_psm = htobs(0x1001);
+    str2ba( dest, &addr.l2_bdaddr );
+
+    // connect to server
+    status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
+
+    // send a message
+    if( status == 0 ) {
+        status = write(s, "hello!", 6);
+    }
+
+    if( status < 0 ) perror("uh oh");
+
+    close(s);
+}
+
 
 /*
  * determine which transport protocol to use

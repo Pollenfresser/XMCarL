@@ -23,6 +23,12 @@
 #include <pc_uart.h>
 #include <pc_bluetooth.h>
 
+#include <string.h>
+#include <gst/gst.h>
+#include <gst/video/videooverlay.h>
+#include <gdk/gdk.h>
+
+
 /**
 * Defines
 */
@@ -124,6 +130,12 @@ typedef struct {
 	GtkWidget *window;
 	GtkWidget *main_box;
 	GtkStyleProvider *css_style;
+
+	GstElement *playbin;
+	GtkWidget *streams_list;
+	GstState state;
+	gint64 duration;
+
 	start_widgets start;
 	stream_widgets stream;
 	datavis_widgets datavis;
