@@ -33,7 +33,10 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
 
 	//stream_code((gpointer) a);
-	 blue_how_to_communicate();
+	// printf("%d", a->wait.device_id);
+	a->choosen_blue_dev = atoi(gtk_widget_get_name (wid));
+	printf("Choosen device id: %d", a->choosen_blue_dev);
+	blue_how_to_communicate((gpointer)a);
 
 	//bluetooth_client();
 
@@ -68,14 +71,14 @@ static gboolean refresh_ui (gpointer data) {
   gint64 current = -1;
 
   /* If we didn't know it yet, query the stream duration */
-  if (!GST_CLOCK_TIME_IS_VALID (a->duration)) {
-    if (!gst_element_query_duration (a->playbin, GST_FORMAT_TIME, &a->duration)) {
+  if (!GST_CLOCK_TIME_IS_VALID (a->stream.duration)) {
+    if (!gst_element_query_duration (a->stream.playbin, GST_FORMAT_TIME, &a->stream.duration)) {
       g_printerr ("Could not query current duration.\n");
     } else {
     }
   }
 
-  if (gst_element_query_position (a->playbin, GST_FORMAT_TIME, &current)) {
+  if (gst_element_query_position (a->stream.playbin, GST_FORMAT_TIME, &current)) {
 
   }
   return TRUE;
@@ -98,7 +101,6 @@ void stream_code(gpointer data) {
 
 }
 
-
 void stream_main(gpointer data){
 	  //CustomData data;
 	  GstStateChangeReturn ret;
@@ -107,30 +109,30 @@ void stream_main(gpointer data){
 
 	  /* Initialize our data structure */
 	 // memset (&data, 0, sizeof (data));
-	  a->duration = GST_CLOCK_TIME_NONE;
+	  a->stream.duration = GST_CLOCK_TIME_NONE;
 
 	  /* Create the elements */
-	  a->playbin = gst_element_factory_make ("playbin", "playbin");
+	  a->stream.playbin = gst_element_factory_make ("playbin", "playbin");
 
-	  if (!a->playbin) {
+	  if (!a->stream.playbin) {
 	    g_printerr ("Not all elements could be created.\n");
 	    return -1;
 	  }
 
 	  /* Set the URI to play */
-	  g_object_set (a->playbin, "uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm", NULL);
+	  g_object_set (a->stream.playbin, "uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm", NULL);
 
 	  /* Create the GUI */
 //	  create_ui ((gpointer)a);
 //	g_printerr ("GUI init\n");
 
 	  /* Instruct the bus to emit signals for each received message, and connect to the interesting signals */
-	  bus = gst_element_get_bus (a->playbin);
+	  bus = gst_element_get_bus (a->stream.playbin);
 	  gst_bus_add_signal_watch (bus);
 	gst_object_unref (bus);
 
 	  /* Start playing */
-	  ret = gst_element_set_state (a->playbin, GST_STATE_PLAYING);
+	  ret = gst_element_set_state (a->stream.playbin, GST_STATE_PLAYING);
 	g_printerr ("start playing \n");
 
 
@@ -141,7 +143,7 @@ void stream_main(gpointer data){
 	  gtk_main ();
 
 	  /* Free resources */
-	  gst_element_set_state (a->playbin, GST_STATE_NULL);
-	  gst_object_unref (a->playbin);
+	  gst_element_set_state (a->stream.playbin, GST_STATE_NULL);
+	  gst_object_unref (a->stream.playbin);
 }
 

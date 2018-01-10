@@ -85,8 +85,11 @@ void wait_create_button_for_each_device(int count_devices, gpointer data){
 	widgets *a = (widgets *) data;
 	GtkWidget *device_buttons [count_devices];// ** -> has to be allocated
 	int i;
+	char c[1];
 	for(i = 0; i<count_devices; i++){
 		device_buttons[i] = gtk_button_new_with_label(a->bluetooth[i].name);
+		c[0] = i + 48;
+		gtk_widget_set_name (device_buttons[i], c);
 		g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
 		gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
 	}
