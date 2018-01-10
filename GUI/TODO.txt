@@ -1,0 +1,8 @@
+UART:
+- pc_uart_receive:
+  Strip from passed structure -> should be global after that
+  call the function peridically from a thread, not from pc_uart_routine
+
+- pc_uart_routine:
+  delete function, is subsdituted by the thread for uart/bluetooth, mind the
+  initialisation!!

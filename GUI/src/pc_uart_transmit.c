@@ -25,7 +25,8 @@ int pc_uart_init() {
 
 	int bdrate = 115200;
 
-	char mode[] = { '8',   // 8 Databits
+	char mode[] = {
+      '8',   // 8 Databits
 			'N',   // No parity
 			'1',   // 1 stopbit
 			0 };
@@ -59,38 +60,71 @@ void pc_uart_result_manipulation(){
 // whatever i get here should be forwarded to the bluetooth
 // file and to the gui-visualisation file
 
-/*
- * timer, wenn der abgelaufen ist
- * interrupt
- * uart from remote abfragen
- * manipulieren
- * bluetooth 2 car senden
+/*!
+ * \brief Reads the whole serial register and returns the last 2 values for x
+ *        and y to the rcv struct
+ * \param none
+ * \return none
  */
-void pc_uart_receive() {
+void pc_uart_receive(struct rcv *received) {
 
 	int received_bytes = 0;
 	char receive_buff[RECEIVE_BUFF_SIZE];
+  char *dummy_buff;
+  char *x_buff;
+  char *y_buff;
 
+  x_buff = NULL;
+  y_buff = NULL;
 
-	do {
-				received_bytes = RS232_PollComport(cport_nr, receive_buff,
-						(RECEIVE_BUFF_SIZE - 1));
-	#ifdef DEBUG
-				printf("receive_buff: %s\n"
-						"n: %d\n", receive_buff, received_bytes);
-	#endif
-				usleep(500000);
-			} while (received_bytes == 0);
-			receive_buff[received_bytes] = 0; // Setting NULL at the end of the String
-			received_bytes = 0;
-	#ifdef DEBUG
-			printf("Receive passed\n");
-	#endif
+  received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE-1);
 
-			printf("Received: %s", receive_buff);
+  if(received_bytes)
+  {
+    dummy_buff = strtok(receive_buff, " ");
+    while(dummy_buff != NULL)
+    {
+      if(strncmp(dummy_buff, "UART_X", strlen("UART_X")) == 0)
+      {
+        dummy_buff = strtok(NULL, "\n");
+        x_buff = calloc(strlen(dummy_buff), sizeof(char));
+        strncpy(x_buff, dummy_buff, strlen(dummy_buff));
+        #if DEBUG
+          printf("-UART_X: %s\n", x_buff);
+        #endif
+        received->x = strtol(x_buff, NULL, 10);
+      } else if(strncmp(dummy_buff, "UART_Y", strlen("UART_Y")) == 0)
+      {
+        dummy_buff = strtok(NULL, "\n");
+        y_buff = calloc(strlen(dummy_buff), sizeof(char));
+        strncpy(y_buff, dummy_buff, strlen(dummy_buff));
+        #if DEBUG
+          printf("-UART_Y: %s\n", y_buff);
+        #endif
+        received->y = strtol(y_buff, NULL, 10);
+      } else
+      {
+        dummy_buff = strtok(NULL, " \n");
+        #if DEBUG
+          printf("~~dummy: %s\n", dummy_buff);
+        #endif
+      }
+
+      if(x_buff != NULL) {
+        free(x_buff);
+        x_buff = NULL;
+      }
+      if(y_buff != NULL) {
+        free(y_buff);
+        y_buff = NULL;
+      }
+    }
+  }
 }
 
 int pc_uart_routine() {
+
+  struct rcv received;
 
 	if (pc_uart_init()) {
 		return 1;
@@ -98,8 +132,7 @@ int pc_uart_routine() {
 
 	while (1) {
 
-		pc_uart_receive();
-		RS232_cputs(cport_nr, "ACK\n");
+		pc_uart_receive(&received);
 
 	}
 
