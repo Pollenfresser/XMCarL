@@ -93,7 +93,7 @@ void pc_uart_receive(struct rcv *received) {
         #if DEBUG
           printf("-UART_X: %s\n", x_buff);
         #endif
-        *received->x = strtol(x_buff, NULL, 10);
+        received->x = strtol(x_buff, NULL, 10);
       } else if(strncmp(dummy_buff, "UART_Y", strlen("UART_Y")) == 0)
       {
         dummy_buff = strtok(NULL, "\n");
@@ -102,7 +102,7 @@ void pc_uart_receive(struct rcv *received) {
         #if DEBUG
           printf("-UART_Y: %s\n", y_buff);
         #endif
-        *received->y = strtol(y_buff, NULL, 10);
+        received->y = strtol(y_buff, NULL, 10);
       } else
       {
         dummy_buff = strtok(NULL, " \n");
