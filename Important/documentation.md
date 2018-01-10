@@ -1,3 +1,6 @@
+Wailand
+muss es auf x11 umstellen
+
 What I did for bluetooth:
 
 Tutorial: https://people.csail.mit.edu/albert/bluez-intro/c33.html
