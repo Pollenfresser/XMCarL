@@ -60,12 +60,11 @@ void pc_uart_result_manipulation(){
 // whatever i get here should be forwarded to the bluetooth
 // file and to the gui-visualisation file
 
-/*
- * timer, wenn der abgelaufen ist
- * interrupt
- * uart from remote abfragen
- * manipulieren
- * bluetooth 2 car senden
+/*!
+ * \brief Reads the whole serial register and returns the last 2 values for x
+ *        and y to the rcv struct
+ * \param none
+ * \return none
  */
 void pc_uart_receive(struct rcv *received) {
 
@@ -119,10 +118,8 @@ void pc_uart_receive(struct rcv *received) {
         free(y_buff);
         y_buff = NULL;
       }
-
     }
   }
-
 }
 
 int pc_uart_routine() {
