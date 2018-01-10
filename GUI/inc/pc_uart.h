@@ -81,10 +81,20 @@ void RS232_flushRXTX(int);
 int RS232_GetPortnr(const char *);
 
 
+/*****************************/
+/* User functions */
+/******************/
+int pc_uart_init(void);
+gboolean pc_uart_receive(gpointer data);
+
+
+
 struct rcv{
   long x;
   long y;
 };
+
+struct rcv received;
 
 #ifdef __cplusplus
 } /* extern "C" */
