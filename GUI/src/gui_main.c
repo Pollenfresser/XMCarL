@@ -38,6 +38,21 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	}
 }
 
+gpointer transferThread(gpointer data){
+
+	// new thread for uart and bluetooth connection
+	// 1: get data from uart
+	// 2: save data
+	// 3: send data to bluetooth
+	// send data to gui -> polling im callback
+
+	widgets *a = (widgets *) data;
+
+	g_timeout_add();
+	return NULL;
+
+}
+
 /*
  * CSS provider
  * Window properties
@@ -78,14 +93,21 @@ void activate(GtkApplication *app, gpointer data) {
 
 int main(int argc, char ** argv) {
 	int status;
+	GThread* lucasNervt;
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
-	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_devices));
+
+	lucasNervt = g_thread_new("data_transfer", (GThreadFunc) transferThread, (gpointer)a);
+
+
+	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_data));
 
 	a->app = gtk_application_new("org.gtk.gui", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
 	status = g_application_run(G_APPLICATION(a->app), argc, argv);
+
+	g_thread_join (lucasNervt);
 
 	// clean up
 	g_object_unref(a->app);

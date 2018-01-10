@@ -49,12 +49,14 @@
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500
 
+#define MESSAGE_SIZE 1024 // bluetooth
+
 
 /**
 * Prototypes
 */
 
-int blue_how_to_communicate(gpointer data);
+int blue_communication(gpointer data);
 
 // start screen
 void start_screen_init(gpointer data);
@@ -110,7 +112,8 @@ typedef struct {
 typedef struct{
 	char addr[19];
 	char name[248];
-} bluetooth_devices;
+	char message[MESSAGE_SIZE];
+} bluetooth_data;
 
 // data visualisation screen
 typedef struct {
@@ -151,7 +154,7 @@ typedef struct {
 	datavis_widgets datavis;
 	wait_widgets wait;
 	menu_widgets menu;
-	bluetooth_devices *bluetooth; // allocate
+	bluetooth_data *bluetooth; // allocate
 } widgets;
 
 #endif /* GUI_MAIN_H */

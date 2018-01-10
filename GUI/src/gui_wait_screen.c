@@ -73,9 +73,7 @@ void wait_screen_init(gpointer data) {
 void wait_code(gpointer data) {
 
 	widgets *a = (widgets *) data;
-
 	a->wait.label = gtk_label_new("Please wait for available devices");
-
 	gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.label, FALSE, FALSE,
 			0);
 }
@@ -89,10 +87,19 @@ void wait_create_button_for_each_device(int count_devices, gpointer data){
 	for(i = 0; i<count_devices; i++){
 		device_buttons[i] = gtk_button_new_with_label(a->bluetooth[i].name);
 		c[0] = i + 48;
+//		printf("char:%s,c", c);
 		gtk_widget_set_name (device_buttons[i], c);
 		g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
 		gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
 	}
+	i++;
+	device_buttons[i] = gtk_button_new_with_label("chrisy");
+	c[0] = i + 48;
+	gtk_widget_set_name (device_buttons[i], c);
+	g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
+	gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
+
+
 	gtk_widget_show_all(a->wait.layout);
 
 }

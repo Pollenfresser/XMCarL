@@ -53,7 +53,7 @@ void menu_init(gpointer data) {
 
 	// create menu screens *****
 	menu_screen = g_menu_new();
-	g_menu_append(menu_screen, "Stream", "app.stream"); // gopro stream
+	g_menu_append(menu_screen, "Stream - not working", "app.stream"); // gopro stream
 	g_menu_append(menu_screen, "Visual", "app.visual"); // data visualisation
 	g_menu_append_section(menu_end, NULL, G_MENU_MODEL(menu_screen));
 
