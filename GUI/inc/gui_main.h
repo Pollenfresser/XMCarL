@@ -70,6 +70,7 @@ void wait_screen_bluetooth(GtkWidget *wid, gpointer data);
 // gopro stream
 void stream_screen_init(gpointer data);
 void stream_screen_visible(GtkWidget *wid, gpointer data);
+int stream_code(gpointer data);
 
 // data visualisation
 void datavis_screen_init(gpointer data);
@@ -125,11 +126,8 @@ typedef struct {
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
-
+	GtkWidget *video_window;
 	GstElement *playbin;
-	GtkWidget *streams_list;
-	GstState state;
-	gint64 duration;
 } stream_widgets;
 
 // menu

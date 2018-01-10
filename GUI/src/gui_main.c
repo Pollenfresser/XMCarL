@@ -48,7 +48,7 @@ gpointer transferThread(gpointer data){
 
 	widgets *a = (widgets *) data;
 
-	g_timeout_add();
+	//g_timeout_add();
 	return NULL;
 
 }
@@ -110,6 +110,12 @@ int main(int argc, char ** argv) {
 	g_thread_join (lucasNervt);
 
 	// clean up
+
+	// gopro stream
+	gst_element_set_state(a->stream.playbin, GST_STATE_NULL);
+	gst_object_unref(a->stream.playbin);
+	gtk_main_quit();
+
 	g_object_unref(a->app);
 	//g_free(a->bluetooth);
 	g_free(a);
