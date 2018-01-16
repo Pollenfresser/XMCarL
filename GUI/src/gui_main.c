@@ -45,10 +45,18 @@ gpointer transferThread(gpointer data){
 	// 2: save data
 	// 3: send data to bluetooth
 	// send data to gui -> polling im callback
+  widgets *a = (widgets *) data;
 
-	widgets *a = (widgets *) data;
+  if(pc_uart_init()) {
+    return FALSE;
+  }
 
+  g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) pc_uart_receive, NULL);
+
+<<<<<<< HEAD
 	//g_timeout_add();
+=======
+>>>>>>> 7f21df19938a1760f58b4c3cd331c2ec0c18bf7f
 	return NULL;
 
 }
