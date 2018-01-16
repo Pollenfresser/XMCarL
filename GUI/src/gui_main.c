@@ -72,7 +72,7 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_window_set_application(GTK_WINDOW(a->window), GTK_APPLICATION(a->app));
 	gtk_window_set_position(GTK_WINDOW(a->window), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW (a->window), "XMCarL");
-	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 500);
+	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 400);
 	gtk_widget_show(a->window);
 
 	a->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);

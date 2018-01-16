@@ -75,11 +75,6 @@ static void create_ui(CustomData *data) {
 
 /* This function is called periodically to refresh the GUI */
 static gboolean refresh_ui(CustomData *data) {
-//	gint64 current = -1;
-
-	/*We do not want to update anything unless we are in the PAUSED or PLAYING states */
-	//if (data->state < GST_STATE_PAUSED)
-		//return TRUE;
 
 	return TRUE;
 }
@@ -106,10 +101,24 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
+
 	/* Set the URI to play */
 	g_object_set(data.playbin, "uri",
 			"https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm",
 			NULL);
+
+
+
+	// gopro code
+
+
+
+
+
+
+
+
+
 
 	/* Create the GUI */
 	create_ui(&data);
