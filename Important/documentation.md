@@ -1,5 +1,6 @@
-Wailand
-muss es auf x11 umstellen
+fedora nutzt Wailand - muss es auf x11 umstellen
+click on the arrow in the top right corner - click on your username -> logout
+at the login screen, there is a settings symbol -> change to xorg and login; x11 will work then
 
 What I did for bluetooth:
 

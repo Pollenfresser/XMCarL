@@ -36,25 +36,19 @@
 * Defines
 */
 #define DEBUG 1
-#define MEMS_ADDRESS 0x30 // 0b0011000 with added default 0
-#define MEMS_CTRL_REG1 0x20
-#define MEMS_CTRL_REG3 0x22
-#define MEMS_STATUS_REG2 0x27
-#define MEMS_OUT_X_L 0x28
-#define MEMS_OUT_X_H 0x29
-#define MEMS_OUT_Y_L 0x2A
-#define MEMS_OUT_Y_H 0x2B
-#define MEMS_OUT_XY_FULL_READ 0xA8
+#define SENSOR_REFRESH_CYCLE 30
 
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500
+
+#define MESSAGE_SIZE 1024 // bluetooth
 
 
 /**
 * Prototypes
 */
 
-int blue_how_to_communicate(gpointer data);
+int blue_communication(gpointer data);
 
 // start screen
 void start_screen_init(gpointer data);
@@ -68,6 +62,7 @@ void wait_screen_bluetooth(GtkWidget *wid, gpointer data);
 // gopro stream
 void stream_screen_init(gpointer data);
 void stream_screen_visible(GtkWidget *wid, gpointer data);
+int stream_code(gpointer data);
 
 // data visualisation
 void datavis_screen_init(gpointer data);
@@ -110,7 +105,8 @@ typedef struct {
 typedef struct{
 	char addr[19];
 	char name[248];
-} bluetooth_devices;
+	char message[MESSAGE_SIZE];
+} bluetooth_data;
 
 // data visualisation screen
 typedef struct {
@@ -122,11 +118,8 @@ typedef struct {
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
-
+	GtkWidget *video_window;
 	GstElement *playbin;
-	GtkWidget *streams_list;
-	GstState state;
-	gint64 duration;
 } stream_widgets;
 
 // menu
@@ -151,7 +144,7 @@ typedef struct {
 	datavis_widgets datavis;
 	wait_widgets wait;
 	menu_widgets menu;
-	bluetooth_devices *bluetooth; // allocate
+	bluetooth_data *bluetooth; // allocate
 } widgets;
 
 #endif /* GUI_MAIN_H */

@@ -38,6 +38,29 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	}
 }
 
+gpointer transferThread(gpointer data){
+
+	// new thread for uart and bluetooth connection
+	// 1: get data from uart
+	// 2: save data
+	// 3: send data to bluetooth
+	// send data to gui -> polling im callback
+  widgets *a = (widgets *) data;
+
+  if(pc_uart_init()) {
+    return FALSE;
+  }
+
+  g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) pc_uart_receive, NULL);
+//
+//<<<<<<< HEAD
+//	//g_timeout_add();
+//=======
+//>>>>>>> 7f21df19938a1760f58b4c3cd331c2ec0c18bf7f
+  return NULL;
+
+}
+
 /*
  * CSS provider
  * Window properties
@@ -57,7 +80,7 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_window_set_application(GTK_WINDOW(a->window), GTK_APPLICATION(a->app));
 	gtk_window_set_position(GTK_WINDOW(a->window), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW (a->window), "XMCarL");
-	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 500);
+	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 400);
 	gtk_widget_show(a->window);
 
 	a->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -78,16 +101,29 @@ void activate(GtkApplication *app, gpointer data) {
 
 int main(int argc, char ** argv) {
 	int status;
+	GThread* lucasNervt;
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
-	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_devices));
+
+	lucasNervt = g_thread_new("data_transfer", (GThreadFunc) transferThread, (gpointer)a);
+
+
+	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_data));
 
 	a->app = gtk_application_new("org.gtk.gui", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
 	status = g_application_run(G_APPLICATION(a->app), argc, argv);
 
+	g_thread_join (lucasNervt);
+
 	// clean up
+
+	// gopro stream
+	gst_element_set_state(a->stream.playbin, GST_STATE_NULL);
+	gst_object_unref(a->stream.playbin);
+	gtk_main_quit();
+
 	g_object_unref(a->app);
 	//g_free(a->bluetooth);
 	g_free(a);

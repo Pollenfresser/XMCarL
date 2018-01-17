@@ -17,10 +17,10 @@
  *
  *
  * Chrisy modified code by: "BlueZ example code to build an rfcomm client.
-  This code just creates a socket and connects
-  to a remote bluetooth device and sends a string.
-  Programmed by Bastian Ballmann
-  http://www.geektown.de"
+ This code just creates a socket and connects
+ to a remote bluetooth device and sends a string.
+ Programmed by Bastian Ballmann
+ http://www.geektown.de"
  * Status:
  * - able to search for bluetooth devices
  * - able to send data to bluetooth module! - 5 jan
@@ -36,17 +36,16 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 
- #include <netinet/in.h>
- #include <arpa/inet.h>
- #include <sys/types.h>
- #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
- #include <stdlib.h>
+#include <stdlib.h>
 
- #include <bluetooth/bluetooth.h>
- #include <bluetooth/rfcomm.h>
- #include <bluetooth/hci.h>
-
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/rfcomm.h>
+#include <bluetooth/hci.h>
 
 /******************************************************************************
  * Start of user functions
@@ -75,7 +74,8 @@ int blue_search_for_available_devices(gpointer data) {
 	flags = IREQ_CACHE_FLUSH;
 	ii = (inquiry_info*) malloc(MAX_BLUETOOTH_RESPONSES * sizeof(inquiry_info));
 
-	num_rsp = hci_inquiry(dev_id, len, MAX_BLUETOOTH_RESPONSES, NULL, &ii, flags);
+	num_rsp = hci_inquiry(dev_id, len, MAX_BLUETOOTH_RESPONSES, NULL, &ii,
+			flags);
 	if (num_rsp < 0)
 		perror("hci_inquiry");
 
@@ -103,7 +103,7 @@ int blue_search_for_available_devices(gpointer data) {
  * Handling Bluetooth device addresses
  */
 
-void blue_choose_device_to_communicate(){
+void blue_choose_device_to_communicate() {
 
 }
 
@@ -113,69 +113,76 @@ void blue_choose_device_to_communicate(){
  * L2CAP + UDP - never retransmit (logical link control and adaptation protocol)
  */
 
-
-
- /*
-   BlueZ example code to build an rfcomm client.
-   This code just creates a socket and connects
-   to a remote bluetooth device and sends a string.
-   Programmed by Bastian Ballmann
-   http://www.geektown.de
-   Compile with gcc -lbluetooth <executable> <source>
+/*
+ BlueZ example code to build an rfcomm client.
+ This code just creates a socket and connects
+ to a remote bluetooth device and sends a string.
+ Programmed by Bastian Ballmann
+ http://www.geektown.de
+ Compile with gcc -lbluetooth <executable> <source>
  */
 
+void blue_get_own_device_info() {
 
+}
 
- int blue_how_to_communicate(gpointer data)
- {
-		widgets *a = (widgets *) data;
+void blue_bind_and_connect() {
 
-   int sock;
-   struct sockaddr_rc local_addr, remote_addr;
-   struct hci_dev_info device_info;
+}
 
-   // info of own device (laptop)
-   if(hci_devinfo(0, &device_info) < 0)
-     {
-       perror("HCI device info failed");
-       exit(1);
-     }
+void blue_send_data(int sock, gpointer data) {
+	widgets *a = (widgets *) data;
 
-   printf("Local device %s\n", batostr(&device_info.bdaddr));
+	printf("Sending data %s\n", a->bluetooth->message);
+	send(sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
+	printf("Disconnect.\n");
+	close(sock);
 
-   local_addr.rc_family = AF_BLUETOOTH;
-   local_addr.rc_bdaddr = device_info.bdaddr;
-   local_addr.rc_channel = 0;
+}
 
-   remote_addr.rc_family = AF_BLUETOOTH;
-   str2ba(a->bluetooth[a->choosen_blue_dev].addr,&remote_addr.rc_bdaddr);
-   remote_addr.rc_channel = 1;
+int blue_communication(gpointer data) {
+	widgets *a = (widgets *) data;
 
-   if( (sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0)
-     {
-       perror("socket");
-     }
+	int sock;
+	struct sockaddr_rc local_addr, remote_addr;
+	struct hci_dev_info device_info;
 
-   if(bind(sock, (struct sockaddr *)&local_addr, sizeof(local_addr)) < 0)
-     {
-       perror("bind");
-       exit(1);
-     }
+	// info of own device (laptop)
+	if (hci_devinfo(0, &device_info) < 0) {
+		perror("HCI device info failed");
+		exit(1);
+	}
 
-   printf("Remote device %s\n", "00:1B:35:88:0C:81");
+	printf("Local device %s\n", batostr(&device_info.bdaddr));
 
-   if(connect(sock, (struct sockaddr *)&remote_addr, sizeof(remote_addr)) < 0)
-     {
-       perror("connect");
-       exit(1);
-     }
+	local_addr.rc_family = AF_BLUETOOTH;
+	local_addr.rc_bdaddr = device_info.bdaddr;
+	local_addr.rc_channel = 0;
 
-   printf("Connected.\nSending data %s\n","hey");
-   send(sock,"hey",strlen("hey"),0);
-   printf("Disconnect.\n");
-   close(sock);
-   return 0;
- }
+	remote_addr.rc_family = AF_BLUETOOTH;
+	str2ba(a->bluetooth[a->choosen_blue_dev].addr, &remote_addr.rc_bdaddr);
+	remote_addr.rc_channel = 1;
+
+	if ((sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
+		perror("socket"); // go back to start devices
+	}
+
+	if (bind(sock, (struct sockaddr *) &local_addr, sizeof(local_addr)) < 0) {
+		perror("bind"); // go back to start devices
+		exit(1);
+	}
+
+	printf("Remote device %s\n", a->bluetooth[a->choosen_blue_dev].addr);
+
+	if (connect(sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
+			< 0) {
+		perror("connect");
+		exit(1); // go back to start devices
+	}
+
+	blue_send_data(sock, (gpointer)a);
+	return 0;
+}
 
 /*
  * Ports available in L2CAP: 4097 - 32765 (odd) - dynamic ports
@@ -186,108 +193,51 @@ void blue_choose_device_to_communicate(){
  * Bluetooth is to assign a 128-bit number, called the Universally Unique Identifier (UUID), at design time
  *
  */
-/*
- static int create_dev(int ctl, int dev, uint32_t flags, bdaddr_t *bdaddr, int argc, char **argv)
- {
- 	struct rfcomm_dev_req req;
- 	int err;
-
- 	memset(&req, 0, sizeof(req));
- 	req.dev_id = dev;
- 	req.flags = flags;
- 	bacpy(&req.src, bdaddr);
-
- 	if (argc < 2) {
- 		fprintf(stderr, "Missing dev parameter");
- 		return -EINVAL;
- 	}
-
- 	str2ba(argv[1], &req.dst);
-
- 	if (argc > 2)
- 		req.channel = atoi(argv[2]);
- 	else
- 		req.channel = 1;
-
- 	err = ioctl(ctl, RFCOMMCREATEDEV, &req);
- 	if (err == -1) {
- 		err = -errno;
-
- 		if (err == -EOPNOTSUPP)
- 			fprintf(stderr, "RFCOMM TTY support not available\n");
- 		else
- 			perror("Can't create device");
- 	}
-
- 	return err;
- }
-*/
-
-void blue_outgoing_connection(){
-	//         status = write(s, "hello!", 6);
-}
-
-void blue_accept_ingoing_connection(){
-
-}
-
-void blue_send_data(){
-
-    }
-
-void blue_receive_data(){
-
-}
-
-
-
-
 
 /*  this code is working!!!!
-  int sock, d;
-   struct sockaddr_rc laddr, raddr;
-   struct hci_dev_info di;
+ int sock, d;
+ struct sockaddr_rc laddr, raddr;
+ struct hci_dev_info di;
 
-   if(hci_devinfo(0, &di) < 0)
-     {
-       perror("HCI device info failed");
-       exit(1);
-     }
+ if(hci_devinfo(0, &di) < 0)
+ {
+ perror("HCI device info failed");
+ exit(1);
+ }
 
-   printf("Local device %s\n", batostr(&di.bdaddr));
+ printf("Local device %s\n", batostr(&di.bdaddr));
 
-   laddr.rc_family = AF_BLUETOOTH;
-   laddr.rc_bdaddr = di.bdaddr;
-   laddr.rc_channel = 0;
+ laddr.rc_family = AF_BLUETOOTH;
+ laddr.rc_bdaddr = di.bdaddr;
+ laddr.rc_channel = 0;
 
-   raddr.rc_family = AF_BLUETOOTH;
-   str2ba("00:1B:35:88:0C:81",&raddr.rc_bdaddr);
-   raddr.rc_channel = 1;
+ raddr.rc_family = AF_BLUETOOTH;
+ str2ba("00:1B:35:88:0C:81",&raddr.rc_bdaddr);
+ raddr.rc_channel = 1;
 
-   if( (sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0)
-     {
-       perror("socket");
-     }
+ if( (sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0)
+ {
+ perror("socket");
+ }
 
-   if(bind(sock, (struct sockaddr *)&laddr, sizeof(laddr)) < 0)
-     {
-       perror("bind");
-       exit(1);
-     }
+ if(bind(sock, (struct sockaddr *)&laddr, sizeof(laddr)) < 0)
+ {
+ perror("bind");
+ exit(1);
+ }
 
-   printf("Remote device %s\n", "00:1B:35:88:0C:81");
+ printf("Remote device %s\n", "00:1B:35:88:0C:81");
 
-   if(connect(sock, (struct sockaddr *)&raddr, sizeof(raddr)) < 0)
-     {
-       perror("connect");
-       exit(1);
-     }
+ if(connect(sock, (struct sockaddr *)&raddr, sizeof(raddr)) < 0)
+ {
+ perror("connect");
+ exit(1);
+ }
 
-   printf("Connected.\nSending data %s\n","hey");
-   send(sock,"hey",strlen("hey"),0);
-   printf("Disconnect.\n");
-   close(sock);
-   return 0;
+ printf("Connected.\nSending data %s\n","hey");
+ send(sock,"hey",strlen("hey"),0);
+ printf("Disconnect.\n");
+ close(sock);
+ return 0;
  */
-
 
