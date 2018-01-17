@@ -37,7 +37,7 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
 
 static void do_drawing(cairo_t *cr)
 {
-  gint x = 40,i,y = 32.5;
+  gint x = 40,i,y = 32.5,a = 400,b = 325;
 
 
   cairo_set_source_rgb(cr, 255, 255, 255);
@@ -86,6 +86,13 @@ static void do_drawing(cairo_t *cr)
       y = y + 32.5;
     }
   }
+
+  cairo_translate(cr, a, b);
+  cairo_arc(cr, 0, 0, 15, 0, 2*3.1415);
+  cairo_stroke_preserve(cr);
+  cairo_set_source_rgb(cr, 0.5, 0, 0);
+  cairo_fill(cr);
+
 }
 
 void datavis_screen_visible(GtkWidget *wid, gpointer data)
