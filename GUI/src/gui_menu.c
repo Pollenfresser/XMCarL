@@ -107,7 +107,7 @@ void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 	widgets *a = (widgets *) data;
 	GdkPixbuf *pixbuf;
 	GtkWidget *about_dialog;
-	const gchar *authors[] = { "Christina Bornberg", "Lucas Ullrich", NULL };
+	const gchar *authors[] = { "Christina Bornberg", "Lucas Ullrich", "Dominik Jantos", NULL };
 
 	// Image
 	pixbuf = gdk_pixbuf_new_from_file("img/xmcarl.png", NULL);
