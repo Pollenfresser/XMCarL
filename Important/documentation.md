@@ -6,8 +6,14 @@ In all examples so far, we have only supported local files through the “filesr
 
 In order to get the source or sink element supporting a particular URI, use gst_element_make_from_uri (), with the URI type being either GST_URI_SRC for a source element, or GST_URI_SINK for a sink element.
 
+# how to connect gopro to laptop
+* first, we have to install the gopro app on mobile phone to activate wlan
+* mobile phone needs turned on bluetooth
+* connect to laptop with wlan (you cannot be in the internet and connected to gopro)
+* compile with python3 -> https://github.com/KonradIT/GoProStream here is a python file
 
-
+# gstreamer - lernen
+* gst-launch-1.0 videotestsrc ! autovideosink // this command shows an example picture :)
 
 # gstreamer x11
 fedora nutzt Wailand - muss es auf x11 umstellen
