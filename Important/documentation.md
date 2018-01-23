@@ -13,7 +13,11 @@ In order to get the source or sink element supporting a particular URI, use gst_
 * compile with python3 -> https://github.com/KonradIT/GoProStream here is a python file
 
 # gstreamer - lernen
+* i like this tutorial: http://z25.org/static/_rd_/videostreaming_intro_plab/
 * gst-launch-1.0 videotestsrc ! autovideosink // this command shows an example picture :)
+* autovideosink -> to display
+* gst-launch-1.0 udpsrc port=5000 ! \ application/x-rtp,\ encoding-name=H264,payload=96 ! \ rtph264depay ! h264parse ! avdec_h264 ! \ autovideosink
+
 
 # gstreamer x11
 fedora nutzt Wailand - muss es auf x11 umstellen
