@@ -1,8 +1,30 @@
+# GOPRO stream
+
+The URI interface
+
+In all examples so far, we have only supported local files through the “filesrc” element. GStreamer, obviously, supports many more location sources. However, we don't want applications to need to know any particular element implementation details, such as element names for particular network source types and so on. Therefore, there is a URI interface, which can be used to get the source element that supports a particular URI type. There is no strict rule for URI naming, but in general we follow naming conventions that others use, too. For example, assuming you have the correct plugins installed, GStreamer supports “file:///<path>/<file>”, “http://<host>/<path>/<file>”, “mms://<host>/<path>/<file>”, and so on.
+
+In order to get the source or sink element supporting a particular URI, use gst_element_make_from_uri (), with the URI type being either GST_URI_SRC for a source element, or GST_URI_SINK for a sink element.
+
+# how to connect gopro to laptop
+* first, we have to install the gopro app on mobile phone to activate wlan
+* mobile phone needs turned on bluetooth
+* connect to laptop with wlan (you cannot be in the internet and connected to gopro)
+* compile with python3 -> https://github.com/KonradIT/GoProStream here is a python file
+
+# gstreamer - lernen
+* i like this tutorial: http://z25.org/static/_rd_/videostreaming_intro_plab/
+* gst-launch-1.0 videotestsrc ! autovideosink // this command shows an example picture :)
+* autovideosink -> to display
+* gst-launch-1.0 udpsrc port=5000 ! \ application/x-rtp,\ encoding-name=H264,payload=96 ! \ rtph264depay ! h264parse ! avdec_h264 ! \ autovideosink
+
+
+# gstreamer x11
 fedora nutzt Wailand - muss es auf x11 umstellen
 click on the arrow in the top right corner - click on your username -> logout
 at the login screen, there is a settings symbol -> change to xorg and login; x11 will work then
 
-What I did for bluetooth:
+# What I did for bluetooth:
 
 Tutorial: https://people.csail.mit.edu/albert/bluez-intro/c33.html
 I used bluez with c
