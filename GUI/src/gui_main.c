@@ -12,7 +12,7 @@
  *
  *	TODO: reconnect function and if menu is used: wait screen
  *	TODO: you are able to click the connect button more often than twice - this is a big problem
- *
+ *  TODO: close main loop from gstreamer
  */
 
 #include <gui_main.h>
@@ -72,6 +72,8 @@ gpointer transferThread(gpointer data){
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
 
+	gopro_init((gpointer) a);
+
 	a->css_style = GTK_STYLE_PROVIDER(gtk_css_provider_new());
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(a->css_style),
 			"/gui_res/css/style.css");
@@ -120,13 +122,13 @@ int main(int argc, char ** argv) {
 	// clean up
 
 	// gopro stream
-	gst_element_set_state(a->stream.playbin, GST_STATE_NULL);
-	gst_object_unref(a->stream.playbin);
-	gtk_main_quit();
+	stream_screen_clean((gpointer) a);
+	blue_clean((gpointer) a);
 
 	g_object_unref(a->app);
 	//g_free(a->bluetooth);
 	g_free(a);
+
 
 	return status;
 }

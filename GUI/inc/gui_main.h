@@ -17,12 +17,22 @@
 * Included Files
 */
 
+#include <gdk/gdk.h>
+#if defined (GDK_WINDOWING_X11)
+#include <gdk/gdkx.h>
+#elif defined (GDK_WINDOWING_WIN32)
+#include <gdk/gdkwin32.h>
+#elif defined (GDK_WINDOWING_QUARTZ)
+#include <gdk/gdkquartz.h>
+#endif
+
+
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
 
-// XMCarl Header
+// own XMCarl Header
 #include <pc_uart.h>
 #include <pc_bluetooth.h>
 
@@ -30,7 +40,6 @@
 #include <gst/gst.h>
 #include <gst/video/videooverlay.h>
 #include <gdk/gdk.h>
-
 
 /**
 * Defines
@@ -48,25 +57,39 @@
 * Prototypes
 */
 
-int blue_communication(gpointer data);
+// connection via bluetooth from pc to car
+int blue_comm_init(gpointer data);
+void blue_clean(gpointer data);
+
+
+// connection to gopro
+void gopro_init(gpointer data);
+
+// SCREENS
 
 // start screen
 void start_screen_init(gpointer data);
 void start_screen_visible(gpointer data);
 
+// wait screen
 void wait_screen_init(gpointer data);
 void wait_screen_visible(GtkWidget *wid, gpointer data);
 void wait_screen_bluetooth(GtkWidget *wid, gpointer data);
 
-
-// gopro stream
-void stream_screen_init(gpointer data);
+// stream from gopro
+int stream_screen_init(gpointer data);
 void stream_screen_visible(GtkWidget *wid, gpointer data);
-int stream_code(gpointer data);
+void stream_start_stream(gpointer data);
+void stream_screen_clean(gpointer data);
 
 // data visualisation
 void datavis_screen_init(gpointer data);
 void datavis_screen_visible(GtkWidget *wid, gpointer data);
+
+// no matter what button is pressed, we need to get this initialised
+// - bluetooth connection
+// - gopro connection
+void brainfuck_init(gpointer data);
 
 // menu
 void menu_visible (gpointer data);
@@ -137,6 +160,7 @@ typedef struct {
 
 	// Bluetooth
 	int choosen_blue_dev;
+	int sock;
 
 	// Data
 	start_widgets start;

@@ -23,8 +23,8 @@
  http://www.geektown.de"
  * Status:
  * - able to search for bluetooth devices
- * - able to send data to bluetooth module! - 5 jan
- *
+ * - able to send data to bluetooth module! - 5. jan
+ * - should be tested!!! - 24. jan (socket will not be closed after sending)
  *
  */
 
@@ -32,9 +32,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/rfcomm.h>
+
+// TODO : doppelte header
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -53,6 +52,11 @@
 
 // working - the function looks out for available
 // bluetooth devices
+/*
+ * Device adress of bluetooth module on car:
+ * 00:1B:35:88:0C:81
+ * Handling Bluetooth device addresses
+ */
 int blue_search_for_available_devices(gpointer data) {
 	widgets *a = (widgets *) data;
 
@@ -97,53 +101,23 @@ int blue_search_for_available_devices(gpointer data) {
 	return num_rsp;
 }
 
-/*
- * Device adress of bluetooth module on car:
- * 00:1B:35:88:0C:81
- * Handling Bluetooth device addresses
- */
-
-void blue_choose_device_to_communicate() {
-
-}
-
-/*
- * determine which transport protocol to use
- * RFCOMM + TCP or
- * L2CAP + UDP - never retransmit (logical link control and adaptation protocol)
- */
-
-/*
- BlueZ example code to build an rfcomm client.
- This code just creates a socket and connects
- to a remote bluetooth device and sends a string.
- Programmed by Bastian Ballmann
- http://www.geektown.de
- Compile with gcc -lbluetooth <executable> <source>
- */
-
-void blue_get_own_device_info() {
-
-}
-
-void blue_bind_and_connect() {
-
-}
-
-void blue_send_data(int sock, gpointer data) {
+void blue_clean(gpointer data){
 	widgets *a = (widgets *) data;
+	close(a->sock);
+}
 
+// Sends message to the socket from blue_comm_init
+void blue_send_data(gpointer data) {
+	widgets *a = (widgets *) data;
 	printf("Sending data %s\n", a->bluetooth->message);
-	send(sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
-	printf("Disconnect.\n");
-	close(sock);
-
+	send(a->sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
+	// printf("Disconnect.\n");
+	// close(a->sock);
 }
 
-int blue_communication(gpointer data) {
+int blue_comm_init(gpointer data) {
 	widgets *a = (widgets *) data;
 
-	int sock;
 	struct sockaddr_rc local_addr, remote_addr;
 	struct hci_dev_info device_info;
 
@@ -163,81 +137,22 @@ int blue_communication(gpointer data) {
 	str2ba(a->bluetooth[a->choosen_blue_dev].addr, &remote_addr.rc_bdaddr);
 	remote_addr.rc_channel = 1;
 
-	if ((sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
+	if ((a->sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
 		perror("socket"); // go back to start devices
 	}
 
-	if (bind(sock, (struct sockaddr *) &local_addr, sizeof(local_addr)) < 0) {
+	if (bind(a->sock, (struct sockaddr *) &local_addr, sizeof(local_addr)) < 0) {
 		perror("bind"); // go back to start devices
 		exit(1);
 	}
 
 	printf("Remote device %s\n", a->bluetooth[a->choosen_blue_dev].addr);
 
-	if (connect(sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
+	if (connect(a->sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
 			< 0) {
 		perror("connect");
 		exit(1); // go back to start devices
 	}
 
-	blue_send_data(sock, (gpointer)a);
 	return 0;
 }
-
-/*
- * Ports available in L2CAP: 4097 - 32765 (odd) - dynamic ports
- *
- * The host machine operates a server application, called the
- * SDP server, that uses one of the few L2CAP reserved port numbers.
- *
- * Bluetooth is to assign a 128-bit number, called the Universally Unique Identifier (UUID), at design time
- *
- */
-
-/*  this code is working!!!!
- int sock, d;
- struct sockaddr_rc laddr, raddr;
- struct hci_dev_info di;
-
- if(hci_devinfo(0, &di) < 0)
- {
- perror("HCI device info failed");
- exit(1);
- }
-
- printf("Local device %s\n", batostr(&di.bdaddr));
-
- laddr.rc_family = AF_BLUETOOTH;
- laddr.rc_bdaddr = di.bdaddr;
- laddr.rc_channel = 0;
-
- raddr.rc_family = AF_BLUETOOTH;
- str2ba("00:1B:35:88:0C:81",&raddr.rc_bdaddr);
- raddr.rc_channel = 1;
-
- if( (sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0)
- {
- perror("socket");
- }
-
- if(bind(sock, (struct sockaddr *)&laddr, sizeof(laddr)) < 0)
- {
- perror("bind");
- exit(1);
- }
-
- printf("Remote device %s\n", "00:1B:35:88:0C:81");
-
- if(connect(sock, (struct sockaddr *)&raddr, sizeof(raddr)) < 0)
- {
- perror("connect");
- exit(1);
- }
-
- printf("Connected.\nSending data %s\n","hey");
- send(sock,"hey",strlen("hey"),0);
- printf("Disconnect.\n");
- close(sock);
- return 0;
- */
-
