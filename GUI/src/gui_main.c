@@ -71,8 +71,7 @@ gpointer transferThread(gpointer data){
  */
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
-
-	gopro_init((gpointer) a);
+	g_print("activate\n");
 
 	a->css_style = GTK_STYLE_PROVIDER(gtk_css_provider_new());
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(a->css_style),
@@ -99,6 +98,9 @@ void activate(GtkApplication *app, gpointer data) {
 
 	menu_visible ((gpointer) a);
 	start_screen_visible((gpointer) a);
+
+	gopro_init((gpointer) a);
+
 }
 
 int main(int argc, char ** argv) {
