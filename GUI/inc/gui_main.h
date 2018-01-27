@@ -145,6 +145,10 @@ typedef struct {
 	GstElement *playbin;
 } stream_widgets;
 
+typedef struct {
+	int sock;
+} gopro_struct;
+
 // menu
 typedef struct {
 	GtkWidget *menubar;
@@ -165,6 +169,7 @@ typedef struct {
 	// Data
 	start_widgets start;
 	stream_widgets stream;
+	gopro_struct gopro;
 	datavis_widgets datavis;
 	wait_widgets wait;
 	menu_widgets menu;

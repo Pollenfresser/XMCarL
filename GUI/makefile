@@ -13,6 +13,7 @@ CFLAGS  += -lbluetooth
 CFLAGS  += -I$(SRCDIR)
 CFLAGS  += -I$(INCDIR)
 CFLAGS 	+= -std=c99
+CFLAGS  += -std=gnu99 #need for gopro socket
 CFLAGS  += -Wall -g
 OBJS     = $(SRC:.c=.o)
 RESOURCE = gui_res
