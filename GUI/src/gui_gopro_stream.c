@@ -40,14 +40,6 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 
 	g_print("stream_screen_visible2\n");
 
-	// BLUETOOTH - XMC
-	// not working if menu because widget name
-	// printf("%d", a->wait.device_id);
-	//a->choosen_blue_dev = 0;
-	//a->choosen_blue_dev = atoi(gtk_widget_get_name(wid));
-	// printf("Choosen device id: %d", a->choosen_blue_dev);
-	//blue_communication((gpointer) a);
-
 }
 
 // here everything from stream screen should be cleaned up

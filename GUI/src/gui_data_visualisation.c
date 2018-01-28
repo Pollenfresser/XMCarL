@@ -95,6 +95,14 @@ static void do_drawing(cairo_t *cr)
 
 }
 
+gpointer bluetoothThread(gpointer data){
+	widgets *a = (widgets *) data;
+
+	g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) blue_send_data, (gpointer) a);
+
+	return NULL;
+}
+
 void datavis_screen_visible(GtkWidget *wid, gpointer data)
 {
 	widgets *a = (widgets *) data;
@@ -103,6 +111,18 @@ void datavis_screen_visible(GtkWidget *wid, gpointer data)
 	gtk_widget_set_visible(a->start.layout, FALSE);
 	gtk_widget_set_visible(a->wait.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
+
+	// BLUETOOTH - XMC
+	// not working if menu because widget name
+	printf("%d", a->choosen_blue_dev);
+	a->choosen_blue_dev = 0;
+	a->choosen_blue_dev = atoi(gtk_widget_get_name(wid));
+	printf("Choosen device id: %d", a->choosen_blue_dev);
+	blue_comm_init((gpointer) a);
+
+	GThread* gthread_blue;
+	gthread_blue = g_thread_new("bluetooth_data_trans", (GThreadFunc) bluetoothThread, (gpointer)a);
+	g_thread_join (gthread_blue);
 
 }
 

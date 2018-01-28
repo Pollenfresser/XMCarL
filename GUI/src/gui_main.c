@@ -61,6 +61,14 @@ gpointer transferThread(gpointer data){
 
 }
 
+gpointer bluetoothThread(gpointer data){
+	widgets *a = (widgets *) data;
+
+	g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) blue_send_data, (gpointer) a);
+
+	return NULL;
+}
+
 /*
  * CSS provider
  * Window properties
@@ -105,12 +113,12 @@ void activate(GtkApplication *app, gpointer data) {
 
 int main(int argc, char ** argv) {
 	int status;
-	GThread* lucasNervt;
+	GThread* gthread_uart;
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
 
-	lucasNervt = g_thread_new("data_transfer", (GThreadFunc) transferThread, (gpointer)a);
+	gthread_uart = g_thread_new("data_transfer", (GThreadFunc) transferThread, (gpointer)a);
 
 
 	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_data));
@@ -119,7 +127,7 @@ int main(int argc, char ** argv) {
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
 	status = g_application_run(G_APPLICATION(a->app), argc, argv);
 
-	g_thread_join (lucasNervt);
+	g_thread_join (gthread_uart);
 
 	// clean up
 
