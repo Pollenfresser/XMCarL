@@ -52,10 +52,21 @@ for removing rfcomm0; listed here: ls /dev/
 Connected /dev/rfcomm1 to 00:1B:35:88:0C:81 on channel 1
 wuhu, it's working!!!
 
+# MEMS Sensor Pin belegung
+wir sind auf der x2 seite - achtung, außenbeschr = außenports, innenbeschr = innenports
+* GND -> GND
+* Vin -> VDD3.3
+* SCL -> P0_11
+* SDA -> P0_5
+* INT -> P0_3
+USB
+* grünes kabel: tx also geht an rx - p1_4
+* schwarzes kabel: gnd
+* weißes kabel: rx also geht an tx - p1_5
 
+data from mems is from -17.000 to 17000
 
-
-Information about "interruts"
+Information about "interrupts"
 Multi-threading approach
 
 Some time ago I had the same task, and the best way I found to solve it is to use pthreads. Basically, I did next:
