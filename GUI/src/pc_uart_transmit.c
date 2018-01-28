@@ -80,7 +80,10 @@ gboolean pc_uart_receive(gpointer data) {
   do
   {
     received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE-1);
-    //usleep(10000); // update every 0.1 s
+    usleep(100000); // update every 0.1 s
+    if(receive_buff[0] != 'X') {
+      received_bytes = 0;
+    }
   } while (received_bytes == 0);
 
 
