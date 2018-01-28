@@ -1,0 +1,15 @@
+120 MHz
+16 Bit Timer => 65.536
+120 MHz => 120.000.000 Impulse pro Sekunde
+20 ms = (1 / 50) * 120.000.000 = 2.400.000 Impulse in 20 ms
+
+ohne prescaler 2.400.000 / 65.536 verursacht 36 Ueberlaeufe
+
+=> Prescaler 64 => 120.000.000 / 64 = 1.875.000 Impulse pro Sekunde
+1.875.000 / 50 = 37.500 Impulses in 20 ms
+
+37.500 / 20 = 1875 per 1 ms
+
+1875 / 2 = 937 per 0.5 ms
+
+1.5 ms = 1875 + 937 = 2812 Impulses

@@ -124,7 +124,7 @@ int main (void)
 	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_LOW;
 	XMC_GPIO_Init(LED2, &led_config);
 
-	XMC_GPIO_CONFIG_t interrupt_config;
+	XMC_GPIO_CONFIG_t interrupt_config;    // IR1 Pin of the sensor module
 	interrupt_config.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
 	XMC_GPIO_Init(DATAREADY, &interrupt_config);
 
@@ -193,6 +193,7 @@ int main (void)
 		}
 
 	}
+  return 0;
 }
 
 /* EOF */
