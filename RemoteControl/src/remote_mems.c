@@ -74,7 +74,7 @@ uint8_t remote_transmit_data(uint8_t *data)
     printf("UART_X: %d\n", data_x);
     printf("UART_Y: %d\n\n", data_y);
   #endif
-  remote_uart_printf("X: %d\n", data_x);
-  remote_uart_printf("Y: %d\n", data_y);
+  remote_uart_printf("UART_X: %d\n", data_x);
+  remote_uart_printf("UART_Y: %d\n", data_y);
   return 0;
 }
