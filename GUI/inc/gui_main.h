@@ -50,7 +50,7 @@
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500
 
-#define MESSAGE_SIZE 1024 // bluetooth
+#define MESSAGE_SIZE 64 // bluetooth - same as u-controller
 
 
 /**
@@ -60,7 +60,7 @@
 // connection via bluetooth from pc to car
 int blue_comm_init(gpointer data);
 void blue_clean(gpointer data);
-
+gboolean blue_send_data(gpointer data);
 
 // connection to gopro
 void gopro_init(gpointer data);
@@ -94,7 +94,7 @@ void brainfuck_init(gpointer data);
 // menu
 void menu_visible (gpointer data);
 void menu_init(gpointer data);
-void menu_callback_end(GSimpleAction *action, GVariant *parameter,
+void menu_callback_car_connect(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void menu_callback_stream(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
@@ -143,6 +143,8 @@ typedef struct {
 	GtkWidget *label;
 	GtkWidget *video_window;
 	GstElement *playbin;
+	GstElement *source;
+	GstElement *sink;
 } stream_widgets;
 
 typedef struct {

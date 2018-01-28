@@ -40,6 +40,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include <bluetooth/bluetooth.h>
@@ -50,9 +51,9 @@
  * Start of user functions
  *****************************************************************************/
 
-// working - the function looks out for available
-// bluetooth devices
 /*
+ * working - the function looks out for available bluetooth devices
+ *
  * Device adress of bluetooth module on car:
  * 00:1B:35:88:0C:81
  * Handling Bluetooth device addresses
@@ -101,18 +102,21 @@ int blue_search_for_available_devices(gpointer data) {
 	return num_rsp;
 }
 
-void blue_clean(gpointer data){
+void blue_clean(gpointer data) {
 	widgets *a = (widgets *) data;
 	close(a->sock);
 }
 
 // Sends message to the socket from blue_comm_init
-void blue_send_data(gpointer data) {
+gboolean blue_send_data(gpointer data) {
 	widgets *a = (widgets *) data;
+	sprintf(a->bluetooth->message, "%d,%d\n", received.steering, received.throttle); // TODO: received in uart / 2000 !?
+	puts(a->bluetooth->message);
 	printf("Sending data %s\n", a->bluetooth->message);
 	send(a->sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
 	// printf("Disconnect.\n");
 	// close(a->sock);
+	return TRUE;
 }
 
 int blue_comm_init(gpointer data) {
@@ -139,19 +143,21 @@ int blue_comm_init(gpointer data) {
 
 	if ((a->sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
 		perror("socket"); // go back to start devices
+		start_screen_visible((gpointer) a);
 	}
 
-	if (bind(a->sock, (struct sockaddr *) &local_addr, sizeof(local_addr)) < 0) {
+	if (bind(a->sock, (struct sockaddr *) &local_addr, sizeof(local_addr))
+			< 0) {
 		perror("bind"); // go back to start devices
-		exit(1);
+		start_screen_visible((gpointer) a);
 	}
 
 	printf("Remote device %s\n", a->bluetooth[a->choosen_blue_dev].addr);
 
 	if (connect(a->sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
 			< 0) {
-		perror("connect");
-		exit(1); // go back to start devices
+		perror("connect"); // go back to start devices
+		start_screen_visible((gpointer) a);
 	}
 
 	return 0;
