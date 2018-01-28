@@ -50,6 +50,7 @@ extern XMC_CCU4_SLICE_COMPARE_CONFIG_t g_timer_object;
  * Prototypes
  */
 void car_pwm_init(void);
+void car_set_pwm(char *rx_buff);
 
 #endif /* _CAR_PWM_LIB_ */
 

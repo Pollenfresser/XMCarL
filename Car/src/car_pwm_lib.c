@@ -41,3 +41,19 @@ void car_pwm_init(void)
   XMC_CCU4_SLICE_StartTimer(CCU4_SLICE_0);
   XMC_CCU4_SLICE_StartTimer(CCU4_SLICE_1);
 }
+
+
+void car_set_pwm(char *rx_buff)
+{
+  char *buff;
+  long steering = 0;
+  long throttle = 0;
+  char *end
+
+  steering = strtol(rx_buff, &end, 10);
+  rx_buff = end;
+  if(rx_buff == end) {
+    return 1;
+  }
+
+}

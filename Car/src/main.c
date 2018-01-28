@@ -133,6 +133,7 @@ int main (void)
   while(1)
   {
     car_uart_get_string(rx_buff);
+    car_set_pwm(rx_buff);
   }
   return 0;
 
