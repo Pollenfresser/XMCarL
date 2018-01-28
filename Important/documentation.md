@@ -1,3 +1,7 @@
+# UART
+
+sudo usermod -a -G dialout prinzessin
+
 # GOPRO stream
 
 The URI interface
