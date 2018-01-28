@@ -90,8 +90,8 @@ gboolean pc_uart_receive(gpointer data);
 
 
 struct rcv{
-  long x;
-  long y;
+  long steering;
+  long throttle;
 };
 
 struct rcv received;

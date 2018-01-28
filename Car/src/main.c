@@ -97,6 +97,9 @@ void SysTick_Handler (void)
 
 int main (void)
 {
+
+  char rx_buff[RX_BUFFER_SIZE] = {0};
+
   initRetargetSwo();
   XMC_GPIO_CONFIG_t led_config;
   led_config.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL;
@@ -125,9 +128,11 @@ int main (void)
   car_pwm_init();
   #endif
 
+  SysTick_Config(SystemCoreClock / TICKS_PER_SECOND);
+
   while(1)
   {
-
+    car_uart_get_string(rx_buff);
   }
   return 0;
 

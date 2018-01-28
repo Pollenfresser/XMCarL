@@ -437,7 +437,7 @@ uint8_t remote_i2c_to_mems_init(void) {
 	XMC_I2C_CH_Init(XMC_I2C1_CH0, &i2c_cfg);
  80003d0:	490e      	ldr	r1, [pc, #56]	; (800040c <remote_i2c_to_mems_init+0x40>)
  80003d2:	480f      	ldr	r0, [pc, #60]	; (8000410 <remote_i2c_to_mems_init+0x44>)
- 80003d4:	f000 ffec 	bl	80013b0 <XMC_I2C_CH_Init>
+ 80003d4:	f001 f88e 	bl	80014f4 <XMC_I2C_CH_Init>
 	XMC_I2C_CH_SetInputSource(XMC_I2C1_CH0, XMC_I2C_CH_INPUT_SDA,
  80003d8:	2201      	movs	r2, #1
  80003da:	2100      	movs	r1, #0
@@ -457,12 +457,12 @@ uint8_t remote_i2c_to_mems_init(void) {
  80003f2:	4a08      	ldr	r2, [pc, #32]	; (8000414 <remote_i2c_to_mems_init+0x48>)
  80003f4:	210b      	movs	r1, #11
  80003f6:	4808      	ldr	r0, [pc, #32]	; (8000418 <remote_i2c_to_mems_init+0x4c>)
- 80003f8:	f001 f978 	bl	80016ec <XMC_GPIO_Init>
+ 80003f8:	f000 ffb8 	bl	800136c <XMC_GPIO_Init>
 	XMC_GPIO_Init (P0_5, &i2c_sda);
  80003fc:	4a07      	ldr	r2, [pc, #28]	; (800041c <remote_i2c_to_mems_init+0x50>)
  80003fe:	2105      	movs	r1, #5
  8000400:	4805      	ldr	r0, [pc, #20]	; (8000418 <remote_i2c_to_mems_init+0x4c>)
- 8000402:	f001 f973 	bl	80016ec <XMC_GPIO_Init>
+ 8000402:	f000 ffb3 	bl	800136c <XMC_GPIO_Init>
 
 	return 0;
  8000406:	2300      	movs	r3, #0
@@ -493,7 +493,7 @@ uint16_t remote_i2c_write(XMC_USIC_CH_t * const channel, uint8_t data) {
  800042c:	78fb      	ldrb	r3, [r7, #3]
  800042e:	4619      	mov	r1, r3
  8000430:	6878      	ldr	r0, [r7, #4]
- 8000432:	f001 f8cf 	bl	80015d4 <XMC_I2C_CH_MasterTransmit>
+ 8000432:	f001 f971 	bl	8001718 <XMC_I2C_CH_MasterTransmit>
 	if(remote_i2c_wait_for_ack(channel)) {
  8000436:	6878      	ldr	r0, [r7, #4]
  8000438:	f000 f848 	bl	80004cc <remote_i2c_wait_for_ack>
@@ -539,7 +539,7 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
  8000468:	2201      	movs	r2, #1
  800046a:	4619      	mov	r1, r3
  800046c:	6878      	ldr	r0, [r7, #4]
- 800046e:	f001 f857 	bl	8001520 <XMC_I2C_CH_MasterRepeatedStart>
+ 800046e:	f001 f8f9 	bl	8001664 <XMC_I2C_CH_MasterRepeatedStart>
 	if(remote_i2c_wait_for_ack(channel)) {
  8000472:	6878      	ldr	r0, [r7, #4]
  8000474:	f000 f82a 	bl	80004cc <remote_i2c_wait_for_ack>
@@ -555,7 +555,7 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 
 	XMC_I2C_CH_MasterReceiveNack(channel);
  8000484:	6878      	ldr	r0, [r7, #4]
- 8000486:	f001 f8f1 	bl	800166c <XMC_I2C_CH_MasterReceiveNack>
+ 8000486:	f001 f993 	bl	80017b0 <XMC_I2C_CH_MasterReceiveNack>
 
 	while ((XMC_USIC_CH_GetReceiveBufferStatus(channel)
  800048a:	bf00      	nop
@@ -582,7 +582,7 @@ uint16_t remote_i2c_read(XMC_USIC_CH_t * const channel, uint8_t id) {
 
 	recv = XMC_I2C_CH_GetReceivedData(channel);
  80004b2:	6878      	ldr	r0, [r7, #4]
- 80004b4:	f001 f900 	bl	80016b8 <XMC_I2C_CH_GetReceivedData>
+ 80004b4:	f001 f9a2 	bl	80017fc <XMC_I2C_CH_GetReceivedData>
  80004b8:	4603      	mov	r3, r0
  80004ba:	73fb      	strb	r3, [r7, #15]
 
@@ -712,7 +712,7 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
  8000542:	2200      	movs	r2, #0
  8000544:	4619      	mov	r1, r3
  8000546:	68b8      	ldr	r0, [r7, #8]
- 8000548:	f000 ffb6 	bl	80014b8 <XMC_I2C_CH_MasterStart>
+ 8000548:	f001 f858 	bl	80015fc <XMC_I2C_CH_MasterStart>
 	#if DEBUG_ALL
 		printf("\t-I2C started\n");
 	#endif
@@ -734,7 +734,7 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
  800055e:	79bb      	ldrb	r3, [r7, #6]
  8000560:	4619      	mov	r1, r3
  8000562:	68b8      	ldr	r0, [r7, #8]
- 8000564:	f001 f836 	bl	80015d4 <XMC_I2C_CH_MasterTransmit>
+ 8000564:	f001 f8d8 	bl	8001718 <XMC_I2C_CH_MasterTransmit>
 	#if DEBUG_ALL
 		printf("\t-reg_addr transmitted\n");
 	#endif
@@ -779,7 +779,7 @@ uint16_t remote_i2c_write_read(uint8_t id, uint8_t reg_addr, uint8_t i2c_data,
 
 	XMC_I2C_CH_MasterStop(channel);
  800059e:	68b8      	ldr	r0, [r7, #8]
- 80005a0:	f000 fff2 	bl	8001588 <XMC_I2C_CH_MasterStop>
+ 80005a0:	f001 f894 	bl	80016cc <XMC_I2C_CH_MasterStop>
 	#if DEBUG_ALL
 		printf("\t-I2C finished\n");
 	#endif
@@ -823,7 +823,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
  80005cc:	2200      	movs	r2, #0
  80005ce:	4619      	mov	r1, r3
  80005d0:	68b8      	ldr	r0, [r7, #8]
- 80005d2:	f000 ff71 	bl	80014b8 <XMC_I2C_CH_MasterStart>
+ 80005d2:	f001 f813 	bl	80015fc <XMC_I2C_CH_MasterStart>
 	if(remote_i2c_wait_for_ack(channel)) {
  80005d6:	68b8      	ldr	r0, [r7, #8]
  80005d8:	f7ff ff78 	bl	80004cc <remote_i2c_wait_for_ack>
@@ -839,7 +839,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
  80005e6:	79bb      	ldrb	r3, [r7, #6]
  80005e8:	4619      	mov	r1, r3
  80005ea:	68b8      	ldr	r0, [r7, #8]
- 80005ec:	f000 fff2 	bl	80015d4 <XMC_I2C_CH_MasterTransmit>
+ 80005ec:	f001 f894 	bl	8001718 <XMC_I2C_CH_MasterTransmit>
 	if(remote_i2c_wait_for_ack(channel)) {
  80005f0:	68b8      	ldr	r0, [r7, #8]
  80005f2:	f7ff ff6b 	bl	80004cc <remote_i2c_wait_for_ack>
@@ -857,7 +857,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
  8000604:	2201      	movs	r2, #1
  8000606:	4619      	mov	r1, r3
  8000608:	68b8      	ldr	r0, [r7, #8]
- 800060a:	f000 ff89 	bl	8001520 <XMC_I2C_CH_MasterRepeatedStart>
+ 800060a:	f001 f82b 	bl	8001664 <XMC_I2C_CH_MasterRepeatedStart>
 	if(remote_i2c_wait_for_ack(channel)) {
  800060e:	68b8      	ldr	r0, [r7, #8]
  8000610:	f7ff ff5c 	bl	80004cc <remote_i2c_wait_for_ack>
@@ -886,7 +886,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
  8000628:	d803      	bhi.n	8000632 <remote_i2c_read_xy+0x7e>
 			XMC_I2C_CH_MasterReceiveAck(channel);	// is sent as soon as channel is not busy
  800062a:	68b8      	ldr	r0, [r7, #8]
- 800062c:	f000 fff8 	bl	8001620 <XMC_I2C_CH_MasterReceiveAck>
+ 800062c:	f001 f89a 	bl	8001764 <XMC_I2C_CH_MasterReceiveAck>
  8000630:	e002      	b.n	8000638 <remote_i2c_read_xy+0x84>
 			#if DEBUG_ALL
 				printf("Master ACK is sent\n");
@@ -894,7 +894,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
 		} else {
 			XMC_I2C_CH_MasterReceiveNack(channel);
  8000632:	68b8      	ldr	r0, [r7, #8]
- 8000634:	f001 f81a 	bl	800166c <XMC_I2C_CH_MasterReceiveNack>
+ 8000634:	f001 f8bc 	bl	80017b0 <XMC_I2C_CH_MasterReceiveNack>
 		}
 		while ((XMC_USIC_CH_GetReceiveBufferStatus(channel)
  8000638:	bf00      	nop
@@ -925,7 +925,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
  8000662:	683a      	ldr	r2, [r7, #0]
  8000664:	18d4      	adds	r4, r2, r3
  8000666:	68b8      	ldr	r0, [r7, #8]
- 8000668:	f001 f826 	bl	80016b8 <XMC_I2C_CH_GetReceivedData>
+ 8000668:	f001 f8c8 	bl	80017fc <XMC_I2C_CH_GetReceivedData>
  800066c:	4603      	mov	r3, r0
  800066e:	7023      	strb	r3, [r4, #0]
 	}
@@ -947,7 +947,7 @@ uint8_t remote_i2c_read_xy(uint8_t id, uint8_t reg_addr, uint8_t *received) {
 
 	XMC_I2C_CH_MasterStop(channel);
  800067c:	68b8      	ldr	r0, [r7, #8]
- 800067e:	f000 ff83 	bl	8001588 <XMC_I2C_CH_MasterStop>
+ 800067e:	f001 f825 	bl	80016cc <XMC_I2C_CH_MasterStop>
 
 	return 0;
  8000682:	2300      	movs	r3, #0
@@ -1448,7 +1448,7 @@ int main (void)
  8000902:	461a      	mov	r2, r3
  8000904:	2101      	movs	r1, #1
  8000906:	4837      	ldr	r0, [pc, #220]	; (80009e4 <main+0xfc>)
- 8000908:	f000 fef0 	bl	80016ec <XMC_GPIO_Init>
+ 8000908:	f000 fd30 	bl	800136c <XMC_GPIO_Init>
 
 	led_config.output_level = XMC_GPIO_OUTPUT_LEVEL_LOW;
  800090c:	f44f 3380 	mov.w	r3, #65536	; 0x10000
@@ -1458,7 +1458,7 @@ int main (void)
  8000916:	461a      	mov	r2, r3
  8000918:	2100      	movs	r1, #0
  800091a:	4832      	ldr	r0, [pc, #200]	; (80009e4 <main+0xfc>)
- 800091c:	f000 fee6 	bl	80016ec <XMC_GPIO_Init>
+ 800091c:	f000 fd26 	bl	800136c <XMC_GPIO_Init>
 
 	XMC_GPIO_CONFIG_t interrupt_config;    // IR1 Pin of the sensor module
 	interrupt_config.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
@@ -1469,7 +1469,7 @@ int main (void)
  8000926:	461a      	mov	r2, r3
  8000928:	2103      	movs	r1, #3
  800092a:	482f      	ldr	r0, [pc, #188]	; (80009e8 <main+0x100>)
- 800092c:	f000 fede 	bl	80016ec <XMC_GPIO_Init>
+ 800092c:	f000 fd1e 	bl	800136c <XMC_GPIO_Init>
 
 #if DEBUG_ALL
 	printf("Pin Init finished\n");
@@ -1970,12 +1970,12 @@ void remote_uart_to_pc_init(void)
  8000bfe:	4a0b      	ldr	r2, [pc, #44]	; (8000c2c <remote_uart_to_pc_init+0x80>)
  8000c00:	2105      	movs	r1, #5
  8000c02:	480b      	ldr	r0, [pc, #44]	; (8000c30 <remote_uart_to_pc_init+0x84>)
- 8000c04:	f000 fd72 	bl	80016ec <XMC_GPIO_Init>
+ 8000c04:	f000 fbb2 	bl	800136c <XMC_GPIO_Init>
 	XMC_GPIO_Init (UART_RX, &uart_rx);
  8000c08:	4a0a      	ldr	r2, [pc, #40]	; (8000c34 <remote_uart_to_pc_init+0x88>)
  8000c0a:	2104      	movs	r1, #4
  8000c0c:	4808      	ldr	r0, [pc, #32]	; (8000c30 <remote_uart_to_pc_init+0x84>)
- 8000c0e:	f000 fd6d 	bl	80016ec <XMC_GPIO_Init>
+ 8000c0e:	f000 fbad 	bl	800136c <XMC_GPIO_Init>
 
 	/* Configuring priority and enabling NVIC IRQ for the defined service request
 	line number */
@@ -3353,882 +3353,882 @@ __WEAK uint32_t OSCHP_GetFrequency(void)
  8001366:	4770      	bx	lr
  8001368:	00b71b00 	.word	0x00b71b00
 
-0800136c <XMC_USIC_CH_GetTransmitBufferStatus>:
- *
- * \par<b>Related APIs:</b><BR>
- * XMC_USIC_CH_SetDataOutputMode() \n\n\n
- */
-__STATIC_INLINE XMC_USIC_CH_TBUF_STATUS_t XMC_USIC_CH_GetTransmitBufferStatus(XMC_USIC_CH_t *const channel)
-{
- 800136c:	b480      	push	{r7}
- 800136e:	b083      	sub	sp, #12
- 8001370:	af00      	add	r7, sp, #0
- 8001372:	6078      	str	r0, [r7, #4]
-  return (XMC_USIC_CH_TBUF_STATUS_t)(channel->TCSR & USIC_CH_TCSR_TDV_Msk);
- 8001374:	687b      	ldr	r3, [r7, #4]
- 8001376:	6b9b      	ldr	r3, [r3, #56]	; 0x38
- 8001378:	b2db      	uxtb	r3, r3
- 800137a:	f023 037f 	bic.w	r3, r3, #127	; 0x7f
- 800137e:	b2db      	uxtb	r3, r3
-}
- 8001380:	4618      	mov	r0, r3
- 8001382:	370c      	adds	r7, #12
- 8001384:	46bd      	mov	sp, r7
- 8001386:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800138a:	4770      	bx	lr
-
-0800138c <XMC_I2C_CH_ClearStatusFlag>:
- *
- * \par<b>Related APIs:</b><br>
- * XMC_I2C_CH_GetStatusFlag()\n\n
- */
-__STATIC_INLINE void XMC_I2C_CH_ClearStatusFlag(XMC_USIC_CH_t *const channel, uint32_t flag)
-{
- 800138c:	b480      	push	{r7}
- 800138e:	b083      	sub	sp, #12
- 8001390:	af00      	add	r7, sp, #0
- 8001392:	6078      	str	r0, [r7, #4]
- 8001394:	6039      	str	r1, [r7, #0]
-  channel->PSCR |= flag;
- 8001396:	687b      	ldr	r3, [r7, #4]
- 8001398:	6cda      	ldr	r2, [r3, #76]	; 0x4c
- 800139a:	683b      	ldr	r3, [r7, #0]
- 800139c:	431a      	orrs	r2, r3
- 800139e:	687b      	ldr	r3, [r7, #4]
- 80013a0:	64da      	str	r2, [r3, #76]	; 0x4c
-}
- 80013a2:	bf00      	nop
- 80013a4:	370c      	adds	r7, #12
- 80013a6:	46bd      	mov	sp, r7
- 80013a8:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80013ac:	4770      	bx	lr
- 80013ae:	bf00      	nop
-
-080013b0 <XMC_I2C_CH_Init>:
-/*********************************************************************************************************************
- * API IMPLEMENTATION
- *********************************************************************************************************************/
-/* Initializes the USIC channel by setting the data format, slave address, baudrate, transfer buffer */
-void XMC_I2C_CH_Init(XMC_USIC_CH_t *const channel, const XMC_I2C_CH_CONFIG_t *const config)
-{
- 80013b0:	b580      	push	{r7, lr}
- 80013b2:	b082      	sub	sp, #8
- 80013b4:	af00      	add	r7, sp, #0
- 80013b6:	6078      	str	r0, [r7, #4]
- 80013b8:	6039      	str	r1, [r7, #0]
-  XMC_USIC_CH_Enable(channel);
- 80013ba:	6878      	ldr	r0, [r7, #4]
- 80013bc:	f000 fb28 	bl	8001a10 <XMC_USIC_CH_Enable>
-  
-  /* Data format configuration */
-  channel->SCTR = ((uint32_t)TRANSMISSION_MODE << (uint32_t)USIC_CH_SCTR_TRM_Pos) | /* Transmision mode */
- 80013c0:	687b      	ldr	r3, [r7, #4]
- 80013c2:	4a0e      	ldr	r2, [pc, #56]	; (80013fc <XMC_I2C_CH_Init+0x4c>)
- 80013c4:	635a      	str	r2, [r3, #52]	; 0x34
-                  ((uint32_t)WORDLENGTH << (uint32_t)USIC_CH_SCTR_WLE_Pos) | /* 8 data bits */
-                  USIC_CH_SCTR_FLE_Msk |           /* unlimited data flow */
-                  USIC_CH_SCTR_SDIR_Msk |          /* MSB shifted first */
-                  USIC_CH_SCTR_PDL_Msk;            /* Passive Data Level */
-
-  XMC_I2C_CH_SetSlaveAddress(channel, config->address);
- 80013c6:	683b      	ldr	r3, [r7, #0]
- 80013c8:	889b      	ldrh	r3, [r3, #4]
- 80013ca:	4619      	mov	r1, r3
- 80013cc:	6878      	ldr	r0, [r7, #4]
- 80013ce:	f000 f817 	bl	8001400 <XMC_I2C_CH_SetSlaveAddress>
-  (void)XMC_I2C_CH_SetBaudrate(channel, config->baudrate);
- 80013d2:	683b      	ldr	r3, [r7, #0]
- 80013d4:	681b      	ldr	r3, [r3, #0]
- 80013d6:	4619      	mov	r1, r3
- 80013d8:	6878      	ldr	r0, [r7, #4]
- 80013da:	f000 f831 	bl	8001440 <XMC_I2C_CH_SetBaudrate>
-    
-  /* Enable transfer buffer */
-  channel->TCSR = ((uint32_t)SET_TDV << (uint32_t)USIC_CH_TCSR_TDEN_Pos) | USIC_CH_TCSR_TDSSM_Msk;
- 80013de:	687b      	ldr	r3, [r7, #4]
- 80013e0:	f44f 62a0 	mov.w	r2, #1280	; 0x500
- 80013e4:	639a      	str	r2, [r3, #56]	; 0x38
-
-  /* Clear status flags */
-  channel->PSCR = 0xFFFFFFFFU;
- 80013e6:	687b      	ldr	r3, [r7, #4]
- 80013e8:	f04f 32ff 	mov.w	r2, #4294967295
- 80013ec:	64da      	str	r2, [r3, #76]	; 0x4c
-
-  /* Disable parity generation */
-  channel->CCR = 0x0U;
- 80013ee:	687b      	ldr	r3, [r7, #4]
- 80013f0:	2200      	movs	r2, #0
- 80013f2:	641a      	str	r2, [r3, #64]	; 0x40
-}
- 80013f4:	bf00      	nop
- 80013f6:	3708      	adds	r7, #8
- 80013f8:	46bd      	mov	sp, r7
- 80013fa:	bd80      	pop	{r7, pc}
- 80013fc:	073f0303 	.word	0x073f0303
-
-08001400 <XMC_I2C_CH_SetSlaveAddress>:
-/* Sets the slave address */
-void XMC_I2C_CH_SetSlaveAddress(XMC_USIC_CH_t *const channel, const uint16_t address)
-{
- 8001400:	b480      	push	{r7}
- 8001402:	b083      	sub	sp, #12
- 8001404:	af00      	add	r7, sp, #0
- 8001406:	6078      	str	r0, [r7, #4]
- 8001408:	460b      	mov	r3, r1
- 800140a:	807b      	strh	r3, [r7, #2]
-  if ((address & XMC_I2C_10BIT_ADDR_MASK) == XMC_I2C_10BIT_ADDR_GROUP)
- 800140c:	887b      	ldrh	r3, [r7, #2]
- 800140e:	f403 43f8 	and.w	r3, r3, #31744	; 0x7c00
- 8001412:	f5b3 4ff0 	cmp.w	r3, #30720	; 0x7800
- 8001416:	d109      	bne.n	800142c <XMC_I2C_CH_SetSlaveAddress+0x2c>
-  {
-    channel->PCR_IICMode = (address & 0xffU) | ((address << 1) & 0xfe00U);
- 8001418:	887b      	ldrh	r3, [r7, #2]
- 800141a:	b2da      	uxtb	r2, r3
- 800141c:	887b      	ldrh	r3, [r7, #2]
- 800141e:	005b      	lsls	r3, r3, #1
- 8001420:	f403 437e 	and.w	r3, r3, #65024	; 0xfe00
- 8001424:	431a      	orrs	r2, r3
- 8001426:	687b      	ldr	r3, [r7, #4]
- 8001428:	63da      	str	r2, [r3, #60]	; 0x3c
-  }
-  else
-  {
-    channel->PCR_IICMode = ((uint32_t)address) << XMC_I2C_7BIT_ADDR_Pos;
-  }
-}
- 800142a:	e003      	b.n	8001434 <XMC_I2C_CH_SetSlaveAddress+0x34>
-  {
-    channel->PCR_IICMode = (address & 0xffU) | ((address << 1) & 0xfe00U);
-  }
-  else
-  {
-    channel->PCR_IICMode = ((uint32_t)address) << XMC_I2C_7BIT_ADDR_Pos;
- 800142c:	887b      	ldrh	r3, [r7, #2]
- 800142e:	021a      	lsls	r2, r3, #8
- 8001430:	687b      	ldr	r3, [r7, #4]
- 8001432:	63da      	str	r2, [r3, #60]	; 0x3c
-  }
-}
- 8001434:	bf00      	nop
- 8001436:	370c      	adds	r7, #12
- 8001438:	46bd      	mov	sp, r7
- 800143a:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800143e:	4770      	bx	lr
-
-08001440 <XMC_I2C_CH_SetBaudrate>:
-  
-  return (uint16_t)address;
-}
-/* Sets the baudrate and oversampling based on standard speed or fast speed */
-XMC_I2C_CH_STATUS_t XMC_I2C_CH_SetBaudrate(XMC_USIC_CH_t *const channel, uint32_t rate)
-{
- 8001440:	b580      	push	{r7, lr}
- 8001442:	b084      	sub	sp, #16
- 8001444:	af00      	add	r7, sp, #0
- 8001446:	6078      	str	r0, [r7, #4]
- 8001448:	6039      	str	r1, [r7, #0]
-  XMC_I2C_CH_STATUS_t status;
-  
-  status = XMC_I2C_CH_STATUS_ERROR;
- 800144a:	2301      	movs	r3, #1
- 800144c:	73fb      	strb	r3, [r7, #15]
-  
-  if (rate <= (uint32_t)XMC_I2C_CH_MAX_SPEED_STANDARD)
- 800144e:	683b      	ldr	r3, [r7, #0]
- 8001450:	4a17      	ldr	r2, [pc, #92]	; (80014b0 <XMC_I2C_CH_SetBaudrate+0x70>)
- 8001452:	4293      	cmp	r3, r2
- 8001454:	d810      	bhi.n	8001478 <XMC_I2C_CH_SetBaudrate+0x38>
-  {
-		channel->PCR_IICMode &= (uint32_t)~USIC_CH_PCR_IICMode_STIM_Msk;
- 8001456:	687b      	ldr	r3, [r7, #4]
- 8001458:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
- 800145a:	f423 3200 	bic.w	r2, r3, #131072	; 0x20000
- 800145e:	687b      	ldr	r3, [r7, #4]
- 8001460:	63da      	str	r2, [r3, #60]	; 0x3c
-    if (XMC_USIC_CH_SetBaudrate(channel, rate, (uint32_t)XMC_I2C_CH_CLOCK_OVERSAMPLING_STANDARD) == XMC_USIC_CH_STATUS_OK)
- 8001462:	220a      	movs	r2, #10
- 8001464:	6839      	ldr	r1, [r7, #0]
- 8001466:	6878      	ldr	r0, [r7, #4]
- 8001468:	f000 fb20 	bl	8001aac <XMC_USIC_CH_SetBaudrate>
- 800146c:	4603      	mov	r3, r0
- 800146e:	2b00      	cmp	r3, #0
- 8001470:	d119      	bne.n	80014a6 <XMC_I2C_CH_SetBaudrate+0x66>
-    {
-      status = XMC_I2C_CH_STATUS_OK;
- 8001472:	2300      	movs	r3, #0
- 8001474:	73fb      	strb	r3, [r7, #15]
- 8001476:	e016      	b.n	80014a6 <XMC_I2C_CH_SetBaudrate+0x66>
-    }
-  }
-  else if (rate <= (uint32_t)XMC_I2C_CH_MAX_SPEED_FAST)
- 8001478:	683b      	ldr	r3, [r7, #0]
- 800147a:	4a0e      	ldr	r2, [pc, #56]	; (80014b4 <XMC_I2C_CH_SetBaudrate+0x74>)
- 800147c:	4293      	cmp	r3, r2
- 800147e:	d810      	bhi.n	80014a2 <XMC_I2C_CH_SetBaudrate+0x62>
-  {
-    channel->PCR_IICMode |= (uint32_t)USIC_CH_PCR_IICMode_STIM_Msk;
- 8001480:	687b      	ldr	r3, [r7, #4]
- 8001482:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
- 8001484:	f443 3200 	orr.w	r2, r3, #131072	; 0x20000
- 8001488:	687b      	ldr	r3, [r7, #4]
- 800148a:	63da      	str	r2, [r3, #60]	; 0x3c
-    if (XMC_USIC_CH_SetBaudrate(channel, rate, (uint32_t)XMC_I2C_CH_CLOCK_OVERSAMPLING_FAST) == XMC_USIC_CH_STATUS_OK)
- 800148c:	2219      	movs	r2, #25
- 800148e:	6839      	ldr	r1, [r7, #0]
- 8001490:	6878      	ldr	r0, [r7, #4]
- 8001492:	f000 fb0b 	bl	8001aac <XMC_USIC_CH_SetBaudrate>
- 8001496:	4603      	mov	r3, r0
- 8001498:	2b00      	cmp	r3, #0
- 800149a:	d104      	bne.n	80014a6 <XMC_I2C_CH_SetBaudrate+0x66>
-    {
-      status = XMC_I2C_CH_STATUS_OK;
- 800149c:	2300      	movs	r3, #0
- 800149e:	73fb      	strb	r3, [r7, #15]
- 80014a0:	e001      	b.n	80014a6 <XMC_I2C_CH_SetBaudrate+0x66>
-    }
-  }
-  else 
-  {
-    status = XMC_I2C_CH_STATUS_ERROR;
- 80014a2:	2301      	movs	r3, #1
- 80014a4:	73fb      	strb	r3, [r7, #15]
-  }
-  
-  return status;
- 80014a6:	7bfb      	ldrb	r3, [r7, #15]
-}
- 80014a8:	4618      	mov	r0, r3
- 80014aa:	3710      	adds	r7, #16
- 80014ac:	46bd      	mov	sp, r7
- 80014ae:	bd80      	pop	{r7, pc}
- 80014b0:	000186a0 	.word	0x000186a0
- 80014b4:	00061a80 	.word	0x00061a80
-
-080014b8 <XMC_I2C_CH_MasterStart>:
-/* Sends master start condition along with read/write command to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterStart(XMC_USIC_CH_t *const channel, const uint16_t addr, const XMC_I2C_CH_CMD_t command)
-{
- 80014b8:	b580      	push	{r7, lr}
- 80014ba:	b084      	sub	sp, #16
- 80014bc:	af00      	add	r7, sp, #0
- 80014be:	6078      	str	r0, [r7, #4]
- 80014c0:	460b      	mov	r3, r1
- 80014c2:	807b      	strh	r3, [r7, #2]
- 80014c4:	4613      	mov	r3, r2
- 80014c6:	707b      	strb	r3, [r7, #1]
-  uint32_t temp;
-  
-  temp = addr | (uint32_t)XMC_I2C_CH_TDF_MASTER_START;
- 80014c8:	887b      	ldrh	r3, [r7, #2]
- 80014ca:	f443 6380 	orr.w	r3, r3, #1024	; 0x400
- 80014ce:	b29b      	uxth	r3, r3
- 80014d0:	60fb      	str	r3, [r7, #12]
-  if (command == XMC_I2C_CH_CMD_READ)
- 80014d2:	787b      	ldrb	r3, [r7, #1]
- 80014d4:	2b01      	cmp	r3, #1
- 80014d6:	d103      	bne.n	80014e0 <XMC_I2C_CH_MasterStart+0x28>
-  {
-    temp |= 0x1U;
- 80014d8:	68fb      	ldr	r3, [r7, #12]
- 80014da:	f043 0301 	orr.w	r3, r3, #1
- 80014de:	60fb      	str	r3, [r7, #12]
-  }
-
-  /* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 80014e0:	687b      	ldr	r3, [r7, #4]
- 80014e2:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 80014e6:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 80014ea:	2b00      	cmp	r3, #0
- 80014ec:	d110      	bne.n	8001510 <XMC_I2C_CH_MasterStart+0x58>
-  {
-    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 80014ee:	bf00      	nop
- 80014f0:	6878      	ldr	r0, [r7, #4]
- 80014f2:	f7ff ff3b 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 80014f6:	4603      	mov	r3, r0
- 80014f8:	2b80      	cmp	r3, #128	; 0x80
- 80014fa:	d0f9      	beq.n	80014f0 <XMC_I2C_CH_MasterStart+0x38>
-	{
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 80014fc:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 8001500:	6878      	ldr	r0, [r7, #4]
- 8001502:	f7ff ff43 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = temp;
- 8001506:	687b      	ldr	r3, [r7, #4]
- 8001508:	68fa      	ldr	r2, [r7, #12]
- 800150a:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else
-  {
-    channel->IN[0U] = temp;
-  }
-}
- 800150e:	e003      	b.n	8001518 <XMC_I2C_CH_MasterStart+0x60>
-
-    channel->TBUF[0] = temp;
-  }
-  else
-  {
-    channel->IN[0U] = temp;
- 8001510:	687b      	ldr	r3, [r7, #4]
- 8001512:	68fa      	ldr	r2, [r7, #12]
- 8001514:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 8001518:	bf00      	nop
- 800151a:	3710      	adds	r7, #16
- 800151c:	46bd      	mov	sp, r7
- 800151e:	bd80      	pop	{r7, pc}
-
-08001520 <XMC_I2C_CH_MasterRepeatedStart>:
-/* Sends master repeated start condition along with read/write command to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterRepeatedStart(XMC_USIC_CH_t *const channel, const uint16_t addr, const XMC_I2C_CH_CMD_t command)
-{
- 8001520:	b580      	push	{r7, lr}
- 8001522:	b084      	sub	sp, #16
- 8001524:	af00      	add	r7, sp, #0
- 8001526:	6078      	str	r0, [r7, #4]
- 8001528:	460b      	mov	r3, r1
- 800152a:	807b      	strh	r3, [r7, #2]
- 800152c:	4613      	mov	r3, r2
- 800152e:	707b      	strb	r3, [r7, #1]
-  uint32_t tmp;
-  tmp = addr | (uint32_t)XMC_I2C_CH_TDF_MASTER_RESTART;
- 8001530:	887b      	ldrh	r3, [r7, #2]
- 8001532:	f443 63a0 	orr.w	r3, r3, #1280	; 0x500
- 8001536:	b29b      	uxth	r3, r3
- 8001538:	60fb      	str	r3, [r7, #12]
-  if (command == XMC_I2C_CH_CMD_READ)
- 800153a:	787b      	ldrb	r3, [r7, #1]
- 800153c:	2b01      	cmp	r3, #1
- 800153e:	d103      	bne.n	8001548 <XMC_I2C_CH_MasterRepeatedStart+0x28>
-  {
-    tmp |= 0x1U;
- 8001540:	68fb      	ldr	r3, [r7, #12]
- 8001542:	f043 0301 	orr.w	r3, r3, #1
- 8001546:	60fb      	str	r3, [r7, #12]
-  }
-
-  /* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 8001548:	687b      	ldr	r3, [r7, #4]
- 800154a:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 800154e:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 8001552:	2b00      	cmp	r3, #0
- 8001554:	d110      	bne.n	8001578 <XMC_I2C_CH_MasterRepeatedStart+0x58>
-  {  
-    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 8001556:	bf00      	nop
- 8001558:	6878      	ldr	r0, [r7, #4]
- 800155a:	f7ff ff07 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 800155e:	4603      	mov	r3, r0
- 8001560:	2b80      	cmp	r3, #128	; 0x80
- 8001562:	d0f9      	beq.n	8001558 <XMC_I2C_CH_MasterRepeatedStart+0x38>
-	{
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 8001564:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 8001568:	6878      	ldr	r0, [r7, #4]
- 800156a:	f7ff ff0f 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = tmp;
- 800156e:	687b      	ldr	r3, [r7, #4]
- 8001570:	68fa      	ldr	r2, [r7, #12]
- 8001572:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else
-  {
-    channel->IN[0U] = tmp;
-  }
-}
- 8001576:	e003      	b.n	8001580 <XMC_I2C_CH_MasterRepeatedStart+0x60>
-
-    channel->TBUF[0] = tmp;
-  }
-  else
-  {
-    channel->IN[0U] = tmp;
- 8001578:	687b      	ldr	r3, [r7, #4]
- 800157a:	68fa      	ldr	r2, [r7, #12]
- 800157c:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 8001580:	bf00      	nop
- 8001582:	3710      	adds	r7, #16
- 8001584:	46bd      	mov	sp, r7
- 8001586:	bd80      	pop	{r7, pc}
-
-08001588 <XMC_I2C_CH_MasterStop>:
-
-/* Sends master stop command to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterStop(XMC_USIC_CH_t *const channel)
-{
- 8001588:	b580      	push	{r7, lr}
- 800158a:	b082      	sub	sp, #8
- 800158c:	af00      	add	r7, sp, #0
- 800158e:	6078      	str	r0, [r7, #4]
-  /* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 8001590:	687b      	ldr	r3, [r7, #4]
- 8001592:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 8001596:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 800159a:	2b00      	cmp	r3, #0
- 800159c:	d111      	bne.n	80015c2 <XMC_I2C_CH_MasterStop+0x3a>
-  {
-    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 800159e:	bf00      	nop
- 80015a0:	6878      	ldr	r0, [r7, #4]
- 80015a2:	f7ff fee3 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 80015a6:	4603      	mov	r3, r0
- 80015a8:	2b80      	cmp	r3, #128	; 0x80
- 80015aa:	d0f9      	beq.n	80015a0 <XMC_I2C_CH_MasterStop+0x18>
-    {
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 80015ac:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 80015b0:	6878      	ldr	r0, [r7, #4]
- 80015b2:	f7ff feeb 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
- 80015b6:	687b      	ldr	r3, [r7, #4]
- 80015b8:	f44f 62c0 	mov.w	r2, #1536	; 0x600
- 80015bc:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else
-  {
-    channel->IN[0U] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
-  }
-}
- 80015c0:	e004      	b.n	80015cc <XMC_I2C_CH_MasterStop+0x44>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
-  }
-  else
-  {
-    channel->IN[0U] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
- 80015c2:	687b      	ldr	r3, [r7, #4]
- 80015c4:	f44f 62c0 	mov.w	r2, #1536	; 0x600
- 80015c8:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 80015cc:	bf00      	nop
- 80015ce:	3708      	adds	r7, #8
- 80015d0:	46bd      	mov	sp, r7
- 80015d2:	bd80      	pop	{r7, pc}
-
-080015d4 <XMC_I2C_CH_MasterTransmit>:
-
-/* Sends master send command along with data to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterTransmit(XMC_USIC_CH_t *const channel, const uint8_t data)
-{
- 80015d4:	b580      	push	{r7, lr}
- 80015d6:	b082      	sub	sp, #8
- 80015d8:	af00      	add	r7, sp, #0
- 80015da:	6078      	str	r0, [r7, #4]
- 80015dc:	460b      	mov	r3, r1
- 80015de:	70fb      	strb	r3, [r7, #3]
-  /* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 80015e0:	687b      	ldr	r3, [r7, #4]
- 80015e2:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 80015e6:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 80015ea:	2b00      	cmp	r3, #0
- 80015ec:	d110      	bne.n	8001610 <XMC_I2C_CH_MasterTransmit+0x3c>
-  {    
-    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 80015ee:	bf00      	nop
- 80015f0:	6878      	ldr	r0, [r7, #4]
- 80015f2:	f7ff febb 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 80015f6:	4603      	mov	r3, r0
- 80015f8:	2b80      	cmp	r3, #128	; 0x80
- 80015fa:	d0f9      	beq.n	80015f0 <XMC_I2C_CH_MasterTransmit+0x1c>
-	{
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 80015fc:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 8001600:	6878      	ldr	r0, [r7, #4]
- 8001602:	f7ff fec3 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
- 8001606:	78fa      	ldrb	r2, [r7, #3]
- 8001608:	687b      	ldr	r3, [r7, #4]
- 800160a:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
-  }
-}
- 800160e:	e003      	b.n	8001618 <XMC_I2C_CH_MasterTransmit+0x44>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
-  }
-  else
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
- 8001610:	78fa      	ldrb	r2, [r7, #3]
- 8001612:	687b      	ldr	r3, [r7, #4]
- 8001614:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 8001618:	bf00      	nop
- 800161a:	3708      	adds	r7, #8
- 800161c:	46bd      	mov	sp, r7
- 800161e:	bd80      	pop	{r7, pc}
-
-08001620 <XMC_I2C_CH_MasterReceiveAck>:
-  }
-}
-
-/* Sends master receive ack command to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterReceiveAck(XMC_USIC_CH_t *const channel)
-{
- 8001620:	b580      	push	{r7, lr}
- 8001622:	b082      	sub	sp, #8
- 8001624:	af00      	add	r7, sp, #0
- 8001626:	6078      	str	r0, [r7, #4]
-/* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 8001628:	687b      	ldr	r3, [r7, #4]
- 800162a:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 800162e:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 8001632:	2b00      	cmp	r3, #0
- 8001634:	d111      	bne.n	800165a <XMC_I2C_CH_MasterReceiveAck+0x3a>
-  {    
-    while(XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 8001636:	bf00      	nop
- 8001638:	6878      	ldr	r0, [r7, #4]
- 800163a:	f7ff fe97 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 800163e:	4603      	mov	r3, r0
- 8001640:	2b80      	cmp	r3, #128	; 0x80
- 8001642:	d0f9      	beq.n	8001638 <XMC_I2C_CH_MasterReceiveAck+0x18>
-	{
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 8001644:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 8001648:	6878      	ldr	r0, [r7, #4]
- 800164a:	f7ff fe9f 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
- 800164e:	687b      	ldr	r3, [r7, #4]
- 8001650:	f44f 7200 	mov.w	r2, #512	; 0x200
- 8001654:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
-  }
-}
- 8001658:	e004      	b.n	8001664 <XMC_I2C_CH_MasterReceiveAck+0x44>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
-  }
-  else
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
- 800165a:	687b      	ldr	r3, [r7, #4]
- 800165c:	f44f 7200 	mov.w	r2, #512	; 0x200
- 8001660:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 8001664:	bf00      	nop
- 8001666:	3708      	adds	r7, #8
- 8001668:	46bd      	mov	sp, r7
- 800166a:	bd80      	pop	{r7, pc}
-
-0800166c <XMC_I2C_CH_MasterReceiveNack>:
-
-/* Sends master receive nack command to IN/TBUF register based on FIFO/non-FIFO modes. */
-void XMC_I2C_CH_MasterReceiveNack(XMC_USIC_CH_t *const channel)
-{
- 800166c:	b580      	push	{r7, lr}
- 800166e:	b082      	sub	sp, #8
- 8001670:	af00      	add	r7, sp, #0
- 8001672:	6078      	str	r0, [r7, #4]
-  /* Check FIFO size */
-  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
- 8001674:	687b      	ldr	r3, [r7, #4]
- 8001676:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
- 800167a:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 800167e:	2b00      	cmp	r3, #0
- 8001680:	d111      	bne.n	80016a6 <XMC_I2C_CH_MasterReceiveNack+0x3a>
-  {    
-    while(XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
- 8001682:	bf00      	nop
- 8001684:	6878      	ldr	r0, [r7, #4]
- 8001686:	f7ff fe71 	bl	800136c <XMC_USIC_CH_GetTransmitBufferStatus>
- 800168a:	4603      	mov	r3, r0
- 800168c:	2b80      	cmp	r3, #128	; 0x80
- 800168e:	d0f9      	beq.n	8001684 <XMC_I2C_CH_MasterReceiveNack+0x18>
-	{
-      /* check TDV, wait until TBUF is ready */
-    }
-
-    /* clear PSR_TBIF */
-    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
- 8001690:	f44f 5100 	mov.w	r1, #8192	; 0x2000
- 8001694:	6878      	ldr	r0, [r7, #4]
- 8001696:	f7ff fe79 	bl	800138c <XMC_I2C_CH_ClearStatusFlag>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
- 800169a:	687b      	ldr	r3, [r7, #4]
- 800169c:	f44f 7240 	mov.w	r2, #768	; 0x300
- 80016a0:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
-  }
-  else 
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
-  }
-}
- 80016a4:	e004      	b.n	80016b0 <XMC_I2C_CH_MasterReceiveNack+0x44>
-
-    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
-  }
-  else 
-  {
-    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
- 80016a6:	687b      	ldr	r3, [r7, #4]
- 80016a8:	f44f 7240 	mov.w	r2, #768	; 0x300
- 80016ac:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
-  }
-}
- 80016b0:	bf00      	nop
- 80016b2:	3708      	adds	r7, #8
- 80016b4:	46bd      	mov	sp, r7
- 80016b6:	bd80      	pop	{r7, pc}
-
-080016b8 <XMC_I2C_CH_GetReceivedData>:
-
-/* Reads the data from RBUF if FIFO size is 0 otherwise from OUTR. */
-uint8_t XMC_I2C_CH_GetReceivedData(const XMC_USIC_CH_t *const channel)
-{
- 80016b8:	b480      	push	{r7}
- 80016ba:	b085      	sub	sp, #20
- 80016bc:	af00      	add	r7, sp, #0
- 80016be:	6078      	str	r0, [r7, #4]
-  uint8_t retval;
-
-  /* Check FIFO size */
-  if ((channel->RBCTR & USIC_CH_RBCTR_SIZE_Msk) == 0U)
- 80016c0:	687b      	ldr	r3, [r7, #4]
- 80016c2:	f8d3 310c 	ldr.w	r3, [r3, #268]	; 0x10c
- 80016c6:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
- 80016ca:	2b00      	cmp	r3, #0
- 80016cc:	d103      	bne.n	80016d6 <XMC_I2C_CH_GetReceivedData+0x1e>
-  {
-    retval = (uint8_t)channel->RBUF;
- 80016ce:	687b      	ldr	r3, [r7, #4]
- 80016d0:	6d5b      	ldr	r3, [r3, #84]	; 0x54
- 80016d2:	73fb      	strb	r3, [r7, #15]
- 80016d4:	e003      	b.n	80016de <XMC_I2C_CH_GetReceivedData+0x26>
-  }
-  else
-  {
-    retval = (uint8_t)channel->OUTR;
- 80016d6:	687b      	ldr	r3, [r7, #4]
- 80016d8:	f8d3 311c 	ldr.w	r3, [r3, #284]	; 0x11c
- 80016dc:	73fb      	strb	r3, [r7, #15]
-  }
-
-  return retval;
- 80016de:	7bfb      	ldrb	r3, [r7, #15]
-}
- 80016e0:	4618      	mov	r0, r3
- 80016e2:	3714      	adds	r7, #20
- 80016e4:	46bd      	mov	sp, r7
- 80016e6:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80016ea:	4770      	bx	lr
-
-080016ec <XMC_GPIO_Init>:
+0800136c <XMC_GPIO_Init>:
 /*******************************************************************************
  * API IMPLEMENTATION
  *******************************************************************************/
 
 void XMC_GPIO_Init(XMC_GPIO_PORT_t *const port, const uint8_t pin, const XMC_GPIO_CONFIG_t *const config)
 {
- 80016ec:	b480      	push	{r7}
- 80016ee:	b085      	sub	sp, #20
- 80016f0:	af00      	add	r7, sp, #0
- 80016f2:	60f8      	str	r0, [r7, #12]
- 80016f4:	460b      	mov	r3, r1
- 80016f6:	607a      	str	r2, [r7, #4]
- 80016f8:	72fb      	strb	r3, [r7, #11]
+ 800136c:	b480      	push	{r7}
+ 800136e:	b085      	sub	sp, #20
+ 8001370:	af00      	add	r7, sp, #0
+ 8001372:	60f8      	str	r0, [r7, #12]
+ 8001374:	460b      	mov	r3, r1
+ 8001376:	607a      	str	r2, [r7, #4]
+ 8001378:	72fb      	strb	r3, [r7, #11]
   XMC_ASSERT("XMC_GPIO_Init: Invalid port", XMC_GPIO_CHECK_PORT(port));
   XMC_ASSERT("XMC_GPIO_Init: Invalid mode", XMC_GPIO_IsModeValid(config->mode));
  
   /* Switch to input */
   port->IOCR[pin >> 2U] &= (uint32_t)~(PORT_IOCR_PC_Msk << (PORT_IOCR_PC_Size * (pin & 0x3U)));
- 80016fa:	7afb      	ldrb	r3, [r7, #11]
- 80016fc:	089b      	lsrs	r3, r3, #2
- 80016fe:	b2db      	uxtb	r3, r3
- 8001700:	4618      	mov	r0, r3
- 8001702:	7afb      	ldrb	r3, [r7, #11]
- 8001704:	089b      	lsrs	r3, r3, #2
- 8001706:	b2db      	uxtb	r3, r3
- 8001708:	461a      	mov	r2, r3
- 800170a:	68fb      	ldr	r3, [r7, #12]
- 800170c:	3204      	adds	r2, #4
- 800170e:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
- 8001712:	7afb      	ldrb	r3, [r7, #11]
- 8001714:	f003 0303 	and.w	r3, r3, #3
- 8001718:	00db      	lsls	r3, r3, #3
- 800171a:	21f8      	movs	r1, #248	; 0xf8
- 800171c:	fa01 f303 	lsl.w	r3, r1, r3
- 8001720:	43db      	mvns	r3, r3
- 8001722:	ea02 0103 	and.w	r1, r2, r3
- 8001726:	68fb      	ldr	r3, [r7, #12]
- 8001728:	1d02      	adds	r2, r0, #4
- 800172a:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 800137a:	7afb      	ldrb	r3, [r7, #11]
+ 800137c:	089b      	lsrs	r3, r3, #2
+ 800137e:	b2db      	uxtb	r3, r3
+ 8001380:	4618      	mov	r0, r3
+ 8001382:	7afb      	ldrb	r3, [r7, #11]
+ 8001384:	089b      	lsrs	r3, r3, #2
+ 8001386:	b2db      	uxtb	r3, r3
+ 8001388:	461a      	mov	r2, r3
+ 800138a:	68fb      	ldr	r3, [r7, #12]
+ 800138c:	3204      	adds	r2, #4
+ 800138e:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
+ 8001392:	7afb      	ldrb	r3, [r7, #11]
+ 8001394:	f003 0303 	and.w	r3, r3, #3
+ 8001398:	00db      	lsls	r3, r3, #3
+ 800139a:	21f8      	movs	r1, #248	; 0xf8
+ 800139c:	fa01 f303 	lsl.w	r3, r1, r3
+ 80013a0:	43db      	mvns	r3, r3
+ 80013a2:	ea02 0103 	and.w	r1, r2, r3
+ 80013a6:	68fb      	ldr	r3, [r7, #12]
+ 80013a8:	1d02      	adds	r2, r0, #4
+ 80013aa:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 
   /* HW port control is disabled */
   port->HWSEL &= ~(uint32_t)((uint32_t)PORT_HWSEL_Msk << ((uint32_t)pin << 1U));
- 800172e:	68fb      	ldr	r3, [r7, #12]
- 8001730:	6f5a      	ldr	r2, [r3, #116]	; 0x74
- 8001732:	7afb      	ldrb	r3, [r7, #11]
- 8001734:	005b      	lsls	r3, r3, #1
- 8001736:	2103      	movs	r1, #3
- 8001738:	fa01 f303 	lsl.w	r3, r1, r3
- 800173c:	43db      	mvns	r3, r3
- 800173e:	401a      	ands	r2, r3
- 8001740:	68fb      	ldr	r3, [r7, #12]
- 8001742:	675a      	str	r2, [r3, #116]	; 0x74
+ 80013ae:	68fb      	ldr	r3, [r7, #12]
+ 80013b0:	6f5a      	ldr	r2, [r3, #116]	; 0x74
+ 80013b2:	7afb      	ldrb	r3, [r7, #11]
+ 80013b4:	005b      	lsls	r3, r3, #1
+ 80013b6:	2103      	movs	r1, #3
+ 80013b8:	fa01 f303 	lsl.w	r3, r1, r3
+ 80013bc:	43db      	mvns	r3, r3
+ 80013be:	401a      	ands	r2, r3
+ 80013c0:	68fb      	ldr	r3, [r7, #12]
+ 80013c2:	675a      	str	r2, [r3, #116]	; 0x74
 
 
   /* Enable digital input */
   if (XMC_GPIO_CHECK_ANALOG_PORT(port))
- 8001744:	68fb      	ldr	r3, [r7, #12]
- 8001746:	4a38      	ldr	r2, [pc, #224]	; (8001828 <XMC_GPIO_Init+0x13c>)
- 8001748:	4293      	cmp	r3, r2
- 800174a:	d003      	beq.n	8001754 <XMC_GPIO_Init+0x68>
- 800174c:	68fb      	ldr	r3, [r7, #12]
- 800174e:	4a37      	ldr	r2, [pc, #220]	; (800182c <XMC_GPIO_Init+0x140>)
- 8001750:	4293      	cmp	r3, r2
- 8001752:	d10a      	bne.n	800176a <XMC_GPIO_Init+0x7e>
+ 80013c4:	68fb      	ldr	r3, [r7, #12]
+ 80013c6:	4a38      	ldr	r2, [pc, #224]	; (80014a8 <XMC_GPIO_Init+0x13c>)
+ 80013c8:	4293      	cmp	r3, r2
+ 80013ca:	d003      	beq.n	80013d4 <XMC_GPIO_Init+0x68>
+ 80013cc:	68fb      	ldr	r3, [r7, #12]
+ 80013ce:	4a37      	ldr	r2, [pc, #220]	; (80014ac <XMC_GPIO_Init+0x140>)
+ 80013d0:	4293      	cmp	r3, r2
+ 80013d2:	d10a      	bne.n	80013ea <XMC_GPIO_Init+0x7e>
   {
     port->PDISC &= ~(uint32_t)((uint32_t)0x1U << pin);
- 8001754:	68fb      	ldr	r3, [r7, #12]
- 8001756:	6e1a      	ldr	r2, [r3, #96]	; 0x60
- 8001758:	7afb      	ldrb	r3, [r7, #11]
- 800175a:	2101      	movs	r1, #1
- 800175c:	fa01 f303 	lsl.w	r3, r1, r3
- 8001760:	43db      	mvns	r3, r3
- 8001762:	401a      	ands	r2, r3
- 8001764:	68fb      	ldr	r3, [r7, #12]
- 8001766:	661a      	str	r2, [r3, #96]	; 0x60
- 8001768:	e03c      	b.n	80017e4 <XMC_GPIO_Init+0xf8>
+ 80013d4:	68fb      	ldr	r3, [r7, #12]
+ 80013d6:	6e1a      	ldr	r2, [r3, #96]	; 0x60
+ 80013d8:	7afb      	ldrb	r3, [r7, #11]
+ 80013da:	2101      	movs	r1, #1
+ 80013dc:	fa01 f303 	lsl.w	r3, r1, r3
+ 80013e0:	43db      	mvns	r3, r3
+ 80013e2:	401a      	ands	r2, r3
+ 80013e4:	68fb      	ldr	r3, [r7, #12]
+ 80013e6:	661a      	str	r2, [r3, #96]	; 0x60
+ 80013e8:	e03c      	b.n	8001464 <XMC_GPIO_Init+0xf8>
   }
   else
   {
     /* Set output level */
     port->OMR = (uint32_t)config->output_level << pin;
- 800176a:	687b      	ldr	r3, [r7, #4]
- 800176c:	685a      	ldr	r2, [r3, #4]
- 800176e:	7afb      	ldrb	r3, [r7, #11]
- 8001770:	409a      	lsls	r2, r3
- 8001772:	68fb      	ldr	r3, [r7, #12]
- 8001774:	605a      	str	r2, [r3, #4]
+ 80013ea:	687b      	ldr	r3, [r7, #4]
+ 80013ec:	685a      	ldr	r2, [r3, #4]
+ 80013ee:	7afb      	ldrb	r3, [r7, #11]
+ 80013f0:	409a      	lsls	r2, r3
+ 80013f2:	68fb      	ldr	r3, [r7, #12]
+ 80013f4:	605a      	str	r2, [r3, #4]
 
     /* Set output driver strength */
     port->PDR[pin >> 3U] &= (uint32_t)~(PORT_PDR_Msk << ((uint32_t)PORT_PDR_Size * ((uint32_t)pin & 0x7U)));
- 8001776:	7afb      	ldrb	r3, [r7, #11]
- 8001778:	08db      	lsrs	r3, r3, #3
- 800177a:	b2db      	uxtb	r3, r3
- 800177c:	4618      	mov	r0, r3
- 800177e:	7afb      	ldrb	r3, [r7, #11]
- 8001780:	08db      	lsrs	r3, r3, #3
- 8001782:	b2db      	uxtb	r3, r3
- 8001784:	461a      	mov	r2, r3
- 8001786:	68fb      	ldr	r3, [r7, #12]
- 8001788:	3210      	adds	r2, #16
- 800178a:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
- 800178e:	7afb      	ldrb	r3, [r7, #11]
- 8001790:	f003 0307 	and.w	r3, r3, #7
- 8001794:	009b      	lsls	r3, r3, #2
- 8001796:	2107      	movs	r1, #7
- 8001798:	fa01 f303 	lsl.w	r3, r1, r3
- 800179c:	43db      	mvns	r3, r3
- 800179e:	ea02 0103 	and.w	r1, r2, r3
- 80017a2:	68fb      	ldr	r3, [r7, #12]
- 80017a4:	f100 0210 	add.w	r2, r0, #16
- 80017a8:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 80013f6:	7afb      	ldrb	r3, [r7, #11]
+ 80013f8:	08db      	lsrs	r3, r3, #3
+ 80013fa:	b2db      	uxtb	r3, r3
+ 80013fc:	4618      	mov	r0, r3
+ 80013fe:	7afb      	ldrb	r3, [r7, #11]
+ 8001400:	08db      	lsrs	r3, r3, #3
+ 8001402:	b2db      	uxtb	r3, r3
+ 8001404:	461a      	mov	r2, r3
+ 8001406:	68fb      	ldr	r3, [r7, #12]
+ 8001408:	3210      	adds	r2, #16
+ 800140a:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
+ 800140e:	7afb      	ldrb	r3, [r7, #11]
+ 8001410:	f003 0307 	and.w	r3, r3, #7
+ 8001414:	009b      	lsls	r3, r3, #2
+ 8001416:	2107      	movs	r1, #7
+ 8001418:	fa01 f303 	lsl.w	r3, r1, r3
+ 800141c:	43db      	mvns	r3, r3
+ 800141e:	ea02 0103 	and.w	r1, r2, r3
+ 8001422:	68fb      	ldr	r3, [r7, #12]
+ 8001424:	f100 0210 	add.w	r2, r0, #16
+ 8001428:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
     port->PDR[pin >> 3U] |= (uint32_t)config->output_strength << ((uint32_t)PORT_PDR_Size * ((uint32_t)pin & 0x7U));
- 80017ac:	7afb      	ldrb	r3, [r7, #11]
- 80017ae:	08db      	lsrs	r3, r3, #3
- 80017b0:	b2db      	uxtb	r3, r3
- 80017b2:	4618      	mov	r0, r3
- 80017b4:	7afb      	ldrb	r3, [r7, #11]
- 80017b6:	08db      	lsrs	r3, r3, #3
- 80017b8:	b2db      	uxtb	r3, r3
- 80017ba:	461a      	mov	r2, r3
- 80017bc:	68fb      	ldr	r3, [r7, #12]
- 80017be:	3210      	adds	r2, #16
- 80017c0:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
- 80017c4:	687b      	ldr	r3, [r7, #4]
- 80017c6:	7a1b      	ldrb	r3, [r3, #8]
- 80017c8:	4619      	mov	r1, r3
- 80017ca:	7afb      	ldrb	r3, [r7, #11]
- 80017cc:	f003 0307 	and.w	r3, r3, #7
- 80017d0:	009b      	lsls	r3, r3, #2
- 80017d2:	fa01 f303 	lsl.w	r3, r1, r3
- 80017d6:	ea42 0103 	orr.w	r1, r2, r3
- 80017da:	68fb      	ldr	r3, [r7, #12]
- 80017dc:	f100 0210 	add.w	r2, r0, #16
- 80017e0:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 800142c:	7afb      	ldrb	r3, [r7, #11]
+ 800142e:	08db      	lsrs	r3, r3, #3
+ 8001430:	b2db      	uxtb	r3, r3
+ 8001432:	4618      	mov	r0, r3
+ 8001434:	7afb      	ldrb	r3, [r7, #11]
+ 8001436:	08db      	lsrs	r3, r3, #3
+ 8001438:	b2db      	uxtb	r3, r3
+ 800143a:	461a      	mov	r2, r3
+ 800143c:	68fb      	ldr	r3, [r7, #12]
+ 800143e:	3210      	adds	r2, #16
+ 8001440:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
+ 8001444:	687b      	ldr	r3, [r7, #4]
+ 8001446:	7a1b      	ldrb	r3, [r3, #8]
+ 8001448:	4619      	mov	r1, r3
+ 800144a:	7afb      	ldrb	r3, [r7, #11]
+ 800144c:	f003 0307 	and.w	r3, r3, #7
+ 8001450:	009b      	lsls	r3, r3, #2
+ 8001452:	fa01 f303 	lsl.w	r3, r1, r3
+ 8001456:	ea42 0103 	orr.w	r1, r2, r3
+ 800145a:	68fb      	ldr	r3, [r7, #12]
+ 800145c:	f100 0210 	add.w	r2, r0, #16
+ 8001460:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
   }
 
   /* Set mode */
   port->IOCR[pin >> 2U] |= (uint32_t)config->mode << ((uint32_t)PORT_IOCR_PC_Size * ((uint32_t)pin & 0x3U));
- 80017e4:	7afb      	ldrb	r3, [r7, #11]
- 80017e6:	089b      	lsrs	r3, r3, #2
- 80017e8:	b2db      	uxtb	r3, r3
- 80017ea:	4618      	mov	r0, r3
- 80017ec:	7afb      	ldrb	r3, [r7, #11]
- 80017ee:	089b      	lsrs	r3, r3, #2
- 80017f0:	b2db      	uxtb	r3, r3
- 80017f2:	461a      	mov	r2, r3
- 80017f4:	68fb      	ldr	r3, [r7, #12]
- 80017f6:	3204      	adds	r2, #4
- 80017f8:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
- 80017fc:	687b      	ldr	r3, [r7, #4]
- 80017fe:	781b      	ldrb	r3, [r3, #0]
- 8001800:	4619      	mov	r1, r3
- 8001802:	7afb      	ldrb	r3, [r7, #11]
- 8001804:	f003 0303 	and.w	r3, r3, #3
- 8001808:	00db      	lsls	r3, r3, #3
- 800180a:	fa01 f303 	lsl.w	r3, r1, r3
- 800180e:	ea42 0103 	orr.w	r1, r2, r3
- 8001812:	68fb      	ldr	r3, [r7, #12]
- 8001814:	1d02      	adds	r2, r0, #4
- 8001816:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
+ 8001464:	7afb      	ldrb	r3, [r7, #11]
+ 8001466:	089b      	lsrs	r3, r3, #2
+ 8001468:	b2db      	uxtb	r3, r3
+ 800146a:	4618      	mov	r0, r3
+ 800146c:	7afb      	ldrb	r3, [r7, #11]
+ 800146e:	089b      	lsrs	r3, r3, #2
+ 8001470:	b2db      	uxtb	r3, r3
+ 8001472:	461a      	mov	r2, r3
+ 8001474:	68fb      	ldr	r3, [r7, #12]
+ 8001476:	3204      	adds	r2, #4
+ 8001478:	f853 2022 	ldr.w	r2, [r3, r2, lsl #2]
+ 800147c:	687b      	ldr	r3, [r7, #4]
+ 800147e:	781b      	ldrb	r3, [r3, #0]
+ 8001480:	4619      	mov	r1, r3
+ 8001482:	7afb      	ldrb	r3, [r7, #11]
+ 8001484:	f003 0303 	and.w	r3, r3, #3
+ 8001488:	00db      	lsls	r3, r3, #3
+ 800148a:	fa01 f303 	lsl.w	r3, r1, r3
+ 800148e:	ea42 0103 	orr.w	r1, r2, r3
+ 8001492:	68fb      	ldr	r3, [r7, #12]
+ 8001494:	1d02      	adds	r2, r0, #4
+ 8001496:	f843 1022 	str.w	r1, [r3, r2, lsl #2]
 }
- 800181a:	bf00      	nop
- 800181c:	3714      	adds	r7, #20
- 800181e:	46bd      	mov	sp, r7
- 8001820:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8001824:	4770      	bx	lr
- 8001826:	bf00      	nop
- 8001828:	48028e00 	.word	0x48028e00
- 800182c:	48028f00 	.word	0x48028f00
+ 800149a:	bf00      	nop
+ 800149c:	3714      	adds	r7, #20
+ 800149e:	46bd      	mov	sp, r7
+ 80014a0:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80014a4:	4770      	bx	lr
+ 80014a6:	bf00      	nop
+ 80014a8:	48028e00 	.word	0x48028e00
+ 80014ac:	48028f00 	.word	0x48028f00
+
+080014b0 <XMC_USIC_CH_GetTransmitBufferStatus>:
+ *
+ * \par<b>Related APIs:</b><BR>
+ * XMC_USIC_CH_SetDataOutputMode() \n\n\n
+ */
+__STATIC_INLINE XMC_USIC_CH_TBUF_STATUS_t XMC_USIC_CH_GetTransmitBufferStatus(XMC_USIC_CH_t *const channel)
+{
+ 80014b0:	b480      	push	{r7}
+ 80014b2:	b083      	sub	sp, #12
+ 80014b4:	af00      	add	r7, sp, #0
+ 80014b6:	6078      	str	r0, [r7, #4]
+  return (XMC_USIC_CH_TBUF_STATUS_t)(channel->TCSR & USIC_CH_TCSR_TDV_Msk);
+ 80014b8:	687b      	ldr	r3, [r7, #4]
+ 80014ba:	6b9b      	ldr	r3, [r3, #56]	; 0x38
+ 80014bc:	b2db      	uxtb	r3, r3
+ 80014be:	f023 037f 	bic.w	r3, r3, #127	; 0x7f
+ 80014c2:	b2db      	uxtb	r3, r3
+}
+ 80014c4:	4618      	mov	r0, r3
+ 80014c6:	370c      	adds	r7, #12
+ 80014c8:	46bd      	mov	sp, r7
+ 80014ca:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80014ce:	4770      	bx	lr
+
+080014d0 <XMC_I2C_CH_ClearStatusFlag>:
+ *
+ * \par<b>Related APIs:</b><br>
+ * XMC_I2C_CH_GetStatusFlag()\n\n
+ */
+__STATIC_INLINE void XMC_I2C_CH_ClearStatusFlag(XMC_USIC_CH_t *const channel, uint32_t flag)
+{
+ 80014d0:	b480      	push	{r7}
+ 80014d2:	b083      	sub	sp, #12
+ 80014d4:	af00      	add	r7, sp, #0
+ 80014d6:	6078      	str	r0, [r7, #4]
+ 80014d8:	6039      	str	r1, [r7, #0]
+  channel->PSCR |= flag;
+ 80014da:	687b      	ldr	r3, [r7, #4]
+ 80014dc:	6cda      	ldr	r2, [r3, #76]	; 0x4c
+ 80014de:	683b      	ldr	r3, [r7, #0]
+ 80014e0:	431a      	orrs	r2, r3
+ 80014e2:	687b      	ldr	r3, [r7, #4]
+ 80014e4:	64da      	str	r2, [r3, #76]	; 0x4c
+}
+ 80014e6:	bf00      	nop
+ 80014e8:	370c      	adds	r7, #12
+ 80014ea:	46bd      	mov	sp, r7
+ 80014ec:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 80014f0:	4770      	bx	lr
+ 80014f2:	bf00      	nop
+
+080014f4 <XMC_I2C_CH_Init>:
+/*********************************************************************************************************************
+ * API IMPLEMENTATION
+ *********************************************************************************************************************/
+/* Initializes the USIC channel by setting the data format, slave address, baudrate, transfer buffer */
+void XMC_I2C_CH_Init(XMC_USIC_CH_t *const channel, const XMC_I2C_CH_CONFIG_t *const config)
+{
+ 80014f4:	b580      	push	{r7, lr}
+ 80014f6:	b082      	sub	sp, #8
+ 80014f8:	af00      	add	r7, sp, #0
+ 80014fa:	6078      	str	r0, [r7, #4]
+ 80014fc:	6039      	str	r1, [r7, #0]
+  XMC_USIC_CH_Enable(channel);
+ 80014fe:	6878      	ldr	r0, [r7, #4]
+ 8001500:	f000 fa86 	bl	8001a10 <XMC_USIC_CH_Enable>
+  
+  /* Data format configuration */
+  channel->SCTR = ((uint32_t)TRANSMISSION_MODE << (uint32_t)USIC_CH_SCTR_TRM_Pos) | /* Transmision mode */
+ 8001504:	687b      	ldr	r3, [r7, #4]
+ 8001506:	4a0e      	ldr	r2, [pc, #56]	; (8001540 <XMC_I2C_CH_Init+0x4c>)
+ 8001508:	635a      	str	r2, [r3, #52]	; 0x34
+                  ((uint32_t)WORDLENGTH << (uint32_t)USIC_CH_SCTR_WLE_Pos) | /* 8 data bits */
+                  USIC_CH_SCTR_FLE_Msk |           /* unlimited data flow */
+                  USIC_CH_SCTR_SDIR_Msk |          /* MSB shifted first */
+                  USIC_CH_SCTR_PDL_Msk;            /* Passive Data Level */
+
+  XMC_I2C_CH_SetSlaveAddress(channel, config->address);
+ 800150a:	683b      	ldr	r3, [r7, #0]
+ 800150c:	889b      	ldrh	r3, [r3, #4]
+ 800150e:	4619      	mov	r1, r3
+ 8001510:	6878      	ldr	r0, [r7, #4]
+ 8001512:	f000 f817 	bl	8001544 <XMC_I2C_CH_SetSlaveAddress>
+  (void)XMC_I2C_CH_SetBaudrate(channel, config->baudrate);
+ 8001516:	683b      	ldr	r3, [r7, #0]
+ 8001518:	681b      	ldr	r3, [r3, #0]
+ 800151a:	4619      	mov	r1, r3
+ 800151c:	6878      	ldr	r0, [r7, #4]
+ 800151e:	f000 f831 	bl	8001584 <XMC_I2C_CH_SetBaudrate>
+    
+  /* Enable transfer buffer */
+  channel->TCSR = ((uint32_t)SET_TDV << (uint32_t)USIC_CH_TCSR_TDEN_Pos) | USIC_CH_TCSR_TDSSM_Msk;
+ 8001522:	687b      	ldr	r3, [r7, #4]
+ 8001524:	f44f 62a0 	mov.w	r2, #1280	; 0x500
+ 8001528:	639a      	str	r2, [r3, #56]	; 0x38
+
+  /* Clear status flags */
+  channel->PSCR = 0xFFFFFFFFU;
+ 800152a:	687b      	ldr	r3, [r7, #4]
+ 800152c:	f04f 32ff 	mov.w	r2, #4294967295
+ 8001530:	64da      	str	r2, [r3, #76]	; 0x4c
+
+  /* Disable parity generation */
+  channel->CCR = 0x0U;
+ 8001532:	687b      	ldr	r3, [r7, #4]
+ 8001534:	2200      	movs	r2, #0
+ 8001536:	641a      	str	r2, [r3, #64]	; 0x40
+}
+ 8001538:	bf00      	nop
+ 800153a:	3708      	adds	r7, #8
+ 800153c:	46bd      	mov	sp, r7
+ 800153e:	bd80      	pop	{r7, pc}
+ 8001540:	073f0303 	.word	0x073f0303
+
+08001544 <XMC_I2C_CH_SetSlaveAddress>:
+/* Sets the slave address */
+void XMC_I2C_CH_SetSlaveAddress(XMC_USIC_CH_t *const channel, const uint16_t address)
+{
+ 8001544:	b480      	push	{r7}
+ 8001546:	b083      	sub	sp, #12
+ 8001548:	af00      	add	r7, sp, #0
+ 800154a:	6078      	str	r0, [r7, #4]
+ 800154c:	460b      	mov	r3, r1
+ 800154e:	807b      	strh	r3, [r7, #2]
+  if ((address & XMC_I2C_10BIT_ADDR_MASK) == XMC_I2C_10BIT_ADDR_GROUP)
+ 8001550:	887b      	ldrh	r3, [r7, #2]
+ 8001552:	f403 43f8 	and.w	r3, r3, #31744	; 0x7c00
+ 8001556:	f5b3 4ff0 	cmp.w	r3, #30720	; 0x7800
+ 800155a:	d109      	bne.n	8001570 <XMC_I2C_CH_SetSlaveAddress+0x2c>
+  {
+    channel->PCR_IICMode = (address & 0xffU) | ((address << 1) & 0xfe00U);
+ 800155c:	887b      	ldrh	r3, [r7, #2]
+ 800155e:	b2da      	uxtb	r2, r3
+ 8001560:	887b      	ldrh	r3, [r7, #2]
+ 8001562:	005b      	lsls	r3, r3, #1
+ 8001564:	f403 437e 	and.w	r3, r3, #65024	; 0xfe00
+ 8001568:	431a      	orrs	r2, r3
+ 800156a:	687b      	ldr	r3, [r7, #4]
+ 800156c:	63da      	str	r2, [r3, #60]	; 0x3c
+  }
+  else
+  {
+    channel->PCR_IICMode = ((uint32_t)address) << XMC_I2C_7BIT_ADDR_Pos;
+  }
+}
+ 800156e:	e003      	b.n	8001578 <XMC_I2C_CH_SetSlaveAddress+0x34>
+  {
+    channel->PCR_IICMode = (address & 0xffU) | ((address << 1) & 0xfe00U);
+  }
+  else
+  {
+    channel->PCR_IICMode = ((uint32_t)address) << XMC_I2C_7BIT_ADDR_Pos;
+ 8001570:	887b      	ldrh	r3, [r7, #2]
+ 8001572:	021a      	lsls	r2, r3, #8
+ 8001574:	687b      	ldr	r3, [r7, #4]
+ 8001576:	63da      	str	r2, [r3, #60]	; 0x3c
+  }
+}
+ 8001578:	bf00      	nop
+ 800157a:	370c      	adds	r7, #12
+ 800157c:	46bd      	mov	sp, r7
+ 800157e:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8001582:	4770      	bx	lr
+
+08001584 <XMC_I2C_CH_SetBaudrate>:
+  
+  return (uint16_t)address;
+}
+/* Sets the baudrate and oversampling based on standard speed or fast speed */
+XMC_I2C_CH_STATUS_t XMC_I2C_CH_SetBaudrate(XMC_USIC_CH_t *const channel, uint32_t rate)
+{
+ 8001584:	b580      	push	{r7, lr}
+ 8001586:	b084      	sub	sp, #16
+ 8001588:	af00      	add	r7, sp, #0
+ 800158a:	6078      	str	r0, [r7, #4]
+ 800158c:	6039      	str	r1, [r7, #0]
+  XMC_I2C_CH_STATUS_t status;
+  
+  status = XMC_I2C_CH_STATUS_ERROR;
+ 800158e:	2301      	movs	r3, #1
+ 8001590:	73fb      	strb	r3, [r7, #15]
+  
+  if (rate <= (uint32_t)XMC_I2C_CH_MAX_SPEED_STANDARD)
+ 8001592:	683b      	ldr	r3, [r7, #0]
+ 8001594:	4a17      	ldr	r2, [pc, #92]	; (80015f4 <XMC_I2C_CH_SetBaudrate+0x70>)
+ 8001596:	4293      	cmp	r3, r2
+ 8001598:	d810      	bhi.n	80015bc <XMC_I2C_CH_SetBaudrate+0x38>
+  {
+		channel->PCR_IICMode &= (uint32_t)~USIC_CH_PCR_IICMode_STIM_Msk;
+ 800159a:	687b      	ldr	r3, [r7, #4]
+ 800159c:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+ 800159e:	f423 3200 	bic.w	r2, r3, #131072	; 0x20000
+ 80015a2:	687b      	ldr	r3, [r7, #4]
+ 80015a4:	63da      	str	r2, [r3, #60]	; 0x3c
+    if (XMC_USIC_CH_SetBaudrate(channel, rate, (uint32_t)XMC_I2C_CH_CLOCK_OVERSAMPLING_STANDARD) == XMC_USIC_CH_STATUS_OK)
+ 80015a6:	220a      	movs	r2, #10
+ 80015a8:	6839      	ldr	r1, [r7, #0]
+ 80015aa:	6878      	ldr	r0, [r7, #4]
+ 80015ac:	f000 fa7e 	bl	8001aac <XMC_USIC_CH_SetBaudrate>
+ 80015b0:	4603      	mov	r3, r0
+ 80015b2:	2b00      	cmp	r3, #0
+ 80015b4:	d119      	bne.n	80015ea <XMC_I2C_CH_SetBaudrate+0x66>
+    {
+      status = XMC_I2C_CH_STATUS_OK;
+ 80015b6:	2300      	movs	r3, #0
+ 80015b8:	73fb      	strb	r3, [r7, #15]
+ 80015ba:	e016      	b.n	80015ea <XMC_I2C_CH_SetBaudrate+0x66>
+    }
+  }
+  else if (rate <= (uint32_t)XMC_I2C_CH_MAX_SPEED_FAST)
+ 80015bc:	683b      	ldr	r3, [r7, #0]
+ 80015be:	4a0e      	ldr	r2, [pc, #56]	; (80015f8 <XMC_I2C_CH_SetBaudrate+0x74>)
+ 80015c0:	4293      	cmp	r3, r2
+ 80015c2:	d810      	bhi.n	80015e6 <XMC_I2C_CH_SetBaudrate+0x62>
+  {
+    channel->PCR_IICMode |= (uint32_t)USIC_CH_PCR_IICMode_STIM_Msk;
+ 80015c4:	687b      	ldr	r3, [r7, #4]
+ 80015c6:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+ 80015c8:	f443 3200 	orr.w	r2, r3, #131072	; 0x20000
+ 80015cc:	687b      	ldr	r3, [r7, #4]
+ 80015ce:	63da      	str	r2, [r3, #60]	; 0x3c
+    if (XMC_USIC_CH_SetBaudrate(channel, rate, (uint32_t)XMC_I2C_CH_CLOCK_OVERSAMPLING_FAST) == XMC_USIC_CH_STATUS_OK)
+ 80015d0:	2219      	movs	r2, #25
+ 80015d2:	6839      	ldr	r1, [r7, #0]
+ 80015d4:	6878      	ldr	r0, [r7, #4]
+ 80015d6:	f000 fa69 	bl	8001aac <XMC_USIC_CH_SetBaudrate>
+ 80015da:	4603      	mov	r3, r0
+ 80015dc:	2b00      	cmp	r3, #0
+ 80015de:	d104      	bne.n	80015ea <XMC_I2C_CH_SetBaudrate+0x66>
+    {
+      status = XMC_I2C_CH_STATUS_OK;
+ 80015e0:	2300      	movs	r3, #0
+ 80015e2:	73fb      	strb	r3, [r7, #15]
+ 80015e4:	e001      	b.n	80015ea <XMC_I2C_CH_SetBaudrate+0x66>
+    }
+  }
+  else 
+  {
+    status = XMC_I2C_CH_STATUS_ERROR;
+ 80015e6:	2301      	movs	r3, #1
+ 80015e8:	73fb      	strb	r3, [r7, #15]
+  }
+  
+  return status;
+ 80015ea:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 80015ec:	4618      	mov	r0, r3
+ 80015ee:	3710      	adds	r7, #16
+ 80015f0:	46bd      	mov	sp, r7
+ 80015f2:	bd80      	pop	{r7, pc}
+ 80015f4:	000186a0 	.word	0x000186a0
+ 80015f8:	00061a80 	.word	0x00061a80
+
+080015fc <XMC_I2C_CH_MasterStart>:
+/* Sends master start condition along with read/write command to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterStart(XMC_USIC_CH_t *const channel, const uint16_t addr, const XMC_I2C_CH_CMD_t command)
+{
+ 80015fc:	b580      	push	{r7, lr}
+ 80015fe:	b084      	sub	sp, #16
+ 8001600:	af00      	add	r7, sp, #0
+ 8001602:	6078      	str	r0, [r7, #4]
+ 8001604:	460b      	mov	r3, r1
+ 8001606:	807b      	strh	r3, [r7, #2]
+ 8001608:	4613      	mov	r3, r2
+ 800160a:	707b      	strb	r3, [r7, #1]
+  uint32_t temp;
+  
+  temp = addr | (uint32_t)XMC_I2C_CH_TDF_MASTER_START;
+ 800160c:	887b      	ldrh	r3, [r7, #2]
+ 800160e:	f443 6380 	orr.w	r3, r3, #1024	; 0x400
+ 8001612:	b29b      	uxth	r3, r3
+ 8001614:	60fb      	str	r3, [r7, #12]
+  if (command == XMC_I2C_CH_CMD_READ)
+ 8001616:	787b      	ldrb	r3, [r7, #1]
+ 8001618:	2b01      	cmp	r3, #1
+ 800161a:	d103      	bne.n	8001624 <XMC_I2C_CH_MasterStart+0x28>
+  {
+    temp |= 0x1U;
+ 800161c:	68fb      	ldr	r3, [r7, #12]
+ 800161e:	f043 0301 	orr.w	r3, r3, #1
+ 8001622:	60fb      	str	r3, [r7, #12]
+  }
+
+  /* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 8001624:	687b      	ldr	r3, [r7, #4]
+ 8001626:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 800162a:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 800162e:	2b00      	cmp	r3, #0
+ 8001630:	d110      	bne.n	8001654 <XMC_I2C_CH_MasterStart+0x58>
+  {
+    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 8001632:	bf00      	nop
+ 8001634:	6878      	ldr	r0, [r7, #4]
+ 8001636:	f7ff ff3b 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 800163a:	4603      	mov	r3, r0
+ 800163c:	2b80      	cmp	r3, #128	; 0x80
+ 800163e:	d0f9      	beq.n	8001634 <XMC_I2C_CH_MasterStart+0x38>
+	{
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 8001640:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 8001644:	6878      	ldr	r0, [r7, #4]
+ 8001646:	f7ff ff43 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = temp;
+ 800164a:	687b      	ldr	r3, [r7, #4]
+ 800164c:	68fa      	ldr	r2, [r7, #12]
+ 800164e:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else
+  {
+    channel->IN[0U] = temp;
+  }
+}
+ 8001652:	e003      	b.n	800165c <XMC_I2C_CH_MasterStart+0x60>
+
+    channel->TBUF[0] = temp;
+  }
+  else
+  {
+    channel->IN[0U] = temp;
+ 8001654:	687b      	ldr	r3, [r7, #4]
+ 8001656:	68fa      	ldr	r2, [r7, #12]
+ 8001658:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 800165c:	bf00      	nop
+ 800165e:	3710      	adds	r7, #16
+ 8001660:	46bd      	mov	sp, r7
+ 8001662:	bd80      	pop	{r7, pc}
+
+08001664 <XMC_I2C_CH_MasterRepeatedStart>:
+/* Sends master repeated start condition along with read/write command to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterRepeatedStart(XMC_USIC_CH_t *const channel, const uint16_t addr, const XMC_I2C_CH_CMD_t command)
+{
+ 8001664:	b580      	push	{r7, lr}
+ 8001666:	b084      	sub	sp, #16
+ 8001668:	af00      	add	r7, sp, #0
+ 800166a:	6078      	str	r0, [r7, #4]
+ 800166c:	460b      	mov	r3, r1
+ 800166e:	807b      	strh	r3, [r7, #2]
+ 8001670:	4613      	mov	r3, r2
+ 8001672:	707b      	strb	r3, [r7, #1]
+  uint32_t tmp;
+  tmp = addr | (uint32_t)XMC_I2C_CH_TDF_MASTER_RESTART;
+ 8001674:	887b      	ldrh	r3, [r7, #2]
+ 8001676:	f443 63a0 	orr.w	r3, r3, #1280	; 0x500
+ 800167a:	b29b      	uxth	r3, r3
+ 800167c:	60fb      	str	r3, [r7, #12]
+  if (command == XMC_I2C_CH_CMD_READ)
+ 800167e:	787b      	ldrb	r3, [r7, #1]
+ 8001680:	2b01      	cmp	r3, #1
+ 8001682:	d103      	bne.n	800168c <XMC_I2C_CH_MasterRepeatedStart+0x28>
+  {
+    tmp |= 0x1U;
+ 8001684:	68fb      	ldr	r3, [r7, #12]
+ 8001686:	f043 0301 	orr.w	r3, r3, #1
+ 800168a:	60fb      	str	r3, [r7, #12]
+  }
+
+  /* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 800168c:	687b      	ldr	r3, [r7, #4]
+ 800168e:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 8001692:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 8001696:	2b00      	cmp	r3, #0
+ 8001698:	d110      	bne.n	80016bc <XMC_I2C_CH_MasterRepeatedStart+0x58>
+  {  
+    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 800169a:	bf00      	nop
+ 800169c:	6878      	ldr	r0, [r7, #4]
+ 800169e:	f7ff ff07 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 80016a2:	4603      	mov	r3, r0
+ 80016a4:	2b80      	cmp	r3, #128	; 0x80
+ 80016a6:	d0f9      	beq.n	800169c <XMC_I2C_CH_MasterRepeatedStart+0x38>
+	{
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 80016a8:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 80016ac:	6878      	ldr	r0, [r7, #4]
+ 80016ae:	f7ff ff0f 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = tmp;
+ 80016b2:	687b      	ldr	r3, [r7, #4]
+ 80016b4:	68fa      	ldr	r2, [r7, #12]
+ 80016b6:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else
+  {
+    channel->IN[0U] = tmp;
+  }
+}
+ 80016ba:	e003      	b.n	80016c4 <XMC_I2C_CH_MasterRepeatedStart+0x60>
+
+    channel->TBUF[0] = tmp;
+  }
+  else
+  {
+    channel->IN[0U] = tmp;
+ 80016bc:	687b      	ldr	r3, [r7, #4]
+ 80016be:	68fa      	ldr	r2, [r7, #12]
+ 80016c0:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 80016c4:	bf00      	nop
+ 80016c6:	3710      	adds	r7, #16
+ 80016c8:	46bd      	mov	sp, r7
+ 80016ca:	bd80      	pop	{r7, pc}
+
+080016cc <XMC_I2C_CH_MasterStop>:
+
+/* Sends master stop command to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterStop(XMC_USIC_CH_t *const channel)
+{
+ 80016cc:	b580      	push	{r7, lr}
+ 80016ce:	b082      	sub	sp, #8
+ 80016d0:	af00      	add	r7, sp, #0
+ 80016d2:	6078      	str	r0, [r7, #4]
+  /* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 80016d4:	687b      	ldr	r3, [r7, #4]
+ 80016d6:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 80016da:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 80016de:	2b00      	cmp	r3, #0
+ 80016e0:	d111      	bne.n	8001706 <XMC_I2C_CH_MasterStop+0x3a>
+  {
+    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 80016e2:	bf00      	nop
+ 80016e4:	6878      	ldr	r0, [r7, #4]
+ 80016e6:	f7ff fee3 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 80016ea:	4603      	mov	r3, r0
+ 80016ec:	2b80      	cmp	r3, #128	; 0x80
+ 80016ee:	d0f9      	beq.n	80016e4 <XMC_I2C_CH_MasterStop+0x18>
+    {
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 80016f0:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 80016f4:	6878      	ldr	r0, [r7, #4]
+ 80016f6:	f7ff feeb 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
+ 80016fa:	687b      	ldr	r3, [r7, #4]
+ 80016fc:	f44f 62c0 	mov.w	r2, #1536	; 0x600
+ 8001700:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else
+  {
+    channel->IN[0U] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
+  }
+}
+ 8001704:	e004      	b.n	8001710 <XMC_I2C_CH_MasterStop+0x44>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
+  }
+  else
+  {
+    channel->IN[0U] = (uint32_t)XMC_I2C_CH_TDF_MASTER_STOP;
+ 8001706:	687b      	ldr	r3, [r7, #4]
+ 8001708:	f44f 62c0 	mov.w	r2, #1536	; 0x600
+ 800170c:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 8001710:	bf00      	nop
+ 8001712:	3708      	adds	r7, #8
+ 8001714:	46bd      	mov	sp, r7
+ 8001716:	bd80      	pop	{r7, pc}
+
+08001718 <XMC_I2C_CH_MasterTransmit>:
+
+/* Sends master send command along with data to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterTransmit(XMC_USIC_CH_t *const channel, const uint8_t data)
+{
+ 8001718:	b580      	push	{r7, lr}
+ 800171a:	b082      	sub	sp, #8
+ 800171c:	af00      	add	r7, sp, #0
+ 800171e:	6078      	str	r0, [r7, #4]
+ 8001720:	460b      	mov	r3, r1
+ 8001722:	70fb      	strb	r3, [r7, #3]
+  /* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 8001724:	687b      	ldr	r3, [r7, #4]
+ 8001726:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 800172a:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 800172e:	2b00      	cmp	r3, #0
+ 8001730:	d110      	bne.n	8001754 <XMC_I2C_CH_MasterTransmit+0x3c>
+  {    
+    while (XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 8001732:	bf00      	nop
+ 8001734:	6878      	ldr	r0, [r7, #4]
+ 8001736:	f7ff febb 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 800173a:	4603      	mov	r3, r0
+ 800173c:	2b80      	cmp	r3, #128	; 0x80
+ 800173e:	d0f9      	beq.n	8001734 <XMC_I2C_CH_MasterTransmit+0x1c>
+	{
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 8001740:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 8001744:	6878      	ldr	r0, [r7, #4]
+ 8001746:	f7ff fec3 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
+ 800174a:	78fa      	ldrb	r2, [r7, #3]
+ 800174c:	687b      	ldr	r3, [r7, #4]
+ 800174e:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
+  }
+}
+ 8001752:	e003      	b.n	800175c <XMC_I2C_CH_MasterTransmit+0x44>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
+  }
+  else
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_SEND | data;
+ 8001754:	78fa      	ldrb	r2, [r7, #3]
+ 8001756:	687b      	ldr	r3, [r7, #4]
+ 8001758:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 800175c:	bf00      	nop
+ 800175e:	3708      	adds	r7, #8
+ 8001760:	46bd      	mov	sp, r7
+ 8001762:	bd80      	pop	{r7, pc}
+
+08001764 <XMC_I2C_CH_MasterReceiveAck>:
+  }
+}
+
+/* Sends master receive ack command to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterReceiveAck(XMC_USIC_CH_t *const channel)
+{
+ 8001764:	b580      	push	{r7, lr}
+ 8001766:	b082      	sub	sp, #8
+ 8001768:	af00      	add	r7, sp, #0
+ 800176a:	6078      	str	r0, [r7, #4]
+/* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 800176c:	687b      	ldr	r3, [r7, #4]
+ 800176e:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 8001772:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 8001776:	2b00      	cmp	r3, #0
+ 8001778:	d111      	bne.n	800179e <XMC_I2C_CH_MasterReceiveAck+0x3a>
+  {    
+    while(XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 800177a:	bf00      	nop
+ 800177c:	6878      	ldr	r0, [r7, #4]
+ 800177e:	f7ff fe97 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 8001782:	4603      	mov	r3, r0
+ 8001784:	2b80      	cmp	r3, #128	; 0x80
+ 8001786:	d0f9      	beq.n	800177c <XMC_I2C_CH_MasterReceiveAck+0x18>
+	{
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 8001788:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 800178c:	6878      	ldr	r0, [r7, #4]
+ 800178e:	f7ff fe9f 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
+ 8001792:	687b      	ldr	r3, [r7, #4]
+ 8001794:	f44f 7200 	mov.w	r2, #512	; 0x200
+ 8001798:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
+  }
+}
+ 800179c:	e004      	b.n	80017a8 <XMC_I2C_CH_MasterReceiveAck+0x44>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
+  }
+  else
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_ACK;
+ 800179e:	687b      	ldr	r3, [r7, #4]
+ 80017a0:	f44f 7200 	mov.w	r2, #512	; 0x200
+ 80017a4:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 80017a8:	bf00      	nop
+ 80017aa:	3708      	adds	r7, #8
+ 80017ac:	46bd      	mov	sp, r7
+ 80017ae:	bd80      	pop	{r7, pc}
+
+080017b0 <XMC_I2C_CH_MasterReceiveNack>:
+
+/* Sends master receive nack command to IN/TBUF register based on FIFO/non-FIFO modes. */
+void XMC_I2C_CH_MasterReceiveNack(XMC_USIC_CH_t *const channel)
+{
+ 80017b0:	b580      	push	{r7, lr}
+ 80017b2:	b082      	sub	sp, #8
+ 80017b4:	af00      	add	r7, sp, #0
+ 80017b6:	6078      	str	r0, [r7, #4]
+  /* Check FIFO size */
+  if ((channel->TBCTR & USIC_CH_TBCTR_SIZE_Msk) == 0U)
+ 80017b8:	687b      	ldr	r3, [r7, #4]
+ 80017ba:	f8d3 3108 	ldr.w	r3, [r3, #264]	; 0x108
+ 80017be:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 80017c2:	2b00      	cmp	r3, #0
+ 80017c4:	d111      	bne.n	80017ea <XMC_I2C_CH_MasterReceiveNack+0x3a>
+  {    
+    while(XMC_USIC_CH_GetTransmitBufferStatus(channel) == XMC_USIC_CH_TBUF_STATUS_BUSY)
+ 80017c6:	bf00      	nop
+ 80017c8:	6878      	ldr	r0, [r7, #4]
+ 80017ca:	f7ff fe71 	bl	80014b0 <XMC_USIC_CH_GetTransmitBufferStatus>
+ 80017ce:	4603      	mov	r3, r0
+ 80017d0:	2b80      	cmp	r3, #128	; 0x80
+ 80017d2:	d0f9      	beq.n	80017c8 <XMC_I2C_CH_MasterReceiveNack+0x18>
+	{
+      /* check TDV, wait until TBUF is ready */
+    }
+
+    /* clear PSR_TBIF */
+    XMC_I2C_CH_ClearStatusFlag(channel, (uint32_t)XMC_I2C_CH_STATUS_FLAG_TRANSMIT_BUFFER_INDICATION);
+ 80017d4:	f44f 5100 	mov.w	r1, #8192	; 0x2000
+ 80017d8:	6878      	ldr	r0, [r7, #4]
+ 80017da:	f7ff fe79 	bl	80014d0 <XMC_I2C_CH_ClearStatusFlag>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
+ 80017de:	687b      	ldr	r3, [r7, #4]
+ 80017e0:	f44f 7240 	mov.w	r2, #768	; 0x300
+ 80017e4:	f8c3 2080 	str.w	r2, [r3, #128]	; 0x80
+  }
+  else 
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
+  }
+}
+ 80017e8:	e004      	b.n	80017f4 <XMC_I2C_CH_MasterReceiveNack+0x44>
+
+    channel->TBUF[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
+  }
+  else 
+  {
+    channel->IN[0] = (uint32_t)XMC_I2C_CH_TDF_MASTER_RECEIVE_NACK;
+ 80017ea:	687b      	ldr	r3, [r7, #4]
+ 80017ec:	f44f 7240 	mov.w	r2, #768	; 0x300
+ 80017f0:	f8c3 2180 	str.w	r2, [r3, #384]	; 0x180
+  }
+}
+ 80017f4:	bf00      	nop
+ 80017f6:	3708      	adds	r7, #8
+ 80017f8:	46bd      	mov	sp, r7
+ 80017fa:	bd80      	pop	{r7, pc}
+
+080017fc <XMC_I2C_CH_GetReceivedData>:
+
+/* Reads the data from RBUF if FIFO size is 0 otherwise from OUTR. */
+uint8_t XMC_I2C_CH_GetReceivedData(const XMC_USIC_CH_t *const channel)
+{
+ 80017fc:	b480      	push	{r7}
+ 80017fe:	b085      	sub	sp, #20
+ 8001800:	af00      	add	r7, sp, #0
+ 8001802:	6078      	str	r0, [r7, #4]
+  uint8_t retval;
+
+  /* Check FIFO size */
+  if ((channel->RBCTR & USIC_CH_RBCTR_SIZE_Msk) == 0U)
+ 8001804:	687b      	ldr	r3, [r7, #4]
+ 8001806:	f8d3 310c 	ldr.w	r3, [r3, #268]	; 0x10c
+ 800180a:	f003 63e0 	and.w	r3, r3, #117440512	; 0x7000000
+ 800180e:	2b00      	cmp	r3, #0
+ 8001810:	d103      	bne.n	800181a <XMC_I2C_CH_GetReceivedData+0x1e>
+  {
+    retval = (uint8_t)channel->RBUF;
+ 8001812:	687b      	ldr	r3, [r7, #4]
+ 8001814:	6d5b      	ldr	r3, [r3, #84]	; 0x54
+ 8001816:	73fb      	strb	r3, [r7, #15]
+ 8001818:	e003      	b.n	8001822 <XMC_I2C_CH_GetReceivedData+0x26>
+  }
+  else
+  {
+    retval = (uint8_t)channel->OUTR;
+ 800181a:	687b      	ldr	r3, [r7, #4]
+ 800181c:	f8d3 311c 	ldr.w	r3, [r3, #284]	; 0x11c
+ 8001820:	73fb      	strb	r3, [r7, #15]
+  }
+
+  return retval;
+ 8001822:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 8001824:	4618      	mov	r0, r3
+ 8001826:	3714      	adds	r7, #20
+ 8001828:	46bd      	mov	sp, r7
+ 800182a:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800182e:	4770      	bx	lr
 
 08001830 <XMC_USIC_CH_GetTransmitBufferStatus>:
  *
