@@ -23,7 +23,7 @@
 /**
  * \brief Configures the UART module with 115200 baud, 1 stopbit, 8 databits and no parity
  */
-void remote_uart_to_pc_init()
+void remote_uart_to_pc_init(void)
 {
 	/* USIC channels initialization */
 	XMC_UART_CH_Init (XMC_UART0_CH0, &uart_config);

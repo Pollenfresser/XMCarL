@@ -12,8 +12,8 @@
  *
  */
 
-#ifndef MAIN
-#define MAIN
+#ifndef _CAR_PWM_LIB_
+#define _CAR_PWM_LIB_
 
 /**
  * Included Files
@@ -22,36 +22,35 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <xmc_ccu4.h>
 #include <xmc_gpio.h>
-// User files
-#include <debug_lib.h>
-#include <car_pwm_lib.h>
-#include <car_uart_lib.h>
 
 
 /**
  * Defines
  */
-#define RX_BUFFER_SIZE 64
+#define THROTTLE  P1_3
+#define STEERING  P1_2
 
-#define UART_EN 0
-#define PWM_EN  1
+#define CCU4_SLICE_0     CCU40_CC40
+#define CCU4_SLICE_1     CCU40_CC41
+#define CCU4_MODULE     CCU40
 
-
-/**
- * Pins
- */
-#define LED1 P1_1
+#define PERIOD_FOR_64_PRESCALING 37500
+#define IDLE_FOR_64_PRESCALING 2812
 
 /**
  * Global variables
  */
+extern XMC_CCU4_SLICE_COMPARE_CONFIG_t g_timer_object;
+
 
 /**
  * Prototypes
  */
+void car_pwm_init(void);
 
-
-#endif /* MAIN */
+#endif /* _CAR_PWM_LIB_ */
 
 /* EOF */
