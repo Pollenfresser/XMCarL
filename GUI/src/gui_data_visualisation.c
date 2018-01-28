@@ -115,8 +115,10 @@ void datavis_screen_visible(GtkWidget *wid, gpointer data)
 	// BLUETOOTH - XMC
 	// not working if menu because widget name
 	printf("%d", a->choosen_blue_dev);
-	a->choosen_blue_dev = 0;
+//	if(a->choosen_blue_dev == -1){
 	a->choosen_blue_dev = atoi(gtk_widget_get_name(wid));
+//	}
+
 	printf("Choosen device id: %d", a->choosen_blue_dev);
 	blue_comm_init((gpointer) a);
 
@@ -137,6 +139,7 @@ void datavis_screen_init(gpointer data) {
 
 	widgets *a = (widgets *) data;
 	a->datavis.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	a->choosen_blue_dev = -1;
 	// you can call your functions here
 	// uart call function
 	datavis_code((gpointer) a);

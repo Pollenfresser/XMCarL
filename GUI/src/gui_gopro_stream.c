@@ -48,10 +48,11 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 void stream_screen_clean(gpointer data) {
 	widgets *a = (widgets *) data;
 	g_print("stream_screen_clean\n");
-
-	gst_element_set_state(a->stream.playbin, GST_STATE_READY);
-	gtk_main_quit();
-	gst_object_unref(a->stream.playbin);
+	//if(main_loops != NULL){
+		gst_element_set_state(a->stream.playbin, GST_STATE_READY);
+		gtk_main_quit();
+		gst_object_unref(a->stream.playbin);
+//	}
 }
 
 int stream_screen_init(gpointer data) {

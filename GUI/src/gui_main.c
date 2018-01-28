@@ -123,8 +123,6 @@ int main(int argc, char ** argv) {
 	g_thread_join (gthread_uart);
 
 	// clean up
-
-	// gopro stream
 	stream_screen_clean((gpointer) a);
 	blue_clean((gpointer) a);
 
