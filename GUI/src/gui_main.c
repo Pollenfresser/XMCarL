@@ -12,7 +12,7 @@
  *
  *	TODO: reconnect function and if menu is used: wait screen
  *	TODO: you are able to click the connect button more often than twice - this is a big problem
- *
+ *  TODO: close main loop from gstreamer
  */
 
 #include <gui_main.h>
@@ -52,8 +52,12 @@ gpointer transferThread(gpointer data){
   }
 
   g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) pc_uart_receive, NULL);
-
-	return NULL;
+//
+//<<<<<<< HEAD
+//	//g_timeout_add();
+//=======
+//>>>>>>> 7f21df19938a1760f58b4c3cd331c2ec0c18bf7f
+  return NULL;
 
 }
 
@@ -67,6 +71,7 @@ gpointer transferThread(gpointer data){
  */
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
+	g_print("activate\n");
 
 	a->css_style = GTK_STYLE_PROVIDER(gtk_css_provider_new());
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(a->css_style),
@@ -76,7 +81,7 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_window_set_application(GTK_WINDOW(a->window), GTK_APPLICATION(a->app));
 	gtk_window_set_position(GTK_WINDOW(a->window), GTK_WIN_POS_CENTER);
 	gtk_window_set_title(GTK_WINDOW (a->window), "XMCarL");
-	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 500);
+	gtk_window_set_default_size(GTK_WINDOW(a->window), 800, 400);
 	gtk_widget_show(a->window);
 
 	a->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -93,6 +98,9 @@ void activate(GtkApplication *app, gpointer data) {
 
 	menu_visible ((gpointer) a);
 	start_screen_visible((gpointer) a);
+
+	gopro_init((gpointer) a);
+
 }
 
 int main(int argc, char ** argv) {
@@ -114,9 +122,15 @@ int main(int argc, char ** argv) {
 	g_thread_join (lucasNervt);
 
 	// clean up
+
+	// gopro stream
+	stream_screen_clean((gpointer) a);
+	blue_clean((gpointer) a);
+
 	g_object_unref(a->app);
 	//g_free(a->bluetooth);
 	g_free(a);
+
 
 	return status;
 }

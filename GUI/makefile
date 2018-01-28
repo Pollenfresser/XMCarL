@@ -7,10 +7,13 @@ SRC			+= gui_res.c
 INCDIR   = ./inc
 CFLAGS   = `pkg-config --cflags --libs gtk+-3.0`
 CFLAGS  += `pkg-config --cflags --libs gstreamer-1.0`
+CFLAGS  += `pkg-config --cflags --libs gstreamer-video-1.0`
+CFLAGS  += `curl-config --cflags --libs`
 CFLAGS  += -lbluetooth
 CFLAGS  += -I$(SRCDIR)
 CFLAGS  += -I$(INCDIR)
 CFLAGS 	+= -std=c99
+CFLAGS  += -std=gnu99 #need for gopro socket
 CFLAGS  += -Wall -g
 OBJS     = $(SRC:.c=.o)
 RESOURCE = gui_res
