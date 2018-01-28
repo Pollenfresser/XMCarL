@@ -61,13 +61,6 @@ gpointer transferThread(gpointer data){
 
 }
 
-gpointer bluetoothThread(gpointer data){
-	widgets *a = (widgets *) data;
-
-	g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) blue_send_data, (gpointer) a);
-
-	return NULL;
-}
 
 /*
  * CSS provider

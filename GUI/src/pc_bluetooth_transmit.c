@@ -111,8 +111,8 @@ void blue_clean(gpointer data) {
 gboolean blue_send_data(gpointer data) {
 	widgets *a = (widgets *) data;
 	sprintf(a->bluetooth->message, "%ld %ld\n", received.steering, received.throttle); // TODO: received in uart / 2000 !?
-	puts(a->bluetooth->message);
-	printf("Sending data %s\n", a->bluetooth->message);
+	//puts(a->bluetooth->message);
+	printf("Sending data %s, %ld\n", a->bluetooth->message, received.steering);
 	send(a->sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
 	// printf("Disconnect.\n");
 	// close(a->sock);
