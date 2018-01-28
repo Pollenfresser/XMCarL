@@ -66,6 +66,12 @@ USB
 
 data from mems is from -17.000 to 17000
 
+maximalwerte sind 2g
+
++-32.000 sind maximalwerte
+
+chrisy ist etwas verwirrt
+
 Information about "interrupts"
 Multi-threading approach
 
