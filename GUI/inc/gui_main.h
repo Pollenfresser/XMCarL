@@ -45,7 +45,7 @@
 * Defines
 */
 #define DEBUG 1
-#define SENSOR_REFRESH_CYCLE 30
+#define SENSOR_REFRESH_CYCLE 1
 
 #define TICKS_PER_SECOND 1000
 #define TICKS_WAIT 500
