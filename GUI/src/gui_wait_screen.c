@@ -18,9 +18,6 @@
  * Start of user functions
  *****************************************************************************/
 
-// give the prototype to header if you got a right name for it
-void wait_code(gpointer data);
-
 void wait_screen_bluetooth(GtkWidget *wid, gpointer data) {
 
 	widgets *a = (widgets *) data;
@@ -33,8 +30,6 @@ void wait_screen_bluetooth(GtkWidget *wid, gpointer data) {
 
 void wait_screen_visible(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
-
-	gtk_button_set_label (GTK_BUTTON(a->start.button), "Wait for connection");
 
 	gtk_widget_show_all(a->wait.layout);
 
@@ -59,46 +54,37 @@ void wait_screen_init(gpointer data) {
 	g_signal_connect(a->wait.button, "clicked",
 							G_CALLBACK(wait_screen_bluetooth), (gpointer) a);
 
-	// you can give your functions here
-	wait_code((gpointer) a);
+	a->wait.label = gtk_label_new("Please wait for available devices");
+		gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.label, FALSE, FALSE,
+				0);
 
 	gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.button, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(a->main_box), a->wait.layout, FALSE, FALSE, 0);
 
 }
 
-// you can rename this function
-// append with: gtk_box_pack_start (GTK_BOX(a->stream.layout), any widget you want, FALSE, FALSE, 0);
-
-void wait_code(gpointer data) {
-
-	widgets *a = (widgets *) data;
-	a->wait.label = gtk_label_new("Please wait for available devices");
-	gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.label, FALSE, FALSE,
-			0);
-}
-
 void wait_create_button_for_each_device(int count_devices, gpointer data){
 
 	widgets *a = (widgets *) data;
-	GtkWidget *device_buttons [count_devices];// ** -> has to be allocated
+	GtkWidget *device_buttons [count_devices];
 	int i;
 	char c[1];
+	if(count_devices > 9){
+		count_devices = 9;
+	}
 	for(i = 0; i<count_devices; i++){
 		device_buttons[i] = gtk_button_new_with_label(a->bluetooth[i].name);
 		c[0] = i + 48;
-//		printf("char:%s,c", c);
 		gtk_widget_set_name (device_buttons[i], c);
 		g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
 		gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
 	}
 	i++;
-	device_buttons[i] = gtk_button_new_with_label("chrisy");
+	device_buttons[i] = gtk_button_new_with_label("example");
 	c[0] = i + 48;
 	gtk_widget_set_name (device_buttons[i], c);
 	g_signal_connect(device_buttons[i], "clicked", G_CALLBACK(stream_screen_visible), (gpointer) a);
 	gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE, 0);
-
 
 	gtk_widget_show_all(a->wait.layout);
 

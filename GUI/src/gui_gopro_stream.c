@@ -13,6 +13,7 @@
  */
 
 #include <gui_main.h>
+#include <gio/gio.h>
 
 // TODO headerfile
 
@@ -63,6 +64,9 @@ void stream_screen_clean(gpointer data) {
 
 int stream_screen_init(gpointer data) {
 	widgets *a = (widgets *) data;
+
+	// pipeline == playbin
+
 	g_print("stream_screen_init\n");
 	a->stream.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_container_add(GTK_CONTAINER(a->main_box), a->stream.layout);
@@ -70,8 +74,11 @@ int stream_screen_init(gpointer data) {
 	gtk_init(NULL, NULL); // Initialize GTK
 	gst_init(NULL, NULL); // Initialize GStreamer
 
+	a->stream.source = gst_element_factory_make("udpsrc", "udp");
+	a->stream.sink = gst_element_factory_make ("autovideosink", "sink");
+
 	a->stream.playbin = gst_element_factory_make("playbin", "playbin");
-	if (!a->stream.playbin) {
+	if (!a->stream.playbin || !a->stream.source || !a->stream.sink) {
 		g_printerr("Not all elements could be created.\n");
 		return -1;
 	}
@@ -94,14 +101,18 @@ void stream_start_stream(gpointer data) {
 
 	GstStateChangeReturn ret;
 
-	g_object_set(a->stream.playbin, "uri",
-			"https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm",
-			NULL);
+	//g_object_set(a->stream.playbin, "uri", 			"udp://:8554",			NULL);
+
+//	GSocket *goproSocketUpd;
+//
+//	goproSocketUpd = g_socket_new(G_SOCKET_FAMILY_IPV4, G_SOCKET_TYPE_DATAGRAM, G_SOCKET_PROTOCOL_UDP, NULL);
+//
+	g_object_set(a->stream.playbin, "uri", "udp://:8554", NULL);
 
 	ret = gst_element_set_state(a->stream.playbin, GST_STATE_PLAYING);
 	if (ret == GST_STATE_CHANGE_FAILURE) {
 		g_printerr("Unable to set the pipeline to the playing state.\n");
-		gst_object_unref(a->stream.playbin);
+		// gst_object_unref(a->stream.playbin);
 	}else {
 		g_print("pipeline is on playing state");
 	}

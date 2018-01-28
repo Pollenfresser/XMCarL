@@ -18,7 +18,7 @@
  * Start of user functions
  *****************************************************************************/
 
-const GActionEntry app_entries[] = { { "end", menu_callback_end, NULL, NULL,
+const GActionEntry app_entries[] = { { "carconnect", menu_callback_car_connect, NULL, NULL,
 NULL, { 0, 0, 0 } }, { "stream", menu_callback_stream, NULL, NULL, NULL, { 0, 0,
 		0 } },
 		{ "visual", menu_callback_visual, NULL, NULL, NULL, { 0, 0, 0 } }, {
@@ -35,7 +35,7 @@ void menu_init(gpointer data) {
 	GMenu *menu, *menu_end, *menu_screen, *menu_about;
 
 	// keyboard accelerators
-	const gchar *accels_end[8] = { "<Ctrl>e", NULL };
+	const gchar *accels_carconnect[8] = { "<Ctrl>c", NULL };
 	const gchar *accels_stream[8] = { "<Ctrl>s", NULL };
 	const gchar *accels_visual[8] = { "<Ctrl>v", NULL };
 	const gchar *accels_about[2] = { "F1", NULL };
@@ -49,12 +49,12 @@ void menu_init(gpointer data) {
 
 	// create menu end ****
 	menu_end = g_menu_new();
-	g_menu_append(menu_end, "End", "app.end"); // quit
+	g_menu_append(menu_end, "Connect car", "app.carconnect"); // quit
 
 	// create menu screens *****
 	menu_screen = g_menu_new();
-	g_menu_append(menu_screen, "Stream - not working", "app.stream"); // gopro stream
-	g_menu_append(menu_screen, "Visual", "app.visual"); // data visualisation
+	g_menu_append(menu_screen, "GoPro Stream", "app.stream"); // gopro stream
+	g_menu_append(menu_screen, "Remote Control Visual", "app.visual"); // data visualisation
 	g_menu_append_section(menu_end, NULL, G_MENU_MODEL(menu_screen));
 
 	g_menu_insert_submenu(menu, 0, "Screens", G_MENU_MODEL(menu_end));
@@ -73,8 +73,8 @@ void menu_init(gpointer data) {
 	gtk_box_pack_start(GTK_BOX(a->main_box), a->menu.menubar, FALSE, FALSE, 0);
 
 	// connect keyboard accelerators *****
-	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.end",
-			accels_end);
+	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.carconnect",
+			accels_carconnect);
 	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.stream",
 			accels_stream);
 	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.visual",
@@ -84,7 +84,7 @@ void menu_init(gpointer data) {
 
 }
 
-void menu_callback_end(GSimpleAction *action, GVariant *parameter,
+void menu_callback_car_connect(GSimpleAction *action, GVariant *parameter,
 		gpointer data) {
 	widgets *a = (widgets *) data;
 	start_screen_visible((gpointer) a);

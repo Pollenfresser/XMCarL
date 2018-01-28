@@ -76,8 +76,8 @@ void gopro_init(gpointer data) {
 
 	g_print("GOPRO init\n");
 	// gopro_activate(1); // auskommentieren, wenn testen - außer gopro ist verbunden
-	gopro_create_sockets((gpointer) a);
-	gopro_stream_routine((gpointer) a);
+	//gopro_create_sockets((gpointer) a);
+	//gopro_stream_routine((gpointer) a);
 }
 
 // working if gopro is connected
