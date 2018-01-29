@@ -9,7 +9,8 @@
  * File description: Sockets to communicate with the gopro
  * I used this python file: https://github.com/KonradIT/GoProStream/blob/master/GoProStream.py
  *
- * Status: at the beginning
+ * Status: you can send keep alive message to gopro and open url with curl to
+ * start gopro stream (just can't read the stream :(
  *
  * http://www.willemer.de/informatik/unix/unprsock.htm
  * socket 	Anforderung eines Kommunikationsendpunktes
@@ -29,10 +30,6 @@
 // Needed to open URL to start / stop GOPRO stream
 #include <curl/curl.h>
 CURL *curl_easy_init();
-
-#define GOPRO_KEEP_ALIVE_PERIOD 2500
-#define GOPRO_KEEP_ALIVE_CMD 2
-#define GOPRO_UDP_PORT 8554
 
 // sudo dnf install libcurl-devel
 
@@ -62,14 +59,13 @@ void gopro_init(gpointer data) {
 	gopro_create_sockets((gpointer) a);
 }
 
-// working if gopro is connected
-// it's working fine, if no internet access
+// working
+// there is a problem with closing (timeout)
 // need this line in makefile: CFLAGS  += `curl-config --cflags --libs`
 // https://curl.haxx.se/libcurl/c/curl_easy_init.html
 // https://curl.haxx.se/libcurl/c/CURLOPT_ERRORBUFFER.html
 void gopro_activate(int set_active) {
 	g_print("GOPRO set start / stop\n");
-	g_print("GOPRO NEEDS TO BE CONNECTED!!!!!\n");
 	CURL *curl = curl_easy_init();
 	if (curl) {
 		CURLcode res;
@@ -97,8 +93,6 @@ void gopro_activate(int set_active) {
 						((errbuf[len - 1] != '\n') ? "\n" : ""));
 			else
 				fprintf(stderr, "%s\n", curl_easy_strerror(res));
-		}else{
-			g_print("not connected to gopro");
 		}
 		curl_easy_cleanup(curl);
 	}
