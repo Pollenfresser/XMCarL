@@ -26,28 +26,9 @@
 // /live/amba.m3u8
 #include <gui_main.h>
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-#include <unistd.h> // for sleep
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
-#include <netdb.h>
-#include <fcntl.h>
-
-// #include <netinet/tcp.h>
-
 // Needed to open URL to start / stop GOPRO stream
 #include <curl/curl.h>
 CURL *curl_easy_init();
-// something is not working with following line - syntax error??
-//CURLcode curl_easy_setopt(CURL *handle, CURLOPT_ERRORBUFFER, char *buf);
-
 
 #define GOPRO_KEEP_ALIVE_PERIOD 2500
 #define GOPRO_KEEP_ALIVE_CMD 2
@@ -67,18 +48,18 @@ gpointer goproThread(gpointer data);
 
 // keep alive: GPHD:0:0:2:0.000000
 void gopro_clean(gpointer data) {
+	widgets *a = (widgets *) data;
 	gopro_activate(0);
+	close(a->gopro.sock);
 	// close socket
 	// freeaddrinfo(addr_info....
 }
 
 void gopro_init(gpointer data) {
-	widgets *a = (widgets *) data;
-
 	g_print("GOPRO init\n");
+	widgets *a = (widgets *) data;
 	gopro_activate(1); // auskommentieren, wenn testen - außer gopro ist verbunden
 	gopro_create_sockets((gpointer) a);
-	//gopro_stream_routine((gpointer) a);
 }
 
 // working if gopro is connected
@@ -88,6 +69,7 @@ void gopro_init(gpointer data) {
 // https://curl.haxx.se/libcurl/c/CURLOPT_ERRORBUFFER.html
 void gopro_activate(int set_active) {
 	g_print("GOPRO set start / stop\n");
+	g_print("GOPRO NEEDS TO BE CONNECTED!!!!!\n");
 	CURL *curl = curl_easy_init();
 	if (curl) {
 		CURLcode res;
@@ -102,8 +84,9 @@ void gopro_activate(int set_active) {
 					"http://10.5.5.9/gp/gpControl/execute?p1=gpStream&a1=proto_v2&c1=stop");
 			g_print("GOPRO stream gets deactivated\n");
 		}
-		//curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
+		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 		errbuf[0] = 0;
+		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 4L);
 		res = curl_easy_perform(curl);
 
 		if (res != CURLE_OK) {
@@ -114,6 +97,8 @@ void gopro_activate(int set_active) {
 						((errbuf[len - 1] != '\n') ? "\n" : ""));
 			else
 				fprintf(stderr, "%s\n", curl_easy_strerror(res));
+		}else{
+			g_print("not connected to gopro");
 		}
 		curl_easy_cleanup(curl);
 	}
@@ -137,15 +122,15 @@ void gopro_create_sockets(gpointer data) {
 	a->gopro.sock = socket(addr_info_client->ai_family, addr_info_client->ai_socktype, addr_info_client->ai_protocol);
 
 	if(a->gopro.sock < 0){
-		g_print("Error: socket");
+		g_print("Error: socket\n");
 	}else{
-		g_print("Socket for GoPro is created");
+		g_print("Socket for GoPro is created\n");
 	}
 
 	if( connect(a->gopro.sock, addr_info_client->ai_addr, addr_info_client->ai_addrlen) < 0){
-		g_print("Error: connect");
+		g_print("Error: connect\n");
 	}else{
-		g_print("GoPro is connected");
+		g_print("GoPro is connected\n");
 		gthread_gopro = g_thread_new("data_transfer", (GThreadFunc) goproThread, (gpointer)a);
 		g_thread_join (gthread_gopro);
 	}
@@ -156,7 +141,7 @@ void gopro_create_sockets(gpointer data) {
  */
 gpointer goproThread(gpointer data){
   widgets *a = (widgets *) data;
-  g_print("routine gopro");
+  g_print("routine gopro\n");
   g_timeout_add(2500, (GSourceFunc) gopro_stream_routine, (gpointer) a);
   return NULL;
 
@@ -165,7 +150,6 @@ gpointer goproThread(gpointer data){
 gboolean gopro_stream_routine(gpointer data) {
 
 	widgets *a = (widgets *) data;
-	printf("Sending data\n");
 	send(a->gopro.sock, "_GPHD_:0:0:2:0.000000", 21, 0);
 
 	return TRUE;

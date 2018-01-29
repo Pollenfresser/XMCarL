@@ -121,7 +121,7 @@ int main(int argc, char ** argv) {
 	blue_clean((gpointer) a);
 
 	g_object_unref(a->app);
-	//g_free(a->bluetooth);
+	g_free(a->bluetooth);
 	g_free(a);
 
 	return status;

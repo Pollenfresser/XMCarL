@@ -31,6 +31,8 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <string.h>
+#include <stdio.h>
+
 
 // own XMCarl Header
 #include <pc_uart.h>
@@ -42,6 +44,13 @@
 #include <gdk/gdk.h>
 
 // GoPro Header files
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <netdb.h>
+#include <fcntl.h>
 
 /**
 * Defines
