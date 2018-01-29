@@ -38,7 +38,7 @@ CURL *curl_easy_init();
  *****************************************************************************/
 
 void gopro_create_sockets(gpointer data);
-void gopro_activate(int set_active);
+int gopro_activate(int set_active);
 gboolean gopro_stream_routine(gpointer data);
 gpointer goproThread(gpointer data);
 
@@ -55,8 +55,9 @@ void gopro_clean(gpointer data) {
 void gopro_init(gpointer data) {
 	g_print("GOPRO init\n");
 	widgets *a = (widgets *) data;
-	gopro_activate(1); // auskommentieren, wenn testen - außer gopro ist verbunden
-	gopro_create_sockets((gpointer) a);
+	if(gopro_activate(1)){
+		gopro_create_sockets((gpointer) a);
+	}
 }
 
 // working
@@ -64,7 +65,7 @@ void gopro_init(gpointer data) {
 // need this line in makefile: CFLAGS  += `curl-config --cflags --libs`
 // https://curl.haxx.se/libcurl/c/curl_easy_init.html
 // https://curl.haxx.se/libcurl/c/CURLOPT_ERRORBUFFER.html
-void gopro_activate(int set_active) {
+int gopro_activate(int set_active) {
 	g_print("GOPRO set start / stop\n");
 	CURL *curl = curl_easy_init();
 	if (curl) {
@@ -82,10 +83,13 @@ void gopro_activate(int set_active) {
 		}
 		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 		errbuf[0] = 0;
-		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 4L);
+		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
 		res = curl_easy_perform(curl);
 
 		if (res != CURLE_OK) {
+			if (res == CURLE_OPERATION_TIMEDOUT){
+				g_print("GoPro might not be connected\n");
+			}
 			size_t len = strlen(errbuf);
 			fprintf(stderr, "libcurl: (%d) ", res);
 			if (len)
@@ -93,9 +97,14 @@ void gopro_activate(int set_active) {
 						((errbuf[len - 1] != '\n') ? "\n" : ""));
 			else
 				fprintf(stderr, "%s\n", curl_easy_strerror(res));
+			curl_easy_cleanup(curl);
+			return 0;
+		}else{
+			curl_easy_cleanup(curl);
+			return 1;
 		}
-		curl_easy_cleanup(curl);
 	}
+	return 0;
 }
 
 void gopro_create_sockets(gpointer data) {
