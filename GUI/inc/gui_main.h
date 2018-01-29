@@ -41,6 +41,8 @@
 #include <gst/video/videooverlay.h>
 #include <gdk/gdk.h>
 
+// GoPro Header files
+
 /**
 * Defines
 */
@@ -64,6 +66,7 @@ gboolean blue_send_data(gpointer data);
 
 // connection to gopro
 void gopro_init(gpointer data);
+void gopro_clean(gpointer data);
 
 // SCREENS
 

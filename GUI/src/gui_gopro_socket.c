@@ -61,7 +61,8 @@ CURL *curl_easy_init();
 
 void gopro_create_sockets(gpointer data);
 void gopro_activate(int set_active);
-void gopro_stream_routine(gpointer data);
+gboolean gopro_stream_routine(gpointer data);
+gpointer goproThread(gpointer data);
 
 
 // keep alive: GPHD:0:0:2:0.000000
@@ -75,8 +76,8 @@ void gopro_init(gpointer data) {
 	widgets *a = (widgets *) data;
 
 	g_print("GOPRO init\n");
-	// gopro_activate(1); // auskommentieren, wenn testen - außer gopro ist verbunden
-	//gopro_create_sockets((gpointer) a);
+	gopro_activate(1); // auskommentieren, wenn testen - außer gopro ist verbunden
+	gopro_create_sockets((gpointer) a);
 	//gopro_stream_routine((gpointer) a);
 }
 
@@ -120,47 +121,52 @@ void gopro_activate(int set_active) {
 
 void gopro_create_sockets(gpointer data) {
 
-	g_print("create socket");
 	widgets *a = (widgets *) data;
+	GThread* gthread_gopro;
 	int res;
 	int sock;
 
 	struct addrinfo hints_client, *addr_info_client; // for connect
 	memset(&hints_client, 0, sizeof hints_client);
-	g_print("create socket2");
 	hints_client.ai_family = AF_INET;
 	// SOCK_DGRAM => Connectionless, unreliable datagrams
 	// of fixed maximum length.
 	hints_client.ai_socktype = SOCK_DGRAM;
-	g_print("create socket3");
 	res = getaddrinfo("10.5.5.9", "8554", &hints_client, &addr_info_client);
-	g_print("create socket4");
 
 	a->gopro.sock = socket(addr_info_client->ai_family, addr_info_client->ai_socktype, addr_info_client->ai_protocol);
 
-	g_print("create socket4.5");
 	if(a->gopro.sock < 0){
 		g_print("Error: socket");
+	}else{
+		g_print("Socket for GoPro is created");
 	}
 
-	/*if (bind (a->gopro.sock, client_addr, sizeof(struct sockaddr_in)) < 0){
-		// error
-	}*/
-	g_print("create socket5");
 	if( connect(a->gopro.sock, addr_info_client->ai_addr, addr_info_client->ai_addrlen) < 0){
 		g_print("Error: connect");
+	}else{
+		g_print("GoPro is connected");
+		gthread_gopro = g_thread_new("data_transfer", (GThreadFunc) goproThread, (gpointer)a);
+		g_thread_join (gthread_gopro);
 	}
-	g_print("create socket6");
 }
 
-// needs to be in a several thread
-void gopro_stream_routine(gpointer data) {
+/*
+ * all 2.5 seconds, the gopro needs a new keep alive message
+ */
+gpointer goproThread(gpointer data){
+  widgets *a = (widgets *) data;
+  g_print("routine gopro");
+  g_timeout_add(2500, (GSourceFunc) gopro_stream_routine, (gpointer) a);
+  return NULL;
 
-	g_print("routine gopro");
+}
+
+gboolean gopro_stream_routine(gpointer data) {
+
 	widgets *a = (widgets *) data;
-	while (1) {
-		printf("Sending data\n");
-		send(a->gopro.sock, "_GPHD_:0:0:2:0.000000", 21, 0);
-		sleep(25/10);
-	 }
+	printf("Sending data\n");
+	send(a->gopro.sock, "_GPHD_:0:0:2:0.000000", 21, 0);
+
+	return TRUE;
 }

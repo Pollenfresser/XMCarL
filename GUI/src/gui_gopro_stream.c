@@ -15,8 +15,6 @@
 #include <gui_main.h>
 #include <gio/gio.h>
 
-// TODO headerfile
-
 static gboolean stream_refresh(gpointer data);
 static void stream_realize_cb(GtkWidget *widget, gpointer data);
 
