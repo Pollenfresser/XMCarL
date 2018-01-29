@@ -68,6 +68,11 @@ void pc_uart_result_manipulation(){
  */
 gboolean pc_uart_receive(gpointer data) {
 
+#if DEBUG
+  printf("Receive started\n");
+#endif
+
+
 	int received_bytes = 0;
 	char receive_buff[RECEIVE_BUFF_SIZE];
   char *dummy_buff;
@@ -77,59 +82,103 @@ gboolean pc_uart_receive(gpointer data) {
   x_buff = NULL;
   y_buff = NULL;
 
+
+/*
   do
   {
     received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE-1);
-    usleep(100000); // update every 0.1 s
-    if(receive_buff[0] != 'X') {
+
+    #if DEBUG
+      printf("received_bytes: %d\n", received_bytes);
+      printf("buff: %s\n", receive_buff);
+    #endif
+
+    usleep(200000); // update every 0.1 s
+    if(strncmp(receive_buff, "UART_X", strlen("UART_X")) != 0) {
+      memset(&receive_buff, 0, sizeof(receive_buff));
       received_bytes = 0;
+      printf("Wrong format received, dumping data\n");
     }
   } while (received_bytes == 0);
+*/
 
+
+  received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE - 1);
 
   #if DEBUG
-  printf("*******\n");
-  printf("received: %s\n", receive_buff);
-  printf("*******\n");
+    int strncmp_ret = strncmp(receive_buff, "UART_X", strlen("UART_X")) != 0;
+    printf("received_bytes: %d\tstrncmp_ret: %d\n", received_bytes, strncmp_ret);
+    printf("~~~~~~~~\nbuff: %s\n********\n", receive_buff);
   #endif
 
-  dummy_buff = strtok(receive_buff, " ");
-  while(dummy_buff != NULL)
+
+  if(received_bytes != 0 && strncmp(receive_buff, "UART_X", strlen("UART_X")) == 0)
   {
-    if(strncmp(dummy_buff, "UART_X", strlen("UART_X")) == 0)
+    dummy_buff = strtok(receive_buff, " ");
+    while(dummy_buff != NULL)
     {
-      dummy_buff = strtok(NULL, "\n");
-      x_buff = calloc(strlen(dummy_buff), sizeof(char));
-      strncpy(x_buff, dummy_buff, strlen(dummy_buff));
-      #if DEBUG
+      #if DEBUG_DATA
+        printf("dummy_buff: \"%s\";\t%ld\n", dummy_buff, strlen(dummy_buff));
+      #endif
+      if(strncmp(dummy_buff, "UART_X", strlen("UART_X")) == 0 && strlen(receive_buff) > 8)
+      {
+        #if DEBUG_MEM
+          printf("writing x_buff\n");
+          printf("dummy_buff: %s\n", dummy_buff);
+        #endif
+
+        dummy_buff = strtok(NULL, "\n");
+        x_buff = calloc(strlen(dummy_buff), sizeof(char));
+        strncpy(x_buff, dummy_buff, strlen(dummy_buff));
+        #if DEBUG
         printf("-UART_X: %s\n", x_buff);
         #endif
         received.steering = strtol(x_buff, NULL, 10);
-    } else if(strncmp(dummy_buff, "UART_Y", strlen("UART_Y")) == 0)
-    {
-      dummy_buff = strtok(NULL, "\n");
-      y_buff = calloc(strlen(dummy_buff), sizeof(char));
-      strncpy(y_buff, dummy_buff, strlen(dummy_buff));
-      #if DEBUG
-      printf("-UART_Y: %s\n", y_buff);
-      #endif
-      received.throttle = strtol(y_buff, NULL, 10);
-    } else
-    {
-      dummy_buff = strtok(NULL, " \n");
-      #if DEBUG
-      printf("~~dummy: %s\n", dummy_buff);
-      #endif
-    }
+      } else if(strncmp(dummy_buff, "UART_Y", strlen("UART_Y")) == 0 && strlen(receive_buff) > 8)
+      {
+        #if DEBUG_MEM
+          printf("writing y_buff\n");
+        #endif
 
-    if(x_buff != NULL) {
-      free(x_buff);
-      x_buff = NULL;
-    }
-    if(y_buff != NULL) {
-      free(y_buff);
-      y_buff = NULL;
+        dummy_buff = strtok(NULL, "\n");
+        y_buff = calloc(strlen(dummy_buff), sizeof(char));
+        strncpy(y_buff, dummy_buff, strlen(dummy_buff));
+        #if DEBUG
+        printf("-UART_Y: %s\n", y_buff);
+        #endif
+        received.throttle = strtol(y_buff, NULL, 10);
+      } else
+      {
+        #if DEBUG_MEM
+          printf("writing dummy_buff\n");
+        #endif
+
+        //dummy_buff = calloc(strlen(dummy_buff), sizeof(char));
+        dummy_buff = strtok(NULL, " \n");
+        #if DEBUG
+        printf("~~dummy: %s\n", dummy_buff);
+        #endif
+      }
+
+      #if DEBUG_MEM
+      printf("x_mem: %p\n", x_buff);
+      printf("y_mem; %p\n", y_buff);
+      #endif
+
+      if(x_buff != NULL) {
+        free(x_buff);
+        x_buff = NULL;
+      }
+      if(y_buff != NULL) {
+        free(y_buff);
+        y_buff = NULL;
+      }
     }
   }
+
+  #if DEBUG_DATA
+  printf("steering: %ld\nthrottle: %ld\n", received.steering, received.throttle);
+  #endif
+
   return TRUE;
 }
