@@ -31,7 +31,6 @@
 /**
 * Defines
 */
-#define DEBUG 1
 #define MAX_BLUETOOTH_RESPONSES 10
 /**
  * Pins
