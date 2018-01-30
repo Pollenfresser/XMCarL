@@ -68,7 +68,7 @@ void pc_uart_result_manipulation(){
  */
 gboolean pc_uart_receive(gpointer data) {
 
-#if DEBUG
+#if DEBUG_DATA
   printf("Receive started\n");
 #endif
 
