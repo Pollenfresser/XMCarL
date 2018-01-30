@@ -115,7 +115,6 @@ void stream_start_stream(gpointer data) {
 
 static void stream_realize_cb(GtkWidget *widget, gpointer data) {
 	widgets *a = (widgets *) data;
-	g_print("stream_realize_cb\n");
 
 	GdkWindow *gdk_window = gtk_widget_get_window(widget);
 	guintptr window_handle;

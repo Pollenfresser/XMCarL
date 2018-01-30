@@ -53,7 +53,7 @@ gpointer uartThread(gpointer data){
     printf("Start UART init\n");
   #endif
 
-  if(pc_uart_init()) {
+  if(pc_uart_init((gpointer)a)) {
     return FALSE;
   }
 
@@ -73,7 +73,6 @@ gpointer uartThread(gpointer data){
  */
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
-	g_print("activate\n");
 
 	a->css_style = GTK_STYLE_PROVIDER(gtk_css_provider_new());
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(a->css_style),
@@ -102,7 +101,7 @@ void activate(GtkApplication *app, gpointer data) {
 	menu_visible ((gpointer) a);
 	home_screen_visible((gpointer) a);
 
-	gopro_init((gpointer) a);
+	gopro_init(NULL,(gpointer) a);
 
 }
 
@@ -113,7 +112,7 @@ int main(int argc, char ** argv) {
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
 
-	gthread_uart = g_thread_new("data_transfer", (GThreadFunc) uartThread, (gpointer)a);
+	gthread_uart = g_thread_new("data_transfer", (GThreadFunc) uartThread, (gpointer) a);
 
 	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_data));
 

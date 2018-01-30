@@ -105,6 +105,8 @@ int blue_search_for_available_devices(gpointer data) {
 void blue_clean(gpointer data) {
 	widgets *a = (widgets *) data;
 	close(a->sock);
+	a->status.stream = DISCONNECTED;
+	strcpy(a->status.stream_info, "Bluetooth socket is closed");
 }
 
 // Sends message to the socket from blue_comm_init
@@ -112,10 +114,10 @@ gboolean blue_send_data(gpointer data) {
 	widgets *a = (widgets *) data;
 	sprintf(a->bluetooth->message, "%ld %ld\n", received.steering, received.throttle); // TODO: received in uart / 2000 !?
 	//puts(a->bluetooth->message);
+#if DEBUG
 	printf("Sending data %s, %ld\n", a->bluetooth->message, received.steering);
+#endif
 	send(a->sock, a->bluetooth->message, strlen(a->bluetooth->message), 0); // TODO initialize message
-	// printf("Disconnect.\n");
-	// close(a->sock);
 	return TRUE;
 }
 
@@ -142,22 +144,26 @@ int blue_comm_init(gpointer data) {
 	remote_addr.rc_channel = 1;
 
 	if ((a->sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
-		perror("socket"); // go back to start devices
+		a->status.car = ERROR;
+		strcpy(a->status.car_info, "Sock is not working (Bluetooth)");
 		home_screen_visible((gpointer) a);
 	}
 
 	if (bind(a->sock, (struct sockaddr *) &local_addr, sizeof(local_addr))
 			< 0) {
-		perror("bind"); // go back to start devices
+		a->status.car = ERROR;
+		strcpy(a->status.car_info, "Bind is not working (Bluetooth)");
 		home_screen_visible((gpointer) a);
 	}
 
-	printf("Remote device %s\n", a->bluetooth[a->choosen_blue_dev].addr);
-
 	if (connect(a->sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
 			< 0) {
-		perror("connect"); // go back to start devices
+		a->status.car = ERROR;
+		strcpy(a->status.car_info, "Connect is not working (Bluetooth)");
 		home_screen_visible((gpointer) a);
+	}else{
+		a->status.car = CONNECTED;
+		sprintf(a->status.car_info, "Connected to: %s %s (Bluetooth)", a->bluetooth[a->choosen_blue_dev].name, a->bluetooth[a->choosen_blue_dev].addr);
 	}
 
 	return 0;

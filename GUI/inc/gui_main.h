@@ -64,6 +64,7 @@
 #define DISCONNECTED 2
 #define SENDING 3
 #define RECEIVING 4
+#define ERROR 5
 
 /**
 * Prototypes
@@ -74,11 +75,14 @@ int blue_comm_init(gpointer data);
 void blue_clean(gpointer data);
 gboolean blue_send_data(gpointer data);
 
+// uart for car connection
+gpointer uartThread(gpointer data);
+
 // connection to gopro
-void gopro_init(gpointer data);
+void gopro_init(GtkWidget *wid, gpointer data);
 void gopro_clean(gpointer data);
 void gopro_create_sockets(gpointer data);
-int gopro_activate(int set_active);
+int gopro_activate(int set_active, gpointer data);
 gboolean gopro_stream_routine(gpointer data);
 gpointer goproThread(gpointer data);
 
@@ -184,6 +188,8 @@ typedef struct {
 	GtkWidget *label_car_info;
 	GtkWidget *label_remote_info;
 	GtkWidget *label_stream_info;
+	GtkWidget *button_gopro_connect;
+	GtkWidget *button_uart_connect;
 } status_widgets;
 
 

@@ -21,8 +21,9 @@
  * Start of user functions
  *****************************************************************************/
 
-int pc_uart_init(void) {
+int pc_uart_init(gpointer data) {
 
+	widgets *a = (widgets *) data;
 	int bdrate = 115200;
 
 	char mode[] = {
@@ -32,15 +33,19 @@ int pc_uart_init(void) {
 			0 };
 
 	if (RS232_OpenComport(cport_nr, bdrate, mode)) {
-		printf("Cannot open com port\n");
-
+		a->status.remote = ERROR;
+		strcpy(a->status.remote_info, "Cannot open com port");
 		return 1;
 	}
+
+	a->status.remote = CONNECTED;
+	sprintf(a->status.remote_info, "COM Port is connected to: %d", cport_nr);
 	return 0;
 
 }
 
-// if something has to be: close, free, unref, ...
+// if something has to be: close, unable to open comport : No such file or directory
+// free, unref, ...
 void pc_uart_clean() {
 
 }

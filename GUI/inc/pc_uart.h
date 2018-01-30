@@ -87,7 +87,7 @@ int RS232_GetPortnr(const char *);
 /*****************************/
 /* User functions */
 /******************/
-int pc_uart_init(void);
+int pc_uart_init(gpointer data);
 gboolean pc_uart_receive(gpointer data);
 
 
