@@ -67,7 +67,6 @@ gpointer uartThread(gpointer data){
 
 }
 
-
 /*
  * CSS provider, Window properties, main_box - Layout, init of all screens
  * CSS function call, make screens visible
@@ -92,15 +91,15 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_container_add(GTK_CONTAINER(a->window), a->main_box);
 
 	menu_init ((gpointer) a);
-	start_screen_init((gpointer) a);
-	wait_screen_init((gpointer) a);
+	home_screen_init((gpointer) a);
+	car_screen_init((gpointer) a);
 	stream_screen_init((gpointer) a);
 	datavis_screen_init((gpointer) a);
 
 	apply_css(a->window, a->css_style);
 
 	menu_visible ((gpointer) a);
-	start_screen_visible((gpointer) a);
+	home_screen_visible((gpointer) a);
 
 	gopro_init((gpointer) a);
 

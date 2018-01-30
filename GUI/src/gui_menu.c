@@ -18,11 +18,12 @@
  * Start of user functions
  *****************************************************************************/
 
-const GActionEntry app_entries[] = { { "carconnect", menu_callback_car_connect, NULL, NULL,
-NULL, { 0, 0, 0 } }, { "stream", menu_callback_stream, NULL, NULL, NULL, { 0, 0,
-		0 } },
-		{ "visual", menu_callback_visual, NULL, NULL, NULL, { 0, 0, 0 } }, {
-				"about", menu_callback_about, NULL, NULL, NULL, { 0, 0, 0 } } };
+const GActionEntry app_entries[] = {
+		{ "home", menu_callback_home, NULL, NULL, NULL, { 0, 0, 0 } },
+		{ "car", menu_callback_car, NULL, NULL, NULL, { 0, 0, 0 } },
+		{ "stream", menu_callback_stream, NULL, NULL, NULL,	{ 0, 0, 0 } },
+		{ "datavis", menu_callback_datavis, NULL, NULL, NULL, { 0, 0, 0 } },
+		{ "about", menu_callback_about, NULL, NULL, NULL, { 0, 0, 0 } } };
 
 void menu_visible(gpointer data) {
 	widgets *a = (widgets *) data;
@@ -35,9 +36,10 @@ void menu_init(gpointer data) {
 	GMenu *menu, *menu_end, *menu_screen, *menu_about;
 
 	// keyboard accelerators
-	const gchar *accels_carconnect[8] = { "<Ctrl>c", NULL };
+	const gchar *accels_home[8] = { "<Ctrl>h", NULL };
+	const gchar *accels_car[8] = { "<Ctrl>c", NULL };
 	const gchar *accels_stream[8] = { "<Ctrl>s", NULL };
-	const gchar *accels_visual[8] = { "<Ctrl>v", NULL };
+	const gchar *accels_datavis[8] = { "<Ctrl>v", NULL };
 	const gchar *accels_about[2] = { "F1", NULL };
 
 	// map entries and actions *****
@@ -49,12 +51,13 @@ void menu_init(gpointer data) {
 
 	// create menu end ****
 	menu_end = g_menu_new();
-	g_menu_append(menu_end, "Connect car", "app.carconnect"); // quit
+	g_menu_append(menu_end, "Home", "app.home"); // quit
 
 	// create menu screens *****
 	menu_screen = g_menu_new();
+	g_menu_append(menu_screen, "Connect car", "app.car"); // connect car
 	g_menu_append(menu_screen, "GoPro Stream", "app.stream"); // gopro stream
-	g_menu_append(menu_screen, "Remote Control Visual", "app.visual"); // data visualisation
+	g_menu_append(menu_screen, "Remote Control Visual", "app.datavis"); // data visualisation
 	g_menu_append_section(menu_end, NULL, G_MENU_MODEL(menu_screen));
 
 	g_menu_insert_submenu(menu, 0, "Screens", G_MENU_MODEL(menu_end));
@@ -73,21 +76,27 @@ void menu_init(gpointer data) {
 	gtk_box_pack_start(GTK_BOX(a->main_box), a->menu.menubar, FALSE, FALSE, 0);
 
 	// connect keyboard accelerators *****
-	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.carconnect",
-			accels_carconnect);
+	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.home", accels_home);
+	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.car", accels_car);
 	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.stream",
 			accels_stream);
-	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.visual",
-			accels_visual);
+	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.datavis",
+			accels_datavis);
 	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.about",
 			accels_about);
 
 }
 
-void menu_callback_car_connect(GSimpleAction *action, GVariant *parameter,
+void menu_callback_home(GSimpleAction *action, GVariant *parameter,
 		gpointer data) {
 	widgets *a = (widgets *) data;
-	start_screen_visible((gpointer) a);
+	home_screen_visible((gpointer) a);
+}
+
+void menu_callback_car(GSimpleAction *action, GVariant *parameter,
+		gpointer data) {
+	widgets *a = (widgets *) data;
+	car_screen_visible(NULL, (gpointer) a);
 }
 
 void menu_callback_stream(GSimpleAction *action, GVariant *parameter,
@@ -96,7 +105,7 @@ void menu_callback_stream(GSimpleAction *action, GVariant *parameter,
 	stream_screen_visible(NULL, (gpointer) a);
 }
 
-void menu_callback_visual(GSimpleAction *action, GVariant *parameter,
+void menu_callback_datavis(GSimpleAction *action, GVariant *parameter,
 		gpointer data) {
 	widgets *a = (widgets *) data;
 	datavis_screen_visible(NULL, (gpointer) a);
@@ -107,7 +116,8 @@ void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 	widgets *a = (widgets *) data;
 	GdkPixbuf *pixbuf;
 	GtkWidget *about_dialog;
-	const gchar *authors[] = { "Christina Bornberg", "Lucas Ullrich", "Dominik Jantos", NULL };
+	const gchar *authors[] = { "Christina Bornberg", "Lucas Ullrich",
+			"Dominik Jantos", NULL };
 
 	// Image
 	pixbuf = gdk_pixbuf_new_from_file("img/xmcarl.png", NULL);

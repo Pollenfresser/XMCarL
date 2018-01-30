@@ -41,7 +41,7 @@
 */
 
 int blue_search_for_available_devices(gpointer data);
-void wait_create_button_for_each_device(int count_devices, gpointer data);
+void car_create_button_for_each_device(int count_devices, gpointer data);
 void bluetooth_client(void);
 
 /**
