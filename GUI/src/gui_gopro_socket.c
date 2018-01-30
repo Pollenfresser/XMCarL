@@ -37,12 +37,6 @@ CURL *curl_easy_init();
  * Start of user functions
  *****************************************************************************/
 
-void gopro_create_sockets(gpointer data);
-int gopro_activate(int set_active);
-gboolean gopro_stream_routine(gpointer data);
-gpointer goproThread(gpointer data);
-
-
 // keep alive: GPHD:0:0:2:0.000000
 void gopro_clean(gpointer data) {
 	widgets *a = (widgets *) data;

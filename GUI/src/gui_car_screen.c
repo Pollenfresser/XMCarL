@@ -6,7 +6,7 @@
  *
  * Date of creation: 02.01.2018
  *
- * File description: Wait Screen - connection with GoPro
+ * File description: Connection over bluetooth with car
  *
  * Status: done ?!
  * TODO: maybe see, if realy 9 devices can be created (logic)
@@ -20,25 +20,14 @@
  *****************************************************************************/
 
 /*
- * after clicking the load devices button, this function is called
- * a button for each device will be created
+ * car screen is now visible
  */
-void wait_screen_bluetooth(GtkWidget *wid, gpointer data) {
-	widgets *a = (widgets *) data;
-	int count_devices = 0;
-	count_devices = blue_search_for_available_devices((gpointer) a);
-	wait_create_button_for_each_device(count_devices, (gpointer) a);
-}
-
-/*
- * Wait screen is now visible
- */
-void wait_screen_visible(GtkWidget *wid, gpointer data) {
+void car_screen_visible(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
 
-	gtk_widget_show_all(a->wait.layout);
+	gtk_widget_show_all(a->car.layout);
 
-	gtk_widget_set_visible(a->start.layout, FALSE);
+	gtk_widget_set_visible(a->home.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
 
@@ -48,29 +37,40 @@ void wait_screen_visible(GtkWidget *wid, gpointer data) {
  * here everything from stream screen should be cleaned up
  * unref, ...
  */
-void wait_screen_clean(gpointer data) {
+void car_screen_clean(gpointer data) {
 	// close thread??
 }
 
 /*
- * Initialisation of wait screen
+ * Initialisation of car screen
  */
-void wait_screen_init(gpointer data) {
+void car_screen_init(gpointer data) {
 	widgets *a = (widgets *) data;
 
-	a->wait.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	a->wait.button = gtk_button_new_with_label(
+	a->car.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	a->car.button = gtk_button_new_with_label(
 			"Click and wait to load devices");
-	g_signal_connect(a->wait.button, "clicked",
-			G_CALLBACK(wait_screen_bluetooth), (gpointer) a);
+	g_signal_connect(a->car.button, "clicked",
+			G_CALLBACK(car_bluetooth), (gpointer) a);
 
-	a->wait.label = gtk_label_new("Please wait for available devices");
-	gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.label, FALSE, FALSE, 0);
+	a->car.label = gtk_label_new("Please wait for available devices");
+	gtk_box_pack_start(GTK_BOX(a->car.layout), a->car.label, FALSE, FALSE, 0);
 
-	gtk_box_pack_start(GTK_BOX(a->wait.layout), a->wait.button, FALSE, FALSE,
+	gtk_box_pack_start(GTK_BOX(a->car.layout), a->car.button, FALSE, FALSE,
 			0);
-	gtk_box_pack_start(GTK_BOX(a->main_box), a->wait.layout, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(a->main_box), a->car.layout, FALSE, FALSE, 0);
 
+}
+
+/*
+ * after clicking the load devices button, this function is called
+ * a button for each device will be created
+ */
+void car_bluetooth(GtkWidget *wid, gpointer data) {
+	widgets *a = (widgets *) data;
+	int count_devices = 0;
+	count_devices = blue_search_for_available_devices((gpointer) a);
+	car_create_button_for_each_device(count_devices, (gpointer) a);
 }
 
 /*
@@ -88,7 +88,7 @@ gpointer bluetoothThread(gpointer data) {
  * gets selected device and starts thread for sending data over
  * bluetooth to the car
  */
-void wait_connect_device(GtkWidget *wid, gpointer data) {
+void car_connect_device(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
 	a->choosen_blue_dev = 0;
 	a->choosen_blue_dev = atoi(gtk_widget_get_name(wid));
@@ -102,7 +102,7 @@ void wait_connect_device(GtkWidget *wid, gpointer data) {
 
 }
 
-void wait_create_button_for_each_device(int count_devices, gpointer data) {
+void car_create_button_for_each_device(int count_devices, gpointer data) {
 
 	widgets *a = (widgets *) data;
 	GtkWidget *device_buttons[count_devices];
@@ -116,8 +116,8 @@ void wait_create_button_for_each_device(int count_devices, gpointer data) {
 		c[0] = i + 48;
 		gtk_widget_set_name(device_buttons[i], c);
 		g_signal_connect(device_buttons[i], "clicked",
-				G_CALLBACK(wait_connect_device), (gpointer) a);
-		gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE,
+				G_CALLBACK(car_connect_device), (gpointer) a);
+		gtk_box_pack_start(GTK_BOX(a->car.layout), device_buttons[i], FALSE,
 				FALSE, 0);
 	}
 	i++;
@@ -125,11 +125,11 @@ void wait_create_button_for_each_device(int count_devices, gpointer data) {
 	c[0] = i + 48;
 	gtk_widget_set_name(device_buttons[i], c);
 	g_signal_connect(device_buttons[i], "clicked",
-			G_CALLBACK(wait_connect_device), (gpointer) a);
-	gtk_box_pack_start(GTK_BOX(a->wait.layout), device_buttons[i], FALSE, FALSE,
+			G_CALLBACK(car_connect_device), (gpointer) a);
+	gtk_box_pack_start(GTK_BOX(a->car.layout), device_buttons[i], FALSE, FALSE,
 			0);
 
-	gtk_widget_show_all(a->wait.layout);
+	gtk_widget_show_all(a->car.layout);
 
 }
 

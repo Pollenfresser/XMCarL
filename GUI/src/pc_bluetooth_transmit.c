@@ -143,13 +143,13 @@ int blue_comm_init(gpointer data) {
 
 	if ((a->sock = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)) < 0) {
 		perror("socket"); // go back to start devices
-		start_screen_visible((gpointer) a);
+		home_screen_visible((gpointer) a);
 	}
 
 	if (bind(a->sock, (struct sockaddr *) &local_addr, sizeof(local_addr))
 			< 0) {
 		perror("bind"); // go back to start devices
-		start_screen_visible((gpointer) a);
+		home_screen_visible((gpointer) a);
 	}
 
 	printf("Remote device %s\n", a->bluetooth[a->choosen_blue_dev].addr);
@@ -157,7 +157,7 @@ int blue_comm_init(gpointer data) {
 	if (connect(a->sock, (struct sockaddr *) &remote_addr, sizeof(remote_addr))
 			< 0) {
 		perror("connect"); // go back to start devices
-		start_screen_visible((gpointer) a);
+		home_screen_visible((gpointer) a);
 	}
 
 	return 0;

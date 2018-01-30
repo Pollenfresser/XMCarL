@@ -63,7 +63,6 @@
 
 #define MESSAGE_SIZE 64 // bluetooth - same as u-controller
 
-
 /**
 * Prototypes
 */
@@ -76,17 +75,22 @@ gboolean blue_send_data(gpointer data);
 // connection to gopro
 void gopro_init(gpointer data);
 void gopro_clean(gpointer data);
+void gopro_create_sockets(gpointer data);
+int gopro_activate(int set_active);
+gboolean gopro_stream_routine(gpointer data);
+gpointer goproThread(gpointer data);
+
 
 // SCREENS
 
-// start screen
-void start_screen_init(gpointer data);
-void start_screen_visible(gpointer data);
+// home screen
+void home_screen_init(gpointer data);
+void home_screen_visible(gpointer data);
 
-// wait screen
-void wait_screen_init(gpointer data);
-void wait_screen_visible(GtkWidget *wid, gpointer data);
-void wait_screen_bluetooth(GtkWidget *wid, gpointer data);
+// car connect screen
+void car_screen_init(gpointer data);
+void car_screen_visible(GtkWidget *wid, gpointer data);
+void car_bluetooth(GtkWidget *wid, gpointer data);
 
 // stream from gopro
 int stream_screen_init(gpointer data);
@@ -106,11 +110,14 @@ void brainfuck_init(gpointer data);
 // menu
 void menu_visible (gpointer data);
 void menu_init(gpointer data);
-void menu_callback_car_connect(GSimpleAction *action, GVariant *parameter,
+
+void menu_callback_home(GSimpleAction *action, GVariant *parameter,
+		gpointer data);
+void menu_callback_car(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void menu_callback_stream(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
-void menu_callback_visual(GSimpleAction *action, GVariant *parameter,
+void menu_callback_datavis(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
@@ -122,20 +129,22 @@ void destroy_dialog(GtkDialog *dialog, gint response_id, gpointer data);
 * Global variables
 */
 
-// start screen
+// home screen
 typedef struct {
 	GtkWidget *layout;
-	GtkWidget *button;
+	GtkWidget *button_car;
+	GtkWidget *button_stream;
+	GtkWidget *button_datavis;
 	GtkWidget *label;
 	GtkWidget *img;
-} start_widgets;
+} home_widgets;
 
-// wait screen
+// car screen
 typedef struct {
 	GtkWidget *layout;
 	GtkWidget *button;
 	GtkWidget *label;
-} wait_widgets;
+} car_widgets;
 
 typedef struct{
 	char addr[19];
@@ -181,11 +190,11 @@ typedef struct {
 	int sock;
 
 	// Data
-	start_widgets start;
+	home_widgets home;
 	stream_widgets stream;
 	gopro_struct gopro;
 	datavis_widgets datavis;
-	wait_widgets wait;
+	car_widgets car;
 	menu_widgets menu;
 	bluetooth_data *bluetooth; // allocate
 } widgets;

@@ -1,12 +1,13 @@
 /**
  * Project: XMCarL
  *
- * Author:
+ * Author: Christina
  * Modified:
+ * Used Code:
  *
  * Date of creation: 26.12.2017
  *
- * File description: GoPro Stream - this file should be created by Dominik and Chrisy
+ * File description: GoPro Stream
  *
  * Status: at the beginning
  * - info: /live/amba.m3u8
@@ -29,15 +30,12 @@ void stream_screen_visible(GtkWidget *wid, gpointer data) {
 
 	gtk_widget_show_all(a->stream.layout);
 
-	gtk_widget_set_visible(a->start.layout, FALSE);
-	gtk_widget_set_visible(a->wait.layout, FALSE);
+	gtk_widget_set_visible(a->home.layout, FALSE);
+	gtk_widget_set_visible(a->car.layout, FALSE);
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
 
 	// GOPRO
 	stream_start_stream((gpointer) a);
-
-	g_print("stream_screen_visible2\n");
-
 }
 
 // here everything from stream screen should be cleaned up
@@ -103,6 +101,7 @@ void stream_start_stream(gpointer data) {
 	ret = gst_element_set_state(a->stream.playbin, GST_STATE_PLAYING);
 	if (ret == GST_STATE_CHANGE_FAILURE) {
 		g_printerr("Unable to set the pipeline to the playing state.\n");
+		home_screen_visible((gpointer) a);
 		// gst_object_unref(a->stream.playbin);
 	}else {
 		g_print("pipeline is on playing state");
