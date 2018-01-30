@@ -57,6 +57,14 @@
 
 #define MESSAGE_SIZE 64 // bluetooth - same as u-controller
 
+//enum states { CONNECTED, DISCONNECTED, SEND, RECEIVE };
+
+#define INIT 0
+#define CONNECTED 1
+#define DISCONNECTED 2
+#define SENDING 3
+#define RECEIVING 4
+
 /**
 * Prototypes
 */
@@ -93,6 +101,12 @@ void stream_screen_clean(gpointer data);
 void datavis_screen_init(gpointer data);
 void datavis_screen_visible(GtkWidget *wid, gpointer data);
 
+void status_screen_init(gpointer data);
+void status_screen_visible(GtkWidget *wid, gpointer data);
+void status_screen_refresh_info(GtkWidget *wid, char info[1024]);
+void status_screen_refresh_status(GtkWidget *wid, int status);
+
+
 // no matter what button is pressed, we need to get this initialised
 // - bluetooth connection
 // - gopro connection
@@ -110,6 +124,8 @@ void menu_callback_stream(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void menu_callback_datavis(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
+void menu_callback_status(GSimpleAction *action, GVariant *parameter,
+		gpointer data);
 void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void destroy_dialog(GtkDialog *dialog, gint response_id, gpointer data);
@@ -124,6 +140,7 @@ typedef struct {
 	GtkWidget *button_car;
 	GtkWidget *button_stream;
 	GtkWidget *button_datavis;
+	GtkWidget *button_status;
 	GtkWidget *label;
 	GtkWidget *img;
 } home_widgets;
@@ -146,6 +163,29 @@ typedef struct {
 	GtkWidget *layout;
 	GtkWidget *label;
 } datavis_widgets;
+
+// status screen
+typedef struct {
+	GtkWidget *layout;
+	GtkWidget *label;
+	int gopro;
+	int car;
+	int remote;
+	int stream;
+	char gopro_info[1024];
+	char car_info[1024];
+	char remote_info[1024];
+	char stream_info[1024];
+	GtkWidget *label_gopro_status;
+	GtkWidget *label_car_status;
+	GtkWidget *label_remote_status;
+	GtkWidget *label_stream_status;
+	GtkWidget *label_gopro_info;
+	GtkWidget *label_car_info;
+	GtkWidget *label_remote_info;
+	GtkWidget *label_stream_info;
+} status_widgets;
+
 
 // gopro stream screen
 typedef struct {
@@ -183,6 +223,7 @@ typedef struct {
 	stream_widgets stream;
 	gopro_struct gopro;
 	datavis_widgets datavis;
+	status_widgets status;
 	car_widgets car;
 	menu_widgets menu;
 	bluetooth_data *bluetooth; // allocate

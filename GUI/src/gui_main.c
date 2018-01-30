@@ -91,6 +91,7 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_container_add(GTK_CONTAINER(a->window), a->main_box);
 
 	menu_init ((gpointer) a);
+//	status_screen_init((gpointer) a);
 	home_screen_init((gpointer) a);
 	car_screen_init((gpointer) a);
 	stream_screen_init((gpointer) a);
