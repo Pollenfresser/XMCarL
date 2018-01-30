@@ -33,7 +33,7 @@
 /**
 * Defines
 */
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG_ALL 0
 #define I2C 1
 #define UART 1

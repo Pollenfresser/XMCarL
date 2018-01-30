@@ -37,7 +37,7 @@
 #define UART_EN 1
 #define PWM_EN  1
 
-#define DEBUG 1
+#define DEBUG 0
 
 /**
  * Pins

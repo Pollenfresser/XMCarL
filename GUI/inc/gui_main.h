@@ -52,8 +52,8 @@
 /**
 * Defines
 */
-#define DEBUG 1
-#define SENSOR_REFRESH_CYCLE 20
+#define DEBUG 0
+#define SENSOR_REFRESH_CYCLE 30
 
 #define MESSAGE_SIZE 64 // bluetooth - same as u-controller
 
