@@ -77,7 +77,7 @@
  	while (!XMC_USIC_CH_RXFIFO_IsEmpty (XMC_UART0_CH0)) {
  		rx_tmp = XMC_UART_CH_GetReceivedData (XMC_UART0_CH0);
 
- 		if ( (rx_tmp != STRING_CR) && (!str_available)) {
+ 		if ( (rx_tmp != STRING_LF) && (!str_available)) {
  			rx_buffer[rx_ctr++] = rx_tmp;
  		} else {
  			rx_ctr = 0;

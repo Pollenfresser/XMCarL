@@ -48,7 +48,7 @@ extern "C" {
 #define RX_BUFFER_SIZE 64 // UART
 
 #define DEBUG_MEM 0
-#define DEBUG_DATA 0
+#define DEBUG_DATA 1
 
 extern int cport_nr;    // /dev/ttyUSB0
 // XMCarl End
