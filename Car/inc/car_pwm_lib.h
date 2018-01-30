@@ -26,6 +26,8 @@
 #include <xmc_ccu4.h>
 #include <xmc_gpio.h>
 
+#include <main.h>
+
 
 /**
  * Defines
@@ -33,12 +35,13 @@
 #define THROTTLE  P1_3    // Slice 0
 #define STEERING  P1_2    // Slice 1
 
-#define CCU4_SLICE_0    CCU40_CC40
-#define CCU4_SLICE_1    CCU40_CC41
+#define CCU4_SLICE_0    CCU40_CC40		// Throttle
+#define CCU4_SLICE_1    CCU40_CC41		// Steering
 #define CCU4_MODULE     CCU40
 
 #define PERIOD_FOR_64_PRESCALING 37500
 #define IDLE_FOR_64_PRESCALING 2812
+#define MAX_RECEIVE 16000
 
 /**
  * Global variables

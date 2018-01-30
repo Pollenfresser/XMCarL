@@ -16,7 +16,7 @@ uint8_t remote_mems_init(void)
 {
   /*!< Initialises register 1 of the sensor to select a desired refresh
         rate and enable X & Y Axis */
-  while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG1, ONE_HZ_X_AND_Y, 0) == 0xFFFF)
+  while(remote_i2c_write_read(MEMS_ADDRESS, MEMS_CTRL_REG1, TWENTYFIFE_HZ_X_AND_Y, 0) == 0xFFFF)
   {
     XMC_GPIO_ToggleOutput(LED1);
     #if DEBUG

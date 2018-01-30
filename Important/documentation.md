@@ -56,7 +56,15 @@ for removing rfcomm0; listed here: ls /dev/
 Connected /dev/rfcomm1 to 00:1B:35:88:0C:81 on channel 1
 wuhu, it's working!!!
 
-# MEMS Sensor Pin belegung
+# Bluetooth module on XMC connection
+* Bluetooth -> XMC
+* VCC -> VDD5
+* GND -> GND
+* TXD -> P1_4
+* RXD -> P1_5
+
+
+# MEMS Sensor Pin connection
 wir sind auf der x2 seite - achtung, außenbeschr = außenports, innenbeschr = innenports
 * GND -> GND
 * Vin -> VDD3.3

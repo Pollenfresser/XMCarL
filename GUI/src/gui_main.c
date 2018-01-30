@@ -49,9 +49,17 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 gpointer uartThread(gpointer data){
   widgets *a = (widgets *) data;
 
+  #if DEBUG
+    printf("Start UART init\n");
+  #endif
+
   if(pc_uart_init()) {
     return FALSE;
   }
+
+  #if DEBUG
+    printf("UART init successfull\n");
+  #endif
 
   g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) pc_uart_receive, NULL);
 

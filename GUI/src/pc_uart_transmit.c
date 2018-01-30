@@ -68,68 +68,65 @@ void pc_uart_result_manipulation(){
  */
 gboolean pc_uart_receive(gpointer data) {
 
+#if DEBUG_DATA
+  printf("Receive started\n");
+#endif
+
 	int received_bytes = 0;
 	char receive_buff[RECEIVE_BUFF_SIZE];
-  char *dummy_buff;
-  char *x_buff;
-  char *y_buff;
+  char *token;
+  char *prev_token;
 
-  x_buff = NULL;
-  y_buff = NULL;
+  received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE - 1);
 
-  do
+  if(received_bytes > 0)
   {
-    received_bytes = RS232_PollComport(cport_nr, receive_buff, RECEIVE_BUFF_SIZE-1);
-    usleep(100000); // update every 0.1 s
-    if(receive_buff[0] != 'X') {
-      received_bytes = 0;
-    }
-  } while (received_bytes == 0);
+    prev_token  = calloc(strlen(receive_buff), sizeof(receive_buff));
+    token = calloc(strlen(receive_buff), sizeof(receive_buff));
 
-
-  #if DEBUG
-  printf("*******\n");
-  printf("received: %s\n", receive_buff);
-  printf("*******\n");
-  #endif
-
-  dummy_buff = strtok(receive_buff, " ");
-  while(dummy_buff != NULL)
-  {
-    if(strncmp(dummy_buff, "UART_X", strlen("UART_X")) == 0)
+    token = strtok(receive_buff, " \n");
+    while(token != NULL)
     {
-      dummy_buff = strtok(NULL, "\n");
-      x_buff = calloc(strlen(dummy_buff), sizeof(char));
-      strncpy(x_buff, dummy_buff, strlen(dummy_buff));
-      #if DEBUG
-        printf("-UART_X: %s\n", x_buff);
+
+      #if DEBUG_DATA
+      printf("prev: %s\n", prev_token);
+      printf("toke: %s\n", token);
+      #endif
+
+      if(strncmp(prev_token, "UART_X", strlen("UART_X")) == 0)
+      {
+        #if DEBUG_DATA
+        printf("~writing steering\n");
         #endif
-        received.steering = strtol(x_buff, NULL, 10);
-    } else if(strncmp(dummy_buff, "UART_Y", strlen("UART_Y")) == 0)
-    {
-      dummy_buff = strtok(NULL, "\n");
-      y_buff = calloc(strlen(dummy_buff), sizeof(char));
-      strncpy(y_buff, dummy_buff, strlen(dummy_buff));
-      #if DEBUG
-      printf("-UART_Y: %s\n", y_buff);
-      #endif
-      received.throttle = strtol(y_buff, NULL, 10);
-    } else
-    {
-      dummy_buff = strtok(NULL, " \n");
-      #if DEBUG
-      printf("~~dummy: %s\n", dummy_buff);
-      #endif
+        received.steering = strtol(token, NULL, 10);
+        #if DEBUG_DATA
+        printf("token: '%s'\t\t%ld\n", token, received.steering);
+        #endif
+      }
+      else if(strncmp(prev_token, "UART_Y", strlen("UART_Y")) == 0)
+      {
+        #if DEBUG_DATA
+        printf("~writing throttle\n");
+        #endif
+        received.throttle = strtol(token, NULL, 10);
+        #if DEBUG_DATA
+        printf("token: '%s',\t\t%ld\n", token, received.throttle);
+        #endif
+      }
+
+      memset(prev_token, '\0', strlen(prev_token));
+      strncpy(prev_token, token, strlen(token));
+      token = strtok(NULL, " \n");
     }
 
-    if(x_buff != NULL) {
-      free(x_buff);
-      x_buff = NULL;
-    }
-    if(y_buff != NULL) {
-      free(y_buff);
-      y_buff = NULL;
-    }
+    free(prev_token);
+    free(token);
+
+    #if DEBUG_DATA
+    printf("steering: %ld\n", received.steering);
+    printf("throttle: %ld\n", received.throttle);
+    #endif
   }
+
   return TRUE;
 }

@@ -134,6 +134,7 @@ int main (void)
   {
     car_uart_get_string(rx_buff);
     car_set_pwm(rx_buff);
+    memset(&rx_buff, '\0', RX_BUFFER_SIZE);
   }
   return 0;
 

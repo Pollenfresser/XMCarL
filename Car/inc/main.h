@@ -34,9 +34,10 @@
  */
 #define RX_BUFFER_SIZE 64
 
-#define UART_EN 0
+#define UART_EN 1
 #define PWM_EN  1
 
+#define DEBUG 1
 
 /**
  * Pins
