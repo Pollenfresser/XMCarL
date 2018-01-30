@@ -23,6 +23,7 @@ const GActionEntry app_entries[] = {
 		{ "car", menu_callback_car, NULL, NULL, NULL, { 0, 0, 0 } },
 		{ "stream", menu_callback_stream, NULL, NULL, NULL,	{ 0, 0, 0 } },
 		{ "datavis", menu_callback_datavis, NULL, NULL, NULL, { 0, 0, 0 } },
+		{ "status", menu_callback_status, NULL, NULL, NULL, { 0, 0, 0 } },
 		{ "about", menu_callback_about, NULL, NULL, NULL, { 0, 0, 0 } } };
 
 void menu_visible(gpointer data) {
@@ -58,6 +59,7 @@ void menu_init(gpointer data) {
 	g_menu_append(menu_screen, "Connect car", "app.car"); // connect car
 	g_menu_append(menu_screen, "GoPro Stream", "app.stream"); // gopro stream
 	g_menu_append(menu_screen, "Remote Control Visual", "app.datavis"); // data visualisation
+	g_menu_append(menu_screen, "Status", "app.status"); // status of all components
 	g_menu_append_section(menu_end, NULL, G_MENU_MODEL(menu_screen));
 
 	g_menu_insert_submenu(menu, 0, "Screens", G_MENU_MODEL(menu_end));
@@ -109,6 +111,12 @@ void menu_callback_datavis(GSimpleAction *action, GVariant *parameter,
 		gpointer data) {
 	widgets *a = (widgets *) data;
 	datavis_screen_visible(NULL, (gpointer) a);
+}
+
+void menu_callback_status(GSimpleAction *action, GVariant *parameter,
+		gpointer data) {
+	widgets *a = (widgets *) data;
+	status_screen_visible(NULL, (gpointer) a);
 }
 
 void menu_callback_about(GSimpleAction *action, GVariant *parameter,

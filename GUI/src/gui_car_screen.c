@@ -30,6 +30,7 @@ void car_screen_visible(GtkWidget *wid, gpointer data) {
 	gtk_widget_set_visible(a->home.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
 	gtk_widget_set_visible(a->datavis.layout, FALSE);
+	gtk_widget_set_visible(a->status.layout, FALSE);
 
 }
 
@@ -99,6 +100,8 @@ void car_connect_device(GtkWidget *wid, gpointer data) {
 	gthread_blue = g_thread_new("bluetooth_data_trans",
 			(GThreadFunc) bluetoothThread, (gpointer) a);
 	g_thread_join(gthread_blue);
+
+	home_screen_visible((gpointer) a);
 
 }
 

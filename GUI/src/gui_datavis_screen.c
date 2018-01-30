@@ -104,6 +104,8 @@ void datavis_screen_visible(GtkWidget *wid, gpointer data)
 	gtk_widget_set_visible(a->home.layout, FALSE);
 	gtk_widget_set_visible(a->car.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
+	gtk_widget_set_visible(a->status.layout, FALSE);
+
 
 }
 
