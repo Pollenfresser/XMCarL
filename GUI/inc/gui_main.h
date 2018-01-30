@@ -17,6 +17,18 @@
 * Included Files
 */
 
+// GUI
+#include <gtk/gtk.h>
+#include <stdlib.h>
+#include <glib.h>
+#include <string.h>
+#include <stdio.h>
+
+// own XMCarl Header
+#include <pc_uart.h>
+#include <pc_bluetooth.h>
+
+// GStreamer
 #include <gdk/gdk.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
@@ -25,25 +37,10 @@
 #elif defined (GDK_WINDOWING_QUARTZ)
 #include <gdk/gdkquartz.h>
 #endif
-
-
-#include <gtk/gtk.h>
-#include <stdlib.h>
-#include <glib.h>
-#include <string.h>
-#include <stdio.h>
-
-
-// own XMCarl Header
-#include <pc_uart.h>
-#include <pc_bluetooth.h>
-
-// GStreamer
 #include <gst/gst.h>
 #include <gst/video/videooverlay.h>
-#include <gdk/gdk.h>
 
-// GoPro Header files
+// GoPro
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -79,9 +76,6 @@ void gopro_create_sockets(gpointer data);
 int gopro_activate(int set_active);
 gboolean gopro_stream_routine(gpointer data);
 gpointer goproThread(gpointer data);
-
-
-// SCREENS
 
 // home screen
 void home_screen_init(gpointer data);
@@ -122,8 +116,6 @@ void menu_callback_datavis(GSimpleAction *action, GVariant *parameter,
 void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 		gpointer data);
 void destroy_dialog(GtkDialog *dialog, gint response_id, gpointer data);
-
-
 
 /**
 * Global variables

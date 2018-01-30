@@ -59,7 +59,6 @@ gpointer uartThread(gpointer data){
 
 }
 
-
 /*
  * CSS provider, Window properties, main_box - Layout, init of all screens
  * CSS function call, make screens visible

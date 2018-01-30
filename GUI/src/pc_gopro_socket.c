@@ -47,7 +47,6 @@ void gopro_clean(gpointer data) {
 }
 
 void gopro_init(gpointer data) {
-	g_print("GOPRO init\n");
 	widgets *a = (widgets *) data;
 	if(gopro_activate(1)){
 		gopro_create_sockets((gpointer) a);
@@ -60,7 +59,6 @@ void gopro_init(gpointer data) {
 // https://curl.haxx.se/libcurl/c/curl_easy_init.html
 // https://curl.haxx.se/libcurl/c/CURLOPT_ERRORBUFFER.html
 int gopro_activate(int set_active) {
-	g_print("GOPRO set start / stop\n");
 	CURL *curl = curl_easy_init();
 	if (curl) {
 		CURLcode res;

@@ -9,7 +9,7 @@
  * File description: Connection over bluetooth with car
  *
  * Status: done ?!
- * TODO: maybe see, if realy 9 devices can be created (logic)
+ * TODO: maybe see, if really 9 devices can be created (logic)
  *
  */
 
