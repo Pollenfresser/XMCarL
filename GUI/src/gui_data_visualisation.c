@@ -37,7 +37,15 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
 
 static void do_drawing(cairo_t *cr)
 {
-  gint x = 40,i,y = 32.5,a = 400,b = 325;
+  gint x = 40,i,y = 32.5;
+
+  time_t t;
+  int a,b;
+
+  srand((unsigned)time(&t));
+
+   a = rand()%400;
+   b = rand()%400;
 
 
   cairo_set_source_rgb(cr, 255, 255, 255);
@@ -95,14 +103,17 @@ static void do_drawing(cairo_t *cr)
 
 }
 
-void datavis_screen_visible(GtkWidget *wid, gpointer data)
+
+void datavis_screen_visible(GtkWidget *widget, gpointer data)
 {
 	widgets *a = (widgets *) data;
 	gtk_widget_show_all(a->datavis.layout);
-
-	gtk_widget_set_visible(a->start.layout, FALSE);
-	gtk_widget_set_visible(a->wait.layout, FALSE);
+/*
+	gtk_widget_set_visible(a->home.layout, FALSE);
+	gtk_widget_set_visible(a->car.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
+	gtk_widget_set_visible(a->status.layout, FALSE);
+*/
 
 }
 
@@ -112,10 +123,20 @@ void datavis_screen_clean(gpointer data)
 {
 
 }
+void print_hello (GtkWidget *widget, gpointer   data)
+{
+  GtkWidget *darea_new;
+  widgets *a = (widgets *) data;
 
-void datavis_screen_init(gpointer data) {
+  g_print ("MOVE DAMN IT!!!\n");
+  g_signal_connect(G_OBJECT(darea_new), "draw", G_CALLBACK(on_draw_event), NULL);
+  //g_signal_connect(a->datavis.layout, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  gtk_box_pack_start(GTK_BOX(a->datavis.layout), darea_new, FALSE, FALSE, 0);
+}
 
-	widgets *a = (widgets *) data;
+void datavis_screen_init(gpointer data)
+{
+  widgets *a = (widgets *) data;
 	a->datavis.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	// you can call your functions here
 	// uart call function
@@ -125,18 +146,24 @@ void datavis_screen_init(gpointer data) {
 
 }
 
+
 // you can rename this function
 // append with: gtk_box_pack_start (GTK_BOX(a->datavis.layout), any widget you want, FALSE, FALSE, 0);
-void datavis_code(gpointer data)
+void datavis_code( gpointer data)
 {
   GtkWidget *darea;
+  widgets *a = (widgets *) data;
+  GtkWidget *button;
 
-	widgets *a = (widgets *) data;
-	darea = gtk_drawing_area_new();
+  darea = gtk_drawing_area_new();
   gtk_widget_set_size_request(darea, 800, 650);
 
-  g_signal_connect(G_OBJECT(darea), "draw",G_CALLBACK(on_draw_event), NULL);
-  g_signal_connect(a->datavis.layout, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  button = gtk_button_new_with_label ("Move");
+  g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+  gtk_container_add (GTK_CONTAINER (a->datavis.layout), button);
+
+  g_signal_connect(G_OBJECT(darea), "draw", G_CALLBACK(on_draw_event), NULL);
+//  g_signal_connect(a->datavis.layout, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 
 	gtk_box_pack_start(GTK_BOX(a->datavis.layout), darea, FALSE, FALSE, 0);
