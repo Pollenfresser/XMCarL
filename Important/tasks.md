@@ -1,8 +1,11 @@
 Name - WANT / HAS TO / DOING / REVIEW / DONE
 
-XMC
 
-* Initialisierung / Grundgerüst XMC
+Teile: XMC-MEMS, XMC-AUTO, GUI, MEMS, AUTO
+
+# XMC-MEMS
+
+* Initialisierung / Grundgerüst XMC-MEMS <3 DONE <3
 Chrisy - HAS TO <br>
 Lucas - WANT (Überarbeitung)
 
@@ -15,13 +18,13 @@ wir verwenden nur 2 Achsen - daher werden nur 2 Zahlen an Steuerung und GUI weit
 Dominik - WANT
 Wie viel Beschleunigung
 
-* Kommunikation: XMC <-> Auto
+* Kommunikation: XMC-Auto <-> Auto
 Lucas - WANT
 
-* Kommunikation: XMC <-> GUI
+* Kommunikation: XMC-MEMS <-> GUI
 Lucas - HAS TO
 
-GUI
+# GUI
 
 * Kommunikation: GoPro <-> GUI
 Dominik - HAS TO

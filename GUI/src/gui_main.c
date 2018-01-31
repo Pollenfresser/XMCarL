@@ -10,9 +10,8 @@
  *
  * Status: done so far
  *
- *	TODO: reconnect function and if menu is used: wait screen
  *	TODO: you are able to click the connect button more often than twice - this is a big problem
- *
+ *  TODO: close main loop from gstreamer - obsolete?
  */
 
 #include <gui_main.h>
@@ -28,6 +27,9 @@ int cport_nr = 16;    // /dev/ttyUSB0
  * Start of user functions
  *****************************************************************************/
 
+/*
+ * The girl loves media technology
+ */
 void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	gtk_style_context_add_provider(gtk_widget_get_style_context(widget), css_s,
 			G_MAXUINT);
@@ -38,36 +40,35 @@ void apply_css(GtkWidget *widget, GtkStyleProvider *css_s) {
 	}
 }
 
-gpointer transferThread(gpointer data){
-
-	// new thread for uart and bluetooth connection
-	// 1: get data from uart
-	// 2: save data
-	// 3: send data to bluetooth
-	// send data to gui -> polling im callback
+/*
+ * Thread for UART
+ * gets Data from MEMS sensor
+ * Data is needed for Bluetooth connection and Data visualisation
+ */
+gpointer uartThread(gpointer data){
   widgets *a = (widgets *) data;
 
-  if(pc_uart_init()) {
+  #if DEBUG
+    printf("Start UART init\n");
+  #endif
+
+  if(pc_uart_init((gpointer)a)) {
     return FALSE;
   }
 
+  #if DEBUG
+    printf("UART init successfull\n");
+  #endif
+
   g_timeout_add(SENSOR_REFRESH_CYCLE, (GSourceFunc) pc_uart_receive, NULL);
-//
-//<<<<<<< HEAD
-//	//g_timeout_add();
-//=======
-//>>>>>>> 7f21df19938a1760f58b4c3cd331c2ec0c18bf7f
+
   return NULL;
 
 }
 
 /*
- * CSS provider
- * Window properties
- * main_box - Layout
- * init of all screens
- * CSS function call
- * make screens visible
+ * CSS provider, Window properties, main_box - Layout, init of all screens
+ * CSS function call, make screens visible
  */
 void activate(GtkApplication *app, gpointer data) {
 	widgets *a = (widgets *) data;
@@ -88,26 +89,29 @@ void activate(GtkApplication *app, gpointer data) {
 	gtk_container_add(GTK_CONTAINER(a->window), a->main_box);
 
 	menu_init ((gpointer) a);
-	start_screen_init((gpointer) a);
-	wait_screen_init((gpointer) a);
+	status_screen_init((gpointer) a);
+	home_screen_init((gpointer) a);
+	car_screen_init((gpointer) a);
 	stream_screen_init((gpointer) a);
 	datavis_screen_init((gpointer) a);
 
 	apply_css(a->window, a->css_style);
 
 	menu_visible ((gpointer) a);
-	start_screen_visible((gpointer) a);
+	home_screen_visible((gpointer) a);
+
+	gopro_init(NULL,(gpointer) a);
+
 }
 
 int main(int argc, char ** argv) {
 	int status;
-	GThread* lucasNervt;
+	GThread* gthread_uart;
 
 	// Struct which contains all of the data
 	widgets *a = g_malloc(sizeof(widgets));
 
-	lucasNervt = g_thread_new("data_transfer", (GThreadFunc) transferThread, (gpointer)a);
-
+	gthread_uart = g_thread_new("data_transfer", (GThreadFunc) uartThread, (gpointer) a);
 
 	a->bluetooth = g_malloc(MAX_BLUETOOTH_RESPONSES*sizeof(bluetooth_data));
 
@@ -115,17 +119,15 @@ int main(int argc, char ** argv) {
 	g_signal_connect(a->app, "activate", G_CALLBACK(activate), (gpointer) a);
 	status = g_application_run(G_APPLICATION(a->app), argc, argv);
 
-	g_thread_join (lucasNervt);
+	g_thread_join (gthread_uart);
 
 	// clean up
-
-	// gopro stream
-	gst_element_set_state(a->stream.playbin, GST_STATE_NULL);
-	gst_object_unref(a->stream.playbin);
-	gtk_main_quit();
+	stream_screen_clean((gpointer) a);
+	gopro_clean((gpointer) a);
+	blue_clean((gpointer) a);
 
 	g_object_unref(a->app);
-	//g_free(a->bluetooth);
+	g_free(a->bluetooth);
 	g_free(a);
 
 	return status;

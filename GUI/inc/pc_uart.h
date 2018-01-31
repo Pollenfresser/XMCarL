@@ -47,6 +47,9 @@ extern "C" {
 #define RECEIVE_BUFF_SIZE 4096
 #define RX_BUFFER_SIZE 64 // UART
 
+#define DEBUG_MEM 0
+#define DEBUG_DATA 0
+
 extern int cport_nr;    // /dev/ttyUSB0
 // XMCarl End
 
@@ -84,14 +87,14 @@ int RS232_GetPortnr(const char *);
 /*****************************/
 /* User functions */
 /******************/
-int pc_uart_init(void);
+int pc_uart_init(gpointer data);
 gboolean pc_uart_receive(gpointer data);
 
 
 
 struct rcv{
-  long x;
-  long y;
+  long steering;
+  long throttle;
 };
 
 struct rcv received;

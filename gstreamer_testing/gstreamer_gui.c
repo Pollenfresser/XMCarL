@@ -2,9 +2,9 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
 #include <gst/gst.h>
 #include <gst/video/videooverlay.h>
+#include <gtk/gtk.h>
 
 #include <gdk/gdk.h>
 #if defined (GDK_WINDOWING_X11)
@@ -101,13 +101,9 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-
 	/* Set the URI to play */
-	g_object_set(data.playbin, "uri",
-			"https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm",
+	g_object_set(data.playbin, "uri", "http://10.5.5.9:8554/live/amba.m3u8",
 			NULL);
-
-
 
 	// gopro code
 
@@ -115,7 +111,7 @@ int main(int argc, char *argv[]) {
 
 
 
-
+// /gp/gpControl/execute?p1=gpStream&c1=stop
 
 
 

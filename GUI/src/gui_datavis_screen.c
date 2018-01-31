@@ -1,12 +1,12 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg
- * Modified: Lucas Ullrich
+ * Author: Dominik
+ * Modified:
  *
  * Date of creation: 26.12.2017
  *
- * File description: Lucas should do the data visualisation
+ * File description:
  *
  * Status: init is done
  *
@@ -108,12 +108,11 @@ void datavis_screen_visible(GtkWidget *widget, gpointer data)
 {
 	widgets *a = (widgets *) data;
 	gtk_widget_show_all(a->datavis.layout);
-/*
+
 	gtk_widget_set_visible(a->home.layout, FALSE);
 	gtk_widget_set_visible(a->car.layout, FALSE);
 	gtk_widget_set_visible(a->stream.layout, FALSE);
 	gtk_widget_set_visible(a->status.layout, FALSE);
-*/
 
 }
 
@@ -131,13 +130,14 @@ void print_hello (GtkWidget *widget, gpointer   data)
   g_print ("MOVE DAMN IT!!!\n");
   g_signal_connect(G_OBJECT(darea_new), "draw", G_CALLBACK(on_draw_event), NULL);
   //g_signal_connect(a->datavis.layout, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-  //gtk_box_pack_start(GTK_BOX(a->datavis.layout), darea_new, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(a->datavis.layout), darea_new, FALSE, FALSE, 0);
 }
 
 void datavis_screen_init(gpointer data)
 {
   widgets *a = (widgets *) data;
 	a->datavis.layout = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
 	// you can call your functions here
 	// uart call function
 	datavis_code((gpointer) a);
