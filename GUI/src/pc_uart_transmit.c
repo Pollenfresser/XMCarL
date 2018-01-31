@@ -1,8 +1,8 @@
 /**
  * Project: XMCarL
  *
- * Author: Chrisy
- * Modified:
+ * Author: Christina Bornberg
+ * Modified: Lucas Ullrich
  *
  * Date of creation: 27.12.2017
  *
@@ -10,7 +10,7 @@
  * Data is send by the xmc to the pc - will be forwarded
  * via bluetooth to the car and visualised in gui_data_visualisation.c
  *
- * Status: at the beginning
+ * Status: is working
  *
  */
 
@@ -49,21 +49,6 @@ int pc_uart_init(gpointer data) {
 void pc_uart_clean() {
 
 }
-
-
-// ergebnis -> durch 2000 wird an gui
-// durch 2*9.81 an car - ich schicke nur mehr pulsdauer in millisec
-// es sind immer 2 verschiedene werte - eines für throttle, eines für steering
-// pulsdauer zw 1 & 2 ms
-// ich bekomme wahrscheinlich eine 16bit zahl
-void pc_uart_result_manipulation(){
-
-
-}
-
-
-// whatever i get here should be forwarded to the bluetooth
-// file and to the gui-visualisation file
 
 /*!
  * \brief Reads the whole serial register and returns the last 2 values for x

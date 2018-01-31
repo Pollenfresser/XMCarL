@@ -6,7 +6,7 @@
  *
  * Date of creation: 26.12.2017
  *
- * File description: Start Screen
+ * File description: Home Screen
  *
  * Status: done
  *
@@ -18,6 +18,9 @@
  * Start of user functions
  *****************************************************************************/
 
+/*
+ * Home screen is now visible
+ */
 void home_screen_visible(gpointer data) {
 	widgets *a = (widgets *) data;
 	gtk_widget_show_all(a->home.layout);
@@ -29,12 +32,17 @@ void home_screen_visible(gpointer data) {
 
 }
 
-// here everything from start screen should be cleaned up
-// unref, ...
+/*
+ * here everything from start screen should be cleaned up
+ * unref, ...
+ */
 void home_screen_clean(gpointer data) {
 
 }
 
+/*
+ * Initialisation of home screen
+ */
 void home_screen_init(gpointer data) {
 	widgets *a = (widgets *) data;
 

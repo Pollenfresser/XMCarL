@@ -65,6 +65,7 @@
 #define SENDING 3
 #define RECEIVING 4
 #define ERROR 5
+#define SUCCESS 6
 
 /**
 * Prototypes

@@ -10,9 +10,8 @@
  *
  * Status: done so far
  *
- *	TODO: reconnect function and if menu is used: wait screen
  *	TODO: you are able to click the connect button more often than twice - this is a big problem
- *  TODO: close main loop from gstreamer
+ *  TODO: close main loop from gstreamer - obsolete?
  */
 
 #include <gui_main.h>

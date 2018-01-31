@@ -7,8 +7,7 @@
  *
  * File description: Menu
  *
- * Status:
- * TODO if you are not connected already - connect and show wait screen
+ * Status: Done
  *
  */
 
@@ -86,7 +85,6 @@ void menu_init(gpointer data) {
 			accels_datavis);
 	gtk_application_set_accels_for_action(GTK_APPLICATION(a->app), "app.about",
 			accels_about);
-
 }
 
 void menu_callback_home(GSimpleAction *action, GVariant *parameter,
@@ -128,7 +126,7 @@ void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 			"Dominik Jantos", NULL };
 
 	// Image
-	pixbuf = gdk_pixbuf_new_from_file("img/xmcarl.png", NULL);
+	pixbuf = gdk_pixbuf_new_from_file("img/xmcarl_logo.jpeg", NULL);
 
 	// Layout
 	about_dialog = gtk_about_dialog_new();
@@ -142,9 +140,7 @@ void menu_callback_about(GSimpleAction *action, GVariant *parameter,
 	g_signal_connect(GTK_DIALOG(about_dialog), "response",
 			G_CALLBACK(destroy_dialog), (gpointer) a);
 
-	// Free
 	g_object_unref(pixbuf);
-
 }
 
 void destroy_dialog(GtkDialog *dialog, gint response_id, gpointer data) {

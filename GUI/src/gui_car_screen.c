@@ -8,8 +8,8 @@
  *
  * File description: Connection over bluetooth with car
  *
- * Status: done ?!
- * TODO: maybe see, if really 9 devices can be created (logic)
+ * Status: done
+ * TODO: maybe check, if really 9 devices can be created (logic)
  *
  */
 
@@ -105,6 +105,11 @@ void car_connect_device(GtkWidget *wid, gpointer data) {
 
 }
 
+/*
+ * A button for each bluetooth device is created
+ * the maximum is 9 (please check)
+ * another button "example" is there; just for testing reasons
+ */
 void car_create_button_for_each_device(int count_devices, gpointer data) {
 
 	widgets *a = (widgets *) data;

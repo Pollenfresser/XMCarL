@@ -1,16 +1,20 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina
- * Modified:
+ * Author: Christina Bornberg
+ * Modified: -
  * Used Code:
+ * https://gstreamer.freedesktop.org/documentation/tutorials/basic/toolkit-integration.html
+ * https://gstreamer.freedesktop.org/documentation/tutorials/basic/streaming.html
  *
  * Date of creation: 26.12.2017
  *
  * File description: GoPro Stream
  *
- * Status: at the beginning
- * - info: /live/amba.m3u8
+ * Status: it's not working with gopro :(
+ * use this for just streamer testing:
+ *   g_object_set (data.playbin, "uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm", NULL);
+ *
  */
 
 #include <gui_main.h>
@@ -46,7 +50,7 @@ void stream_screen_clean(gpointer data) {
 	widgets *a = (widgets *) data;
 	//if(main_loops != NULL){
 		gst_element_set_state(a->stream.playbin, GST_STATE_READY);
-		gtk_main_quit();
+		//gtk_main_quit();
 		gst_object_unref(a->stream.playbin);
 //	}
 }
@@ -93,7 +97,9 @@ void stream_start_stream(gpointer data) {
 //
 //	goproSocketUpd = g_socket_new(G_SOCKET_FAMILY_IPV4, G_SOCKET_TYPE_DATAGRAM, G_SOCKET_PROTOCOL_UDP, NULL);
 //
-	g_object_set(a->stream.playbin, "uri", "udp://:8554", NULL);
+//	g_object_set(a->stream.playbin, "uri", "udp://:8554", NULL);
+
+	g_object_set (a->stream.playbin, "uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm", NULL);
 
 	ret = gst_element_set_state(a->stream.playbin, GST_STATE_PLAYING);
 	if (ret == GST_STATE_CHANGE_FAILURE) {
@@ -103,14 +109,15 @@ void stream_start_stream(gpointer data) {
 		home_screen_visible((gpointer) a);
 		// gst_object_unref(a->stream.playbin);
 	}else {
-		g_print("pipeline is on playing state");
+		a->status.stream = RECEIVING;
+		strcpy(a->status.stream_info, "Playbin is in playing state");
 	}
 
 	// Register a function that GLib will call every second
 	g_timeout_add_seconds(1, (GSourceFunc) stream_refresh, (gpointer) a);
 
-	// Start the GTK main loop until gtk_main_quit TODO
-	gtk_main();
+	// Start the GTK main loop until gtk_main_quit
+	//gtk_main();
 }
 
 static void stream_realize_cb(GtkWidget *widget, gpointer data) {

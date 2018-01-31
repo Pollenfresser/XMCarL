@@ -52,7 +52,7 @@
  *****************************************************************************/
 
 /*
- * working - the function looks out for available bluetooth devices
+ * working - the function searches for available bluetooth devices
  *
  * Device adress of bluetooth module on car:
  * 00:1B:35:88:0C:81
@@ -109,11 +109,12 @@ void blue_clean(gpointer data) {
 	strcpy(a->status.stream_info, "Bluetooth socket is closed");
 }
 
-// Sends message to the socket from blue_comm_init
+/*
+ * Sends message to the socket from blue_comm_init
+ */
 gboolean blue_send_data(gpointer data) {
 	widgets *a = (widgets *) data;
-	sprintf(a->bluetooth->message, "%ld %ld\n", received.steering, received.throttle); // TODO: received in uart / 2000 !?
-	//puts(a->bluetooth->message);
+	sprintf(a->bluetooth->message, "%ld %ld\n", received.steering, received.throttle);
 #if DEBUG
 	printf("Sending data %s, %ld\n", a->bluetooth->message, received.steering);
 #endif
@@ -121,6 +122,11 @@ gboolean blue_send_data(gpointer data) {
 	return TRUE;
 }
 
+
+/*
+ * Bluetooth socket for the communication with the choosen
+ * device is created, binded and connected
+ */
 int blue_comm_init(gpointer data) {
 	widgets *a = (widgets *) data;
 

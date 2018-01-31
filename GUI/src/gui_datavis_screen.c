@@ -1,12 +1,12 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina Bornberg
- * Modified: Lucas Ullrich
+ * Author: Dominik
+ * Modified:
  *
  * Date of creation: 26.12.2017
  *
- * File description: Lucas should do the data visualisation
+ * File description:
  *
  * Status: init is done
  *

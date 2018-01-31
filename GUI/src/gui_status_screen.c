@@ -1,15 +1,22 @@
 /**
  * Project: XMCarL
  *
- * Author: Christina
- * Modified:
- * Used Code:
+ * Author: Christina Bornberg
+ * Modified: -
+ * Used Code: -
  *
  * Date of creation: 30.01.2018
  *
- * File description: Status of all devices
+ * File description: Status of the devices:
+ *  - GoPro (WLAN)
+ *  - Car (Bluetooth)
+ *  - Remote Control (UART)
+ *  - Stream (GStreamer)
  *
- * Status: at the beginning
+ * Status: Info and Status can be updated
+ * - might be good to find more errors and other states
+ *   in the rest of the code
+ *
  */
 
 #include <gui_main.h>
@@ -18,6 +25,9 @@
  * Start of user functions
  *****************************************************************************/
 
+/*
+ * status screen is now visible
+ */
 void status_screen_visible(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
 
@@ -52,16 +62,26 @@ void status_screen_visible(GtkWidget *wid, gpointer data) {
 
 }
 
-// here everything from stream screen should be cleaned up
-// unref, ...
+/*
+ * here everything from stream screen should be cleaned up
+ * unref, ...
+ */
 void status_screen_clean(gpointer data) {
 
 }
 
+/*
+ * refreshes info-label when status screen is called
+ * it's a longer message related to the status
+ */
 void status_screen_refresh_info(GtkWidget *wid, char info[1024]) {
 	gtk_label_set_text(GTK_LABEL(wid), info);
 }
 
+/*
+ * refreshes status when status screen is called
+ * There are some given states, which are defined in the gui_main.h
+ */
 void status_screen_refresh_status(GtkWidget *wid, int status) {
 	switch (status) {
 	case INIT:
@@ -81,6 +101,8 @@ void status_screen_refresh_status(GtkWidget *wid, int status) {
 		break;
 	case ERROR:
 		gtk_label_set_text(GTK_LABEL(wid), "Error");
+	case SUCCESS:
+			gtk_label_set_text(GTK_LABEL(wid), "Success");
 		break;
 	default:
 		gtk_label_set_text(GTK_LABEL(wid), "Unknown status");
@@ -88,6 +110,10 @@ void status_screen_refresh_status(GtkWidget *wid, int status) {
 	}
 }
 
+/*
+ * calls the uart thread again, if user clicks on button
+ * this can just be done, if an error occurs in the uart routine
+ */
 void status_call_new_uart(GtkWidget *wid, gpointer data) {
 	widgets *a = (widgets *) data;
 
@@ -97,6 +123,9 @@ void status_call_new_uart(GtkWidget *wid, gpointer data) {
 	g_thread_join(gthread_uart);
 }
 
+/*
+ * Initialisation of the status screen
+ */
 void status_screen_init(gpointer data) {
 	widgets *a = (widgets *) data;
 
